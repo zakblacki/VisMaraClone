@@ -1,12 +1,13 @@
 import { useParams, useLocation } from "wouter";
-import { ChevronRight, Download, Share2, Heart, ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronRight, Download, Share2, Heart, ArrowRight, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { sampleProducts } from "@/lib/data";
+import { getProductBySlug, getProducts } from "@/lib/api";
 
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
@@ -23,10 +24,32 @@ export default function ProductDetail() {
   const params = useParams();
   const slug = params.slug;
   
-  const product = sampleProducts.find((p) => p.slug === slug);
-  const relatedProducts = sampleProducts.filter((p) => p.slug !== slug).slice(0, 4);
+  const { data: product, isLoading, error } = useQuery({
+    queryKey: ["product", slug],
+    queryFn: () => getProductBySlug(slug!),
+    enabled: !!slug,
+  });
 
-  if (!product) {
+  const { data: allProducts = [] } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
+
+  const relatedProducts = allProducts.filter((p) => p.slug !== slug).slice(0, 4);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -196,35 +219,37 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold mb-8">Prodotti correlati</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relProduct, index) => (
-                <Card 
-                  key={relProduct.code} 
-                  className="group h-full hover-elevate cursor-pointer overflow-visible"
-                  onClick={() => setLocation(`/prodotto/${relProduct.slug}`)}
-                >
-                  <div className="aspect-square relative bg-muted/50">
-                    <img
-                      src={imageMap[relProduct.image || "speedGovernor"]}
-                      alt={relProduct.name}
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                      data-testid={`img-related-product-${index}`}
-                    />
-                  </div>
-                  <CardContent className="p-4">
-                    <p className="text-xs text-muted-foreground mb-1">
-                      {relProduct.code}
-                    </p>
-                    <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                      {relProduct.name}
-                    </h3>
-                  </CardContent>
-                </Card>
-              ))}
+          {relatedProducts.length > 0 && (
+            <div className="mt-16">
+              <h2 className="text-2xl font-bold mb-8">Prodotti correlati</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {relatedProducts.map((relProduct, index) => (
+                  <Card 
+                    key={relProduct.id} 
+                    className="group h-full hover-elevate cursor-pointer overflow-visible"
+                    onClick={() => setLocation(`/prodotto/${relProduct.slug}`)}
+                  >
+                    <div className="aspect-square relative bg-muted/50">
+                      <img
+                        src={imageMap[relProduct.image || "speedGovernor"]}
+                        alt={relProduct.name}
+                        className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                        data-testid={`img-related-product-${index}`}
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {relProduct.code}
+                      </p>
+                      <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                        {relProduct.name}
+                      </h3>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
       <Footer />

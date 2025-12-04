@@ -1,9 +1,10 @@
 import { useLocation } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { sampleProducts } from "@/lib/data";
+import { getFeaturedProducts } from "@/lib/api";
 
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
@@ -18,7 +19,11 @@ const imageMap: Record<string, string> = {
 
 export function ProductsSection() {
   const [, setLocation] = useLocation();
-  const featuredProducts = sampleProducts.filter(p => p.featured).slice(0, 6);
+  
+  const { data: featuredProducts = [], isLoading } = useQuery({
+    queryKey: ["products", "featured"],
+    queryFn: getFeaturedProducts,
+  });
   
   return (
     <section className="py-16 lg:py-24 bg-muted/30">
@@ -60,37 +65,43 @@ export function ProductsSection() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-              {featuredProducts.map((product, index) => (
-                <Card 
-                  key={product.code} 
-                  className="group h-full hover-elevate cursor-pointer transition-all overflow-visible"
-                  onClick={() => setLocation(`/prodotto/${product.slug}`)}
-                >
-                  <div className="aspect-square relative bg-muted/50">
-                    <img
-                      src={imageMap[product.image || 'speedGovernor']}
-                      alt={product.name}
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                      data-testid={`img-product-${index}`}
-                    />
-                    {product.featured && (
-                      <Badge className="absolute top-3 right-3" variant="default">
-                        In evidenza
-                      </Badge>
-                    )}
-                  </div>
-                  <CardContent className="p-4">
-                    <p className="text-xs text-muted-foreground mb-1">
-                      {product.code}
-                    </p>
-                    <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+                {featuredProducts.slice(0, 6).map((product, index) => (
+                  <Card 
+                    key={product.id} 
+                    className="group h-full hover-elevate cursor-pointer transition-all overflow-visible"
+                    onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                  >
+                    <div className="aspect-square relative bg-muted/50">
+                      <img
+                        src={imageMap[product.image || 'speedGovernor']}
+                        alt={product.name}
+                        className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                        data-testid={`img-product-${index}`}
+                      />
+                      {product.featured && (
+                        <Badge className="absolute top-3 right-3" variant="default">
+                          In evidenza
+                        </Badge>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {product.code}
+                      </p>
+                      <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                        {product.name}
+                      </h3>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

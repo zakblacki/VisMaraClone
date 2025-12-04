@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useSearch, useLocation } from "wouter";
-import { Search, Filter, Grid3X3, List, ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Search, Filter, Grid3X3, List, ChevronRight, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sampleProducts, sampleCategories } from "@/lib/data";
+import { getProducts, getCategories } from "@/lib/api";
 
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
@@ -36,12 +37,22 @@ export default function Catalog() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("name");
 
+  const { data: products = [], isLoading: productsLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
+
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
+
   const filteredProducts = useMemo(() => {
-    let products = [...sampleProducts];
+    let filtered = [...products];
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      products = products.filter(
+      filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.code.toLowerCase().includes(query) ||
@@ -50,17 +61,22 @@ export default function Catalog() {
     }
 
     if (selectedCategory !== "all") {
-      products = products.filter((p) => p.categoryId === selectedCategory);
+      const category = categories.find((c) => c.slug === selectedCategory);
+      if (category) {
+        filtered = filtered.filter((p) => p.categoryId === category.id);
+      }
     }
 
-    products.sort((a, b) => {
+    filtered.sort((a, b) => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
       if (sortBy === "code") return a.code.localeCompare(b.code);
       return 0;
     });
 
-    return products;
-  }, [searchQuery, selectedCategory, sortBy]);
+    return filtered;
+  }, [products, categories, searchQuery, selectedCategory, sortBy]);
+
+  const isLoading = productsLoading || categoriesLoading;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -109,7 +125,7 @@ export default function Catalog() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Tutte le categorie</SelectItem>
-                  {sampleCategories.map((cat) => (
+                  {categories.map((cat) => (
                     <SelectItem key={cat.slug} value={cat.slug}>
                       {cat.name}
                     </SelectItem>
@@ -148,101 +164,109 @@ export default function Catalog() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-muted-foreground">
-              {filteredProducts.length} prodotti trovati
-            </p>
-          </div>
-
-          {viewMode === "grid" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product, index) => (
-                <Card 
-                  key={product.code} 
-                  className="group h-full hover-elevate cursor-pointer overflow-visible"
-                  onClick={() => setLocation(`/prodotto/${product.slug}`)}
-                >
-                  <div className="aspect-square relative bg-muted/50">
-                    <img
-                      src={imageMap[product.image || "speedGovernor"]}
-                      alt={product.name}
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                      data-testid={`img-catalog-product-${index}`}
-                    />
-                    {product.featured && (
-                      <Badge className="absolute top-3 right-3">
-                        In evidenza
-                      </Badge>
-                    )}
-                  </div>
-                  <CardContent className="p-4">
-                    <p className="text-xs text-muted-foreground mb-1">
-                      {product.code}
-                    </p>
-                    <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
-                  </CardContent>
-                </Card>
-              ))}
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="space-y-4">
-              {filteredProducts.map((product, index) => (
-                <Card 
-                  key={product.code} 
-                  className="group hover-elevate cursor-pointer overflow-visible"
-                  onClick={() => setLocation(`/prodotto/${product.slug}`)}
-                >
-                  <CardContent className="p-4 flex gap-4">
-                    <div className="w-24 h-24 flex-shrink-0 bg-muted/50 rounded-lg overflow-hidden">
-                      <img
-                        src={imageMap[product.image || "speedGovernor"]}
-                        alt={product.name}
-                        className="w-full h-full object-contain p-2"
-                        data-testid={`img-catalog-list-product-${index}`}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">
-                            {product.code}
-                          </p>
-                          <h3 className="font-medium group-hover:text-primary transition-colors">
-                            {product.name}
-                          </h3>
-                        </div>
+            <>
+              <div className="flex items-center justify-between mb-6">
+                <p className="text-muted-foreground">
+                  {filteredProducts.length} prodotti trovati
+                </p>
+              </div>
+
+              {viewMode === "grid" ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {filteredProducts.map((product, index) => (
+                    <Card 
+                      key={product.id} 
+                      className="group h-full hover-elevate cursor-pointer overflow-visible"
+                      onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                    >
+                      <div className="aspect-square relative bg-muted/50">
+                        <img
+                          src={imageMap[product.image || "speedGovernor"]}
+                          alt={product.name}
+                          className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                          data-testid={`img-catalog-product-${index}`}
+                        />
                         {product.featured && (
-                          <Badge className="flex-shrink-0">In evidenza</Badge>
+                          <Badge className="absolute top-3 right-3">
+                            In evidenza
+                          </Badge>
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                        {product.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                      <CardContent className="p-4">
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {product.code}
+                        </p>
+                        <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                          {product.name}
+                        </h3>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {filteredProducts.map((product, index) => (
+                    <Card 
+                      key={product.id} 
+                      className="group hover-elevate cursor-pointer overflow-visible"
+                      onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                    >
+                      <CardContent className="p-4 flex gap-4">
+                        <div className="w-24 h-24 flex-shrink-0 bg-muted/50 rounded-lg overflow-hidden">
+                          <img
+                            src={imageMap[product.image || "speedGovernor"]}
+                            alt={product.name}
+                            className="w-full h-full object-contain p-2"
+                            data-testid={`img-catalog-list-product-${index}`}
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-xs text-muted-foreground mb-1">
+                                {product.code}
+                              </p>
+                              <h3 className="font-medium group-hover:text-primary transition-colors">
+                                {product.name}
+                              </h3>
+                            </div>
+                            {product.featured && (
+                              <Badge className="flex-shrink-0">In evidenza</Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                            {product.description}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
 
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">
-                Nessun prodotto trovato per la ricerca "{searchQuery}"
-              </p>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCategory("all");
-                }}
-                data-testid="button-reset-filters"
-              >
-                Reimposta filtri
-              </Button>
-            </div>
+              {filteredProducts.length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground mb-4">
+                    Nessun prodotto trovato per la ricerca "{searchQuery}"
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("all");
+                    }}
+                    data-testid="button-reset-filters"
+                  >
+                    Reimposta filtri
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>

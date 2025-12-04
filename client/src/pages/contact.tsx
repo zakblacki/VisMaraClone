@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearch, useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
 import { ChevronRight, Phone, Mail, MapPin, Clock, Send, Check } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { companyInfo } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
+import { createInquiry } from "@/lib/api";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Il nome deve avere almeno 2 caratteri"),
@@ -43,7 +45,6 @@ export default function Contact() {
   const [, setLocation] = useLocation();
   const searchParams = useSearch();
   const productCode = new URLSearchParams(searchParams).get("product") || "";
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
@@ -59,18 +60,29 @@ export default function Contact() {
     },
   });
 
+  const inquiryMutation = useMutation({
+    mutationFn: createInquiry,
+    onSuccess: () => {
+      setIsSubmitted(true);
+      toast({
+        title: "Messaggio inviato!",
+        description: "Ti risponderemo al più presto.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Si è verificato un errore. Riprova più tardi.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const onSubmit = async (data: ContactFormValues) => {
-    setIsSubmitting(true);
-    
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Messaggio inviato!",
-      description: "Ti risponderemo al più presto.",
-    });
+    inquiryMutation.mutate(data);
   };
+
+  const isSubmitting = inquiryMutation.isPending;
 
   const subjects = [
     { value: "product-info", label: "Informazioni prodotto" },

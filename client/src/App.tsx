@@ -12,6 +12,7 @@ import ElevatorConfigurator from "@/pages/elevator-configurator";
 import PlatformConfigurator from "@/pages/platform-configurator";
 import Downloads from "@/pages/downloads";
 import Services from "@/pages/services";
+import Impianti from "@/pages/impianti";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,8 +28,8 @@ function Router() {
       <Route path="/download" component={Downloads} />
       <Route path="/servizi" component={Services} />
       <Route path="/servizi/:slug" component={Services} />
-      <Route path="/impianti" component={Services} />
-      <Route path="/impianti/:slug" component={Services} />
+      <Route path="/impianti" component={Impianti} />
+      <Route path="/impianti/:slug" component={Impianti} />
       <Route component={NotFound} />
     </Switch>
   );
