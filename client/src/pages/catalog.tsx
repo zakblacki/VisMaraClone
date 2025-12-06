@@ -182,7 +182,7 @@ export default function Catalog() {
                     <Card
                       key={product.id}
                       className="group h-full hover-elevate cursor-pointer overflow-visible"
-                      onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                      onClick={() => setLocation(`/product/${product.slug}`)}
                     >
                       <div className="aspect-square relative bg-muted/50">
                         <img
@@ -214,7 +214,7 @@ export default function Catalog() {
                     <Card
                       key={product.id}
                       className="group hover-elevate cursor-pointer overflow-visible"
-                      onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                      onClick={() => setLocation(`/product/${product.slug}`)}
                     >
                       <CardContent className="p-4 flex gap-4">
                         <div className="w-24 h-24 flex-shrink-0 bg-muted/50 rounded-lg overflow-hidden">

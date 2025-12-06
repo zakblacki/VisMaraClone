@@ -1,0 +1,61 @@
+1)give me all current routes of the apps 
+/impianti
+catalog/
+catalog/operatori
+...etc 
+
+Because some routes /chi-siamo /catalogo ...etc are still showing in italian I need you to rename them all to english 
+
+
+2) I'm getting 
+
+404
+
+Page non trouvée
+La page que vous recherchez n'existe pas ou a été déplacée. Retournez à la page d'accueil ou explorez notre catalogue de produits.
+
+on several pages routes
+
+https://76caf88b-b235-4561-8668-8ba8ad1d62f5-00-2n1433xjbqvqm.worf.replit.dev/prodotto/tappo-terminale-led-220v
+https://76caf88b-b235-4561-8668-8ba8ad1d62f5-00-2n1433xjbqvqm.worf.replit.dev/documents/limitatore-240mm-datasheet.pdf
+https://76caf88b-b235-4561-8668-8ba8ad1d62f5-00-2n1433xjbqvqm.worf.replit.dev//prodotto/operatore-porta-slim-laterale
+
+on the demo mockup data fixe them all so I can test everything working 
+
+3) the multilanguage translation localization in the platform is not working as it should not all pages are translated fixe 
+many strings are still hardcoded. 
+
+4) Also tell me how I can import the database localy I have mac and pgadmin 4 with dbngin with postgresql server 
+
+
+5)
+ npx tsx server/index.ts
+
+Need to install the following packages:
+tsx@4.21.0
+Ok to proceed? (y) y
+
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'dotenv' imported from /home/runner/workspace/server/index.ts
+    at packageResolve (node:internal/modules/esm/resolve:873:9)
+    at moduleResolve (node:internal/modules/esm/resolve:946:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+    at nextResolve (node:internal/modules/esm/hooks:864:28)
+    at resolveBase (file:///home/runner/.npm/_npx/fd45a72a545557e9/node_modules/tsx/dist/esm/index.mjs?1765039387101:2:3744)
+    at resolveDirectory (file:///home/runner/.npm/_npx/fd45a72a545557e9/node_modules/tsx/dist/esm/index.mjs?1765039387101:2:4243)
+    at resolveTsPaths (file:///home/runner/.npm/_npx/fd45a72a545557e9/node_modules/tsx/dist/esm/index.mjs?1765039387101:2:4984)
+    at async resolve (file:///home/runner/.npm/_npx/fd45a72a545557e9/node_modules/tsx/dist/esm/index.mjs?1765039387101:2:5355)
+    at async nextResolve (node:internal/modules/esm/hooks:864:22)
+    at async Hooks.resolve (node:internal/modules/esm/hooks:306:24) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v20.19.3
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.6.4
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.4
+npm notice To update run: npm install -g npm@11.6.4
+npm notice

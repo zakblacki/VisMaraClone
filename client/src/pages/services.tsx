@@ -121,7 +121,7 @@ export default function Services() {
               </button>
               <ChevronRight className="h-4 w-4" />
               <button
-                onClick={() => setLocation("/servizi")}
+                onClick={() => setLocation("/services")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Prestations
@@ -154,7 +154,7 @@ export default function Services() {
               </ul>
               <Button
                 size="lg"
-                onClick={() => setLocation("/contatti")}
+                onClick={() => setLocation("/contact")}
                 data-testid="button-contact-service"
               >
                 Demander des informations
@@ -197,7 +197,7 @@ export default function Services() {
               <Card
                 key={slug}
                 className={`h-full hover-elevate cursor-pointer overflow-visible ${serviceSlug === slug ? 'ring-2 ring-primary' : ''}`}
-                onClick={() => setLocation(`/servizi/${slug}`)}
+                onClick={() => setLocation(`/services/${slug}`)}
               >
                 <CardContent className="p-4">
                   <h3 className="font-semibold mb-1">{svc.title}</h3>

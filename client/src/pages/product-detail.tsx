@@ -27,7 +27,7 @@ export default function ProductDetail() {
   const { toast } = useToast();
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/prodotto/${slug}`;
+    const url = `${window.location.origin}/product/${slug}`;
     const text = `Découvrez ce produit: ${product?.name}`;
     
     if (navigator.share) {
@@ -101,7 +101,7 @@ export default function ProductDetail() {
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Produit non trouvé</h1>
-            <Button onClick={() => setLocation("/catalogo")}>
+            <Button onClick={() => setLocation("/catalog")}>
               Retour au catalogue
             </Button>
           </div>
@@ -126,7 +126,7 @@ export default function ProductDetail() {
               </button>
               <ChevronRight className="h-4 w-4" />
               <button
-                onClick={() => setLocation("/catalogo")}
+                onClick={() => setLocation("/catalog")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Catalogue
@@ -240,7 +240,7 @@ export default function ProductDetail() {
                 <Button
                   className="flex-1"
                   size="lg"
-                  onClick={() => setLocation(`/contatti?product=${product.code}`)}
+                  onClick={() => setLocation(`/contact?product=${product.code}`)}
                   data-testid="button-request-info-product"
                 >
                   Demander des informations
@@ -281,7 +281,7 @@ export default function ProductDetail() {
                   <Card
                     key={relProduct.id}
                     className="group h-full hover-elevate cursor-pointer overflow-visible"
-                    onClick={() => setLocation(`/prodotto/${relProduct.slug}`)}
+                    onClick={() => setLocation(`/product/${relProduct.slug}`)}
                   >
                     <div className="aspect-square relative bg-muted/50">
                       <img

@@ -153,7 +153,7 @@ export default function Installations() {
               </button>
               <ChevronRight className="h-4 w-4" />
               <button
-                onClick={() => setLocation("/impianti")}
+                onClick={() => setLocation("/installations")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Installations
@@ -187,7 +187,7 @@ export default function Installations() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   size="lg"
-                  onClick={() => setLocation("/contatti?subject=quote")}
+                  onClick={() => setLocation("/contact?subject=quote")}
                   data-testid="button-request-quote"
                 >
                   Demander un devis
@@ -196,7 +196,7 @@ export default function Installations() {
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => setLocation("/configuratore-ascensore")}
+                  onClick={() => setLocation("/elevator-configurator")}
                   data-testid="button-configure"
                 >
                   Configurer en ligne
@@ -255,7 +255,7 @@ export default function Installations() {
               <Card
                 key={slug}
                 className={`h-full hover-elevate cursor-pointer overflow-visible ${impiantoSlug === slug ? 'ring-2 ring-primary' : ''}`}
-                onClick={() => setLocation(`/impianti/${slug}`)}
+                onClick={() => setLocation(`/installations/${slug}`)}
               >
                 <CardContent className="p-4">
                   <h3 className="font-semibold mb-1">{imp.title}</h3>

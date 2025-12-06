@@ -34,7 +34,7 @@ export default function NotFound() {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => setLocation("/catalogo")}
+              onClick={() => setLocation("/catalog")}
               data-testid="button-go-catalog"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
