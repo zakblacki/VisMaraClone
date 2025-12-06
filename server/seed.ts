@@ -3,39 +3,39 @@ import { categories, products } from "@shared/schema";
 
 const sampleCategories = [
   {
-    name: "Limitatori di velocità",
+    name: "Limiteurs de vitesse",
     slug: "limitatori",
-    description: "Limitatori di velocità bidirezionali e unidirezionali per ascensori",
+    description: "Limiteurs de vitesse bidirectionnels et unidirectionnels pour ascenseurs",
     icon: "Gauge"
   },
   {
-    name: "Operatori porta",
+    name: "Opérateurs de porte",
     slug: "operatori",
-    description: "Operatori e sospensioni per porte ascensore",
+    description: "Opérateurs et suspensions pour portes d'ascenseur",
     icon: "DoorOpen"
   },
   {
-    name: "Componenti LED",
+    name: "Composants LED",
     slug: "led",
-    description: "Connettori, strisce e accessori LED per illuminazione ascensori",
+    description: "Connecteurs, bandes et accessoires LED pour l'éclairage d'ascenseur",
     icon: "Lightbulb"
   },
   {
-    name: "Sistemi di sicurezza",
+    name: "Systèmes de sécurité",
     slug: "sicurezza",
-    description: "Componenti di sicurezza per impianti ascensoristici",
+    description: "Composants de sécurité pour systèmes d'ascenseurs",
     icon: "Shield"
   },
   {
-    name: "Pulsantiere",
+    name: "Panneaux de commande",
     slug: "pulsantiere",
-    description: "Pannelli di comando e pulsantiere per cabine ascensore",
+    description: "Panneaux de commande et boutons pour cabines d'ascenseur",
     icon: "Keyboard"
   },
   {
-    name: "Strutture e guide",
+    name: "Structures et guides",
     slug: "strutture",
-    description: "Guide, strutture e componenti meccanici per ascensori",
+    description: "Guides, structures et composants mécaniques pour ascenseurs",
     icon: "Layers"
   }
 ];
@@ -43,110 +43,110 @@ const sampleCategories = [
 const sampleProducts = [
   {
     code: "L0X-187",
-    name: "Limitatore di Velocità Bidirezionale ø240mm",
+    name: "Limiteur de Vitesse Bidirectionnel ø240mm",
     slug: "limitatore-velocita-bidirezionale-240mm",
-    description: "Limitatore di velocità bidirezionale con diametro puleggia 240mm. Speed governor bi-directional per applicazioni ascensoristiche.",
-    specifications: "Diametro puleggia: ø 240 mm\nVelocità nominale: configurabile\nCertificazione: CE",
+    description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 240mm. Speed governor bi-directional pour applications d'ascenseurs.",
+    specifications: "Diamètre poulie: ø 240 mm\nVitesse nominale: configurable\nCertification: CE",
     image: "speedGovernor",
     featured: true,
     categorySlug: "limitatori"
   },
   {
     code: "L0X-186",
-    name: "Limitatore di Velocità Bidirezionale ø150mm",
+    name: "Limiteur de Vitesse Bidirectionnel ø150mm",
     slug: "limitatore-velocita-bidirezionale-150mm",
-    description: "Limitatore di velocità bidirezionale con diametro puleggia 150mm. Compact speed governor per spazi ridotti.",
-    specifications: "Diametro puleggia: ø 150 mm\nVelocità nominale: configurabile\nCertificazione: CE",
+    description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 150mm. Compact speed governor pour espaces réduits.",
+    specifications: "Diamètre poulie: ø 150 mm\nVitesse nominale: configurable\nCertification: CE",
     image: "speedGovernor",
     featured: true,
     categorySlug: "limitatori"
   },
   {
     code: "700052",
-    name: "Connettore Tipo I per Striscia LED 220V AC",
+    name: "Connecteur Type I pour Bande LED 220V AC",
     slug: "connettore-tipo-i-led-220v",
-    description: "Connettore Tipo I per striscia LED 220V AC, larghezza 12mm, IP65, monocolore.",
-    specifications: "Tensione: 220V AC\nLarghezza: 12mm\nProtezione: IP65\nTipo: Monocolore",
+    description: "Connecteur Type I pour bande LED 220V AC, largeur 12mm, IP65, monochrome.",
+    specifications: "Tension: 220V AC\nLargeur: 12mm\nProtection: IP65\nType: Monochrome",
     image: "ledConnector",
     featured: false,
     categorySlug: "led"
   },
   {
     code: "700056",
-    name: "Connettore Striscia LED 220V AC IP65",
+    name: "Connecteur Bande LED 220V AC IP65",
     slug: "connettore-striscia-led-ip65",
-    description: "Pin per connettore di striscia LED 220V AC SMD2835 IP65, larghezza 12mm, monocolore.",
-    specifications: "Tensione: 220V AC\nTipo LED: SMD2835\nProtezione: IP65\nLarghezza: 12mm",
+    description: "Pin pour connecteur de bande LED 220V AC SMD2835 IP65, largeur 12mm, monochrome.",
+    specifications: "Tension: 220V AC\nType LED: SMD2835\nProtection: IP65\nLargeur: 12mm",
     image: "ledConnector",
     featured: false,
     categorySlug: "led"
   },
   {
     code: "700051",
-    name: "Cavo Raddrizzatore per Striscia LED 220-240V",
+    name: "Câble Redresseur pour Bande LED 220-240V",
     slug: "cavo-raddrizzatore-led-220v",
-    description: "Cavo raddrizzatore per striscia LED 220-240V AC IP65, larghezza 12mm, certificazione CE, monocolore.",
-    specifications: "Tensione: 220-240V AC\nProtezione: IP65\nLarghezza: 12mm\nCertificazione: CE",
+    description: "Câble redresseur pour bande LED 220-240V AC IP65, largeur 12mm, certification CE, monochrome.",
+    specifications: "Tension: 220-240V AC\nProtection: IP65\nLargeur: 12mm\nCertification: CE",
     image: "ledConnector",
     featured: false,
     categorySlug: "led"
   },
   {
     code: "700053",
-    name: "Tappo Terminale per Striscia LED 220V AC",
+    name: "Bouchon Terminal pour Bande LED 220V AC",
     slug: "tappo-terminale-led-220v",
-    description: "Tappo terminale trasparente per striscia LED 220V AC IP65, larghezza 12mm.",
-    specifications: "Tensione: 220V AC\nProtezione: IP65\nLarghezza: 12mm\nColore: Trasparente",
+    description: "Bouchon terminal transparent pour bande LED 220V AC IP65, largeur 12mm.",
+    specifications: "Tension: 220V AC\nProtection: IP65\nLargeur: 12mm\nCouleur: Transparent",
     image: "ledConnector",
     featured: false,
     categorySlug: "led"
   },
   {
     code: "OP-SLIM-01",
-    name: "Operatore Porta Slim Apertura Laterale",
+    name: "Opérateur Porte Slim Ouverture Latérale",
     slug: "operatore-porta-slim-laterale",
-    description: "Nuovo operatore porta slim con apertura laterale. Design compatto per installazioni con spazio ridotto.",
-    specifications: "Tipo apertura: Laterale\nAltezza soglia: 60mm\nMotore: Brushless DC",
+    description: "Nouvel opérateur porte slim avec ouverture latérale. Design compact pour installations avec espace réduit.",
+    specifications: "Type ouverture: Latérale\nHauteur seuil: 60mm\nMoteur: Brushless DC",
     image: "doorOperator",
     featured: true,
     categorySlug: "operatori"
   },
   {
     code: "SUSP-SLIM-01",
-    name: "Sospensione Slim per Operatore",
+    name: "Suspension Slim pour Opérateur",
     slug: "sospensione-slim-operatore",
-    description: "Sistema di sospensione slim per operatori porta. Profilo ridotto per massimizzare lo spazio cabina.",
-    specifications: "Tipo: Sospensione slim\nMateriale: Alluminio anodizzato\nPortata: fino a 300kg",
+    description: "Système de suspension slim pour opérateurs de porte. Profil réduit pour maximiser l'espace cabine.",
+    specifications: "Type: Suspension slim\nMatériau: Aluminium anodisé\nCharge: jusqu'à 300kg",
     image: "doorOperator",
     featured: true,
     categorySlug: "operatori"
   },
   {
     code: "SB-001",
-    name: "Freno di Sicurezza Progressivo",
+    name: "Frein de Sécurité Progressif",
     slug: "freno-sicurezza-progressivo",
-    description: "Freno di sicurezza progressivo per cabine ascensore. Sistema affidabile per arresto controllato.",
-    specifications: "Tipo: Progressivo\nCapacità: fino a 2000kg\nCertificazione: CE EN81-20",
+    description: "Frein de sécurité progressif pour cabines d'ascenseur. Système fiable pour arrêt contrôlé.",
+    specifications: "Type: Progressif\nCapacité: jusqu'à 2000kg\nCertification: CE EN81-20",
     image: "speedGovernor",
     featured: true,
     categorySlug: "sicurezza"
   },
   {
     code: "COP-01",
-    name: "Pulsantiera Cabina Standard",
+    name: "Panneau Cabine Standard",
     slug: "pulsantiera-cabina-standard",
-    description: "Pulsantiera standard per cabina ascensore con pulsanti illuminati e display piano.",
-    specifications: "Materiale: Acciaio inox\nPulsanti: LED\nDisplay: LCD 7 segmenti",
+    description: "Panneau standard pour cabine d'ascenseur avec boutons illuminés et affichage d'étage.",
+    specifications: "Matériau: Acier inoxydable\nBoutons: LED\nAffichage: LCD 7 segments",
     image: "speedGovernor",
     featured: false,
     categorySlug: "pulsantiere"
   },
   {
     code: "GR-01",
-    name: "Guida a Rullo per Cabina",
+    name: "Guide à Rouleaux pour Cabine",
     slug: "guida-rullo-cabina",
-    description: "Sistema di guide a rullo per cabine ascensore. Scorrimento silenzioso e manutenzione ridotta.",
-    specifications: "Tipo: Rulli regolabili\nMateriale: Acciaio temperato\nPortata: fino a 1500kg",
+    description: "Système de guides à rouleaux pour cabines d'ascenseur. Glissement silencieux et maintenance réduite.",
+    specifications: "Type: Rouleaux réglables\nMatériau: Acier trempé\nCharge: jusqu'à 1500kg",
     image: "doorOperator",
     featured: false,
     categorySlug: "strutture"
@@ -155,7 +155,7 @@ const sampleProducts = [
 
 async function seed() {
   console.log("Starting database seed...");
-  
+
   try {
     const existingCategories = await db.select().from(categories);
     if (existingCategories.length > 0) {
@@ -164,18 +164,20 @@ async function seed() {
     }
 
     console.log("Seeding categories...");
-    const insertedCategories = await db.insert(categories).values(sampleCategories).returning();
+    await db.insert(categories).values(sampleCategories);
+    const insertedCategories = await db.select().from(categories);
     console.log(`Inserted ${insertedCategories.length} categories`);
 
-    const categoryMap = new Map(insertedCategories.map(c => [c.slug, c.id]));
+    const categoryMap = new Map(insertedCategories.map((c) => [c.slug, c.id]));
 
     console.log("Seeding products...");
     const productsToInsert = sampleProducts.map(({ categorySlug, ...product }) => ({
       ...product,
-      categoryId: categoryMap.get(categorySlug) || null
+      categoryId: categoryMap.get(categorySlug) ?? null
     }));
-    
-    const insertedProducts = await db.insert(products).values(productsToInsert).returning();
+
+    await db.insert(products).values(productsToInsert);
+    const insertedProducts = await db.select().from(products);
     console.log(`Inserted ${insertedProducts.length} products`);
 
     console.log("Database seeded successfully!");

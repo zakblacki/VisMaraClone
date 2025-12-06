@@ -1,6 +1,7 @@
 import { useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, Download, Share2, Heart, ArrowRight, Loader2 } from "lucide-react";
+import { ChevronRight, Download, Share2, ArrowRight, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,40 @@ export default function ProductDetail() {
   const [, setLocation] = useLocation();
   const params = useParams();
   const slug = params.slug;
-  
+  const { toast } = useToast();
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/prodotto/${slug}`;
+    const text = `Découvrez ce produit: ${product?.name}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product?.name,
+          text: text,
+          url: url,
+        });
+      } catch (err) {
+        // User cancelled share
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        toast({
+          title: "Lien copié",
+          description: "Le lien du produit a été copié dans le presse-papiers",
+        });
+      } catch (err) {
+        toast({
+          title: "Erreur",
+          description: "Impossible de copier le lien",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["product", slug],
     queryFn: () => getProductBySlug(slug!),
@@ -33,6 +67,17 @@ export default function ProductDetail() {
   const { data: allProducts = [] } = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
+  });
+
+  const { data: productPdfs = [] } = useQuery({
+    queryKey: ["product-pdfs", product?.id],
+    queryFn: async () => {
+      if (!product?.id) return [];
+      const response = await fetch(`/api/products/${product.id}/pdfs`);
+      if (!response.ok) return [];
+      return response.json();
+    },
+    enabled: !!product?.id,
   });
 
   const relatedProducts = allProducts.filter((p) => p.slug !== slug).slice(0, 4);
@@ -55,9 +100,9 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Prodotto non trovato</h1>
+            <h1 className="text-2xl font-bold mb-4">Produit non trouvé</h1>
             <Button onClick={() => setLocation("/catalogo")}>
-              Torna al catalogo
+              Retour au catalogue
             </Button>
           </div>
         </main>
@@ -73,18 +118,18 @@ export default function ProductDetail() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <button 
+              <button
                 onClick={() => setLocation("/catalogo")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Catalogo
+                Catalogue
               </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-foreground truncate">{product.name}</span>
@@ -105,12 +150,12 @@ export default function ProductDetail() {
                       data-testid="img-product-main"
                     />
                     {product.featured && (
-                      <Badge className="absolute top-4 right-4">In evidenza</Badge>
+                      <Badge className="absolute top-4 right-4">En vedette</Badge>
                     )}
                   </div>
                 </CardContent>
               </Card>
-              
+
               <div className="grid grid-cols-4 gap-2 mt-4">
                 {[1, 2, 3, 4].map((_, index) => (
                   <div
@@ -119,7 +164,7 @@ export default function ProductDetail() {
                   >
                     <img
                       src={imageMap[product.image || "speedGovernor"]}
-                      alt={`${product.name} - vista ${index + 1}`}
+                      alt={`${product.name} - vue ${index + 1}`}
                       className="w-full h-full object-contain p-2"
                     />
                   </div>
@@ -142,8 +187,8 @@ export default function ProductDetail() {
 
               <Tabs defaultValue="specs" className="mb-8">
                 <TabsList className="w-full">
-                  <TabsTrigger value="specs" className="flex-1">Specifiche</TabsTrigger>
-                  <TabsTrigger value="docs" className="flex-1">Documentazione</TabsTrigger>
+                  <TabsTrigger value="specs" className="flex-1">Spécifications</TabsTrigger>
+                  <TabsTrigger value="docs" className="flex-1">Documentation</TabsTrigger>
                 </TabsList>
                 <TabsContent value="specs" className="mt-4">
                   <Card>
@@ -165,51 +210,60 @@ export default function ProductDetail() {
                 <TabsContent value="docs" className="mt-4">
                   <Card>
                     <CardContent className="p-4">
-                      <div className="space-y-3">
-                        <Button variant="outline" className="w-full justify-start">
-                          <Download className="h-4 w-4 mr-2" />
-                          Scheda tecnica (PDF)
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          <Download className="h-4 w-4 mr-2" />
-                          Manuale di installazione (PDF)
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          <Download className="h-4 w-4 mr-2" />
-                          Certificazione CE (PDF)
-                        </Button>
-                      </div>
+                      {productPdfs.length > 0 ? (
+                        <div className="space-y-3">
+                          {productPdfs.map((pdf: any) => (
+                            <Button
+                              key={pdf.id}
+                              variant="outline"
+                              className="w-full justify-start"
+                              asChild
+                            >
+                              <a href={pdf.url} download target="_blank" rel="noopener noreferrer">
+                                <Download className="h-4 w-4 mr-2" />
+                                {pdf.name}
+                              </a>
+                            </Button>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Aucune documentation disponible pour ce produit
+                        </p>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
               </Tabs>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                <Button 
-                  className="flex-1" 
-                  size="lg" 
+                <Button
+                  className="flex-1"
+                  size="lg"
                   onClick={() => setLocation(`/contatti?product=${product.code}`)}
                   data-testid="button-request-info-product"
                 >
-                  Richiedi informazioni
+                  Demander des informations
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="lg" data-testid="button-share">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  onClick={handleShare}
+                  data-testid="button-share"
+                >
                   <Share2 className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="lg" data-testid="button-favorite">
-                  <Heart className="h-4 w-4" />
                 </Button>
               </div>
 
               <Card className="bg-muted/50 border-0">
                 <CardContent className="p-4">
                   <p className="text-sm text-muted-foreground">
-                    Hai bisogno di assistenza? Contattaci al{" "}
+                    Besoin d'aide ? Contactez-nous au{" "}
                     <a href="tel:+390392781193" className="text-primary font-medium">
                       +39 039 278 1193
                     </a>{" "}
-                    o inviaci un'email a{" "}
+                    ou envoyez-nous un e-mail à{" "}
                     <a href="mailto:info@fratellivismara.it" className="text-primary font-medium">
                       info@fratellivismara.it
                     </a>
@@ -221,11 +275,11 @@ export default function ProductDetail() {
 
           {relatedProducts.length > 0 && (
             <div className="mt-16">
-              <h2 className="text-2xl font-bold mb-8">Prodotti correlati</h2>
+              <h2 className="text-2xl font-bold mb-8">Produits connexes</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {relatedProducts.map((relProduct, index) => (
-                  <Card 
-                    key={relProduct.id} 
+                  <Card
+                    key={relProduct.id}
                     className="group h-full hover-elevate cursor-pointer overflow-visible"
                     onClick={() => setLocation(`/prodotto/${relProduct.slug}`)}
                   >

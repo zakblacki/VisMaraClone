@@ -18,83 +18,83 @@ const servicesData: Record<string, {
   benefits: { title: string; description: string }[];
 }> = {
   progettazione: {
-    title: "Sviluppo e Progettazione",
-    subtitle: "Innovazione e Design",
-    description: "La progettazione di un ascensore è frutto di attenta analisi e creatività, dove forme, funzionalità ed estetica si fondono armoniosamente. Il nostro team di ingegneri e designer lavora per creare soluzioni su misura che rispettano le normative più rigorose.",
+    title: "Développement et Conception",
+    subtitle: "Innovation et Design",
+    description: "La conception d'un ascenseur est le fruit d'une analyse attentive et de créativité, où formes, fonctionnalités et esthétique se fondent harmonieusement. Notre équipe d'ingénieurs et de designers travaille pour créer des solutions sur mesure qui respectent les normes les plus rigoureuses.",
     image: cadImg,
     features: [
-      "Progettazione CAD 3D avanzata",
-      "Analisi strutturale FEM",
-      "Personalizzazione completa",
-      "Conformità normativa CE",
-      "Assistenza tecnica dedicata"
+      "Conception CAO 3D avancée",
+      "Analyse structurelle FEM",
+      "Personnalisation complète",
+      "Conformité normative CE",
+      "Assistance technique dédiée"
     ],
     benefits: [
       {
-        title: "Soluzioni su misura",
-        description: "Ogni progetto è unico e viene sviluppato secondo le specifiche esigenze del cliente."
+        title: "Solutions sur mesure",
+        description: "Chaque projet est unique et est développé selon les besoins spécifiques du client."
       },
       {
-        title: "Tecnologia avanzata",
-        description: "Utilizziamo software di ultima generazione per simulazioni e ottimizzazione."
+        title: "Technologie avancée",
+        description: "Nous utilisons des logiciels de dernière génération pour les simulations et l'optimisation."
       },
       {
-        title: "Esperienza consolidata",
-        description: "Oltre 50 anni di esperienza nel settore ascensoristico."
+        title: "Expérience consolidée",
+        description: "Plus de 50 ans d'expérience dans le secteur des ascenseurs."
       }
     ]
   },
   attrezzeria: {
-    title: "Servizi di Attrezzeria",
-    subtitle: "Precisione e Qualità",
-    description: "I servizi di attrezzeria offrono soluzioni precise e personalizzate per ogni esigenza produttiva. Dalla progettazione alla realizzazione di stampi e attrezzature, garantiamo qualità e precisione in ogni fase.",
+    title: "Services d'Outillage",
+    subtitle: "Précision et Qualité",
+    description: "Les services d'outillage offrent des solutions précises et personnalisées pour chaque besoin de production. De la conception à la réalisation de moules et équipements, nous garantissons qualité et précision à chaque étape.",
     image: manufacturingImg,
     features: [
-      "Costruzione stampi progressivi",
-      "Attrezzature di tranciatura",
-      "Maschere di saldatura",
-      "Calibri di controllo",
-      "Manutenzione stampi"
+      "Construction de moules progressifs",
+      "Équipements de découpe",
+      "Masques de soudage",
+      "Calibres de contrôle",
+      "Maintenance des moules"
     ],
     benefits: [
       {
-        title: "Qualità certificata",
-        description: "Tutti i nostri stampi sono realizzati con materiali di prima scelta e sottoposti a rigidi controlli."
+        title: "Qualité certifiée",
+        description: "Tous nos moules sont réalisés avec des matériaux de premier choix et soumis à des contrôles rigoureux."
       },
       {
-        title: "Tempi rapidi",
-        description: "Grazie alla nostra organizzazione interna, garantiamo tempi di consegna competitivi."
+        title: "Délais rapides",
+        description: "Grâce à notre organisation interne, nous garantissons des délais de livraison compétitifs."
       },
       {
-        title: "Assistenza completa",
-        description: "Offriamo servizi di manutenzione e revisione per prolungare la vita degli stampi."
+        title: "Assistance complète",
+        description: "Nous offrons des services de maintenance et de révision pour prolonger la vie des moules."
       }
     ]
   },
   stampaggi: {
-    title: "Tranciatura e Stampaggi",
-    subtitle: "Produzione Industriale",
-    description: "I servizi di tranciatura e stampaggi offrono soluzioni versatili ed efficienti per la produzione di componenti metallici. Disponiamo di presse di varia tonnellaggio per soddisfare ogni esigenza produttiva.",
+    title: "Découpe et Emboutissage",
+    subtitle: "Production Industrielle",
+    description: "Les services de découpe et d'emboutissage offrent des solutions polyvalentes et efficaces pour la production de composants métalliques. Nous disposons de presses de différents tonnages pour satisfaire tous les besoins de production.",
     image: stampingImg,
     features: [
-      "Tranciatura fine",
-      "Stampaggio profondo",
-      "Piegatura di precisione",
-      "Assemblaggio componenti",
-      "Trattamenti superficiali"
+      "Découpe fine",
+      "Emboutissage profond",
+      "Pliage de précision",
+      "Assemblage de composants",
+      "Traitements de surface"
     ],
     benefits: [
       {
-        title: "Capacità produttiva",
-        description: "Parco macchine moderno con presse da 25 a 400 tonnellate."
+        title: "Capacité de production",
+        description: "Parc machines moderne avec presses de 25 à 400 tonnes."
       },
       {
-        title: "Flessibilità",
-        description: "Produzioni dal prototipo alla grande serie con la stessa qualità."
+        title: "Flexibilité",
+        description: "Productions du prototype à la grande série avec la même qualité."
       },
       {
-        title: "Controllo qualità",
-        description: "Sistema di gestione qualità certificato ISO 9001."
+        title: "Contrôle qualité",
+        description: "Système de gestion de la qualité certifié ISO 9001."
       }
     ]
   }
@@ -113,18 +113,18 @@ export default function Services() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <button 
+              <button
                 onClick={() => setLocation("/servizi")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Servizi
+                Prestations
               </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-foreground">{service.title}</span>
@@ -152,12 +152,12 @@ export default function Services() {
                   </li>
                 ))}
               </ul>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 onClick={() => setLocation("/contatti")}
                 data-testid="button-contact-service"
               >
-                Richiedi informazioni
+                Demander des informations
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -175,7 +175,7 @@ export default function Services() {
 
           <div className="mb-16">
             <h2 className="text-2xl lg:text-3xl font-bold text-center mb-8">
-              I vantaggi del nostro servizio
+              Les avantages de notre service
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {service.benefits.map((benefit, index) => (
@@ -194,8 +194,8 @@ export default function Services() {
 
           <div className="grid sm:grid-cols-3 gap-4">
             {Object.entries(servicesData).map(([slug, svc]) => (
-              <Card 
-                key={slug} 
+              <Card
+                key={slug}
                 className={`h-full hover-elevate cursor-pointer overflow-visible ${serviceSlug === slug ? 'ring-2 ring-primary' : ''}`}
                 onClick={() => setLocation(`/servizi/${slug}`)}
               >

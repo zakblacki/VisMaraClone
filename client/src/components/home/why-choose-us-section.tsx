@@ -15,14 +15,14 @@ export function WhyChooseUsSection() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-            Perchè sceglierci?
+            Pourquoi nous choisir ?
           </p>
           <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4">
-            Una realtà in forte espansione
+            Une réalité en forte expansion
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            La nostra crescita costante è il risultato di valori solidi e un impegno 
-            quotidiano verso l'eccellenza.
+            Notre croissance constante est le résultat de valeurs solides et d'un engagement
+            quotidien envers l'excellence.
           </p>
         </div>
 
@@ -49,10 +49,10 @@ export function WhyChooseUsSection() {
 
         <div className="mt-12 lg:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {[
-            { value: "50+", label: "Anni di esperienza" },
-            { value: "500+", label: "Prodotti a catalogo" },
-            { value: "1000+", label: "Clienti soddisfatti" },
-            { value: "24/7", label: "Supporto tecnico" }
+            { value: "50+", label: "Années d'expérience" },
+            { value: "500+", label: "Produits au catalogue" },
+            { value: "1000+", label: "Clients satisfaits" },
+            { value: "24/7", label: "Support technique" }
           ].map((stat, index) => (
             <div key={index} className="text-center">
               <p className="text-3xl lg:text-4xl xl:text-5xl font-bold text-primary mb-2">

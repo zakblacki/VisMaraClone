@@ -20,112 +20,112 @@ const impiantiData: Record<string, {
   benefits: { title: string; description: string; icon: typeof Zap }[];
 }> = {
   gearless: {
-    title: "Impianti Gearless MRL",
-    subtitle: "Tecnologia senza locale macchine",
-    description: "Gli impianti Gearless MRL (Machine Room Less) rappresentano l'evoluzione tecnologica nel settore ascensoristico. Grazie all'assenza del locale macchine tradizionale, offrono maggiore flessibilità di installazione e risparmio energetico significativo.",
+    title: "Systèmes Gearless MRL",
+    subtitle: "Technologie sans local machine",
+    description: "Les systèmes Gearless MRL (Machine Room Less) représentent l'évolution technologique dans le secteur des ascenseurs. Grâce à l'absence du local machine traditionnel, ils offrent une plus grande flexibilité d'installation et des économies d'énergie significatives.",
     image: gearlessMotorImg,
     features: [
-      "Motore gearless ad alta efficienza",
-      "Nessun locale macchine richiesto",
-      "Risparmio energetico fino al 50%",
-      "Funzionamento silenzioso",
-      "Manutenzione ridotta",
-      "Conformità normativa EN81-20/50"
+      "Moteur gearless à haute efficacité",
+      "Aucun local machine requis",
+      "Économie d'énergie jusqu'à 50%",
+      "Fonctionnement silencieux",
+      "Maintenance réduite",
+      "Conformité normative EN81-20/50"
     ],
     specs: [
-      { label: "Portata", value: "320 - 2000 kg" },
-      { label: "Velocità", value: "0.5 - 2.5 m/s" },
-      { label: "Corsa massima", value: "100 m" },
-      { label: "Fermate", value: "fino a 40" }
+      { label: "Charge", value: "320 - 2000 kg" },
+      { label: "Vitesse", value: "0.5 - 2.5 m/s" },
+      { label: "Course maximale", value: "100 m" },
+      { label: "Arrêts", value: "jusqu'à 40" }
     ],
     benefits: [
       {
-        title: "Efficienza Energetica",
-        description: "Motori a magneti permanenti con classe energetica A, rigenerazione energia in frenata.",
+        title: "Efficacité Énergétique",
+        description: "Moteurs à aimants permanents avec classe énergétique A, régénération d'énergie au freinage.",
         icon: Zap
       },
       {
-        title: "Sicurezza Avanzata",
-        description: "Sistemi di sicurezza multipli, freni ridondanti e controllo elettronico.",
+        title: "Sécurité Avancée",
+        description: "Systèmes de sécurité multiples, freins redondants et contrôle électronique.",
         icon: Shield
       },
       {
-        title: "Spazio Ottimizzato",
-        description: "Testata e fossa ridotte, nessun locale macchine, massimizzazione spazio utile.",
+        title: "Espace Optimisé",
+        description: "Tête et fosse réduites, aucun local machine, maximisation de l'espace utile.",
         icon: Ruler
       }
     ]
   },
   piattaforme: {
-    title: "Piattaforme Elevatrici",
-    subtitle: "Accessibilità senza barriere",
-    description: "Le piattaforme elevatrici per disabili sono progettate per garantire l'accessibilità e l'autonomia. Soluzioni versatili per superare dislivelli in edifici pubblici e privati, conformi alle normative sull'abbattimento delle barriere architettoniche.",
+    title: "Plateformes Élévatrices",
+    subtitle: "Accessibilité sans barrières",
+    description: "Les plateformes élévatrices pour personnes handicapées sont conçues pour garantir l'accessibilité et l'autonomie. Solutions polyvalentes pour franchir les dénivelés dans les bâtiments publics et privés, conformes aux normes sur la suppression des barrières architecturales.",
     image: platformLiftImg,
     features: [
-      "Installazione interna ed esterna",
-      "Struttura autoportante opzionale",
-      "Comandi intuitivi e accessibili",
-      "Fotocellule di sicurezza",
-      "Batteria di emergenza",
-      "Conformità DM 236/89"
+      "Installation intérieure et extérieure",
+      "Structure autoportante optionnelle",
+      "Commandes intuitives et accessibles",
+      "Cellules photoélectriques de sécurité",
+      "Batterie de secours",
+      "Conformité DM 236/89"
     ],
     specs: [
-      { label: "Portata", value: "250 - 400 kg" },
-      { label: "Velocità", value: "0.15 m/s" },
-      { label: "Corsa massima", value: "12 m" },
-      { label: "Dimensioni", value: "personalizzabili" }
+      { label: "Charge", value: "250 - 400 kg" },
+      { label: "Vitesse", value: "0.15 m/s" },
+      { label: "Course maximale", value: "12 m" },
+      { label: "Dimensions", value: "personnalisables" }
     ],
     benefits: [
       {
-        title: "Accessibilità Garantita",
-        description: "Progettate per persone con mobilità ridotta, carrozzine e deambulatori.",
+        title: "Accessibilité Garantie",
+        description: "Conçues pour les personnes à mobilité réduite, fauteuils roulants et déambulateurs.",
         icon: Shield
       },
       {
-        title: "Installazione Flessibile",
-        description: "Adattabili a qualsiasi contesto architettonico, interno o esterno.",
+        title: "Installation Flexible",
+        description: "Adaptables à tout contexte architectural, intérieur ou extérieur.",
         icon: Ruler
       },
       {
-        title: "Funzionamento Sicuro",
-        description: "Sistemi di sicurezza multipli e batteria di emergenza integrata.",
+        title: "Fonctionnement Sécurisé",
+        description: "Systèmes de sécurité multiples et batterie de secours intégrée.",
         icon: Zap
       }
     ]
   },
   "su-misura": {
-    title: "Ascensori su Misura",
-    subtitle: "Personalizzazione totale",
-    description: "Realizziamo ascensori completamente personalizzati per rispondere a ogni esigenza architettonica e stilistica. Dal design della cabina alle finiture, ogni dettaglio è studiato per integrarsi perfettamente con l'ambiente circostante.",
+    title: "Ascenseurs sur Mesure",
+    subtitle: "Personnalisation totale",
+    description: "Nous réalisons des ascenseurs entièrement personnalisés pour répondre à tous les besoins architecturaux et stylistiques. Du design de la cabine aux finitions, chaque détail est étudié pour s'intégrer parfaitement à l'environnement.",
     image: elevatorCabinImg,
     features: [
-      "Design cabina personalizzato",
-      "Finiture premium su richiesta",
-      "Illuminazione LED regolabile",
-      "Pannelli touch screen",
-      "Materiali sostenibili",
-      "Integrazione domotica"
+      "Design cabine personnalisé",
+      "Finitions premium sur demande",
+      "Éclairage LED réglable",
+      "Panneaux écran tactile",
+      "Matériaux durables",
+      "Intégration domotique"
     ],
     specs: [
-      { label: "Configurazione", value: "completamente personalizzabile" },
-      { label: "Materiali", value: "acciaio, vetro, legno, pietra" },
-      { label: "Illuminazione", value: "LED RGB dinamica" },
-      { label: "Controllo", value: "touch screen, app mobile" }
+      { label: "Configuration", value: "entièrement personnalisable" },
+      { label: "Matériaux", value: "acier, verre, bois, pierre" },
+      { label: "Éclairage", value: "LED RGB dynamique" },
+      { label: "Contrôle", value: "écran tactile, app mobile" }
     ],
     benefits: [
       {
-        title: "Design Esclusivo",
-        description: "Ogni ascensore è un pezzo unico, progettato per le tue esigenze specifiche.",
+        title: "Design Exclusif",
+        description: "Chaque ascenseur est une pièce unique, conçue pour vos besoins spécifiques.",
         icon: Ruler
       },
       {
-        title: "Materiali Premium",
-        description: "Solo materiali di alta qualità per finiture eleganti e durature.",
+        title: "Matériaux Premium",
+        description: "Uniquement des matériaux de haute qualité pour des finitions élégantes et durables.",
         icon: Shield
       },
       {
-        title: "Tecnologia Smart",
-        description: "Integrazione con sistemi domotici e controllo da smartphone.",
+        title: "Technologie Smart",
+        description: "Intégration avec systèmes domotiques et contrôle depuis smartphone.",
         icon: Zap
       }
     ]
@@ -145,18 +145,18 @@ export default function Impianti() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <button 
+              <button
                 onClick={() => setLocation("/impianti")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Impianti
+                Installations
               </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-foreground">{impianto.title}</span>
@@ -185,21 +185,21 @@ export default function Impianti() {
                 ))}
               </ul>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   onClick={() => setLocation("/contatti?subject=quote")}
                   data-testid="button-request-quote"
                 >
-                  Richiedi preventivo
+                  Demander un devis
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   variant="outline"
                   onClick={() => setLocation("/configuratore-ascensore")}
                   data-testid="button-configure"
                 >
-                  Configura online
+                  Configurer en ligne
                 </Button>
               </div>
             </div>
@@ -217,7 +217,7 @@ export default function Impianti() {
 
           <div className="mb-16">
             <h2 className="text-2xl lg:text-3xl font-bold text-center mb-8">
-              Specifiche Tecniche
+              Spécifications Techniques
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {impianto.specs.map((spec, index) => (
@@ -233,7 +233,7 @@ export default function Impianti() {
 
           <div className="mb-16">
             <h2 className="text-2xl lg:text-3xl font-bold text-center mb-8">
-              Vantaggi Principali
+              Avantages Principaux
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {impianto.benefits.map((benefit, index) => (
@@ -252,8 +252,8 @@ export default function Impianti() {
 
           <div className="grid sm:grid-cols-3 gap-4">
             {Object.entries(impiantiData).map(([slug, imp]) => (
-              <Card 
-                key={slug} 
+              <Card
+                key={slug}
                 className={`h-full hover-elevate cursor-pointer overflow-visible ${impiantoSlug === slug ? 'ring-2 ring-primary' : ''}`}
                 onClick={() => setLocation(`/impianti/${slug}`)}
               >

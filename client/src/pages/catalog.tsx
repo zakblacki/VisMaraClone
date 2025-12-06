@@ -31,7 +31,7 @@ export default function Catalog() {
   const [, setLocation] = useLocation();
   const searchParams = useSearch();
   const urlSearchQuery = new URLSearchParams(searchParams).get("search") || "";
-  
+
   const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -85,18 +85,18 @@ export default function Catalog() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Catalogo</span>
+              <span className="text-foreground">Catalogue</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Catalogo Prodotti</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Catalogue de produits</h1>
             <p className="text-muted-foreground mt-2">
-              Scopri la nostra gamma completa di componenti e ricambi per ascensori
+              Découvrez notre gamme complète de composants et pièces de rechange pour ascenseurs
             </p>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function Catalog() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="search"
-                  placeholder="Cerca prodotti per nome o codice..."
+                  placeholder="Rechercher des produits par nom ou code..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -121,10 +121,10 @@ export default function Catalog() {
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-[180px]" data-testid="select-category">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Categoria" />
+                  <SelectValue placeholder="Catégorie" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tutte le categorie</SelectItem>
+                  <SelectItem value="all">Toutes les catégories</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat.slug} value={cat.slug}>
                       {cat.name}
@@ -135,11 +135,11 @@ export default function Catalog() {
 
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-[150px]" data-testid="select-sort">
-                  <SelectValue placeholder="Ordina per" />
+                  <SelectValue placeholder="Trier par" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Nome</SelectItem>
-                  <SelectItem value="code">Codice</SelectItem>
+                  <SelectItem value="name">Nom</SelectItem>
+                  <SelectItem value="code">Code</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -172,15 +172,15 @@ export default function Catalog() {
             <>
               <div className="flex items-center justify-between mb-6">
                 <p className="text-muted-foreground">
-                  {filteredProducts.length} prodotti trovati
+                  {filteredProducts.length} produits trouvés
                 </p>
               </div>
 
               {viewMode === "grid" ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {filteredProducts.map((product, index) => (
-                    <Card 
-                      key={product.id} 
+                    <Card
+                      key={product.id}
                       className="group h-full hover-elevate cursor-pointer overflow-visible"
                       onClick={() => setLocation(`/prodotto/${product.slug}`)}
                     >
@@ -193,7 +193,7 @@ export default function Catalog() {
                         />
                         {product.featured && (
                           <Badge className="absolute top-3 right-3">
-                            In evidenza
+                            En vedette
                           </Badge>
                         )}
                       </div>
@@ -211,8 +211,8 @@ export default function Catalog() {
               ) : (
                 <div className="space-y-4">
                   {filteredProducts.map((product, index) => (
-                    <Card 
-                      key={product.id} 
+                    <Card
+                      key={product.id}
                       className="group hover-elevate cursor-pointer overflow-visible"
                       onClick={() => setLocation(`/prodotto/${product.slug}`)}
                     >
@@ -236,7 +236,7 @@ export default function Catalog() {
                               </h3>
                             </div>
                             {product.featured && (
-                              <Badge className="flex-shrink-0">In evidenza</Badge>
+                              <Badge className="flex-shrink-0">En vedette</Badge>
                             )}
                           </div>
                           <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
@@ -252,7 +252,7 @@ export default function Catalog() {
               {filteredProducts.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-muted-foreground mb-4">
-                    Nessun prodotto trovato per la ricerca "{searchQuery}"
+                    Aucun produit trouvé pour la recherche "{searchQuery}"
                   </p>
                   <Button
                     variant="outline"
@@ -262,7 +262,7 @@ export default function Catalog() {
                     }}
                     data-testid="button-reset-filters"
                   >
-                    Reimposta filtri
+                    Réinitialiser les filtres
                   </Button>
                 </div>
               )}

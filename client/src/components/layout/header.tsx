@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { 
-  Phone, 
-  MapPin, 
-  Search, 
-  Menu, 
-  X, 
+import {
+  Phone,
+  MapPin,
+  Search,
+  Menu,
+  X,
   ChevronDown,
   Sun,
   Moon
@@ -61,7 +61,7 @@ export function Header() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-10 text-sm">
             <div className="flex items-center gap-6 flex-wrap">
-              <a 
+              <a
                 href={`tel:${companyInfo.phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                 data-testid="link-phone"
@@ -96,7 +96,7 @@ export function Header() {
       <div className="bg-background border-b shadow-sm">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
-            <div 
+            <div
               className="flex items-center gap-3 cursor-pointer"
               onClick={() => setLocation("/")}
               data-testid="link-logo"
@@ -106,10 +106,10 @@ export function Header() {
               </div>
               <div className="hidden sm:block">
                 <h1 className="font-bold text-base lg:text-lg text-foreground leading-tight">
-                  Fratelli Vismara
+                  Prodlift
                 </h1>
                 <p className="text-xs text-muted-foreground">
-                  Ascensori e Componenti
+                  Ascenseurs et Composants
                 </p>
               </div>
             </div>
@@ -120,7 +120,7 @@ export function Header() {
                   <NavigationMenuItem key={item.label}>
                     {item.children ? (
                       <>
-                        <NavigationMenuTrigger 
+                        <NavigationMenuTrigger
                           className={cn(
                             "h-10 px-4 text-sm font-medium",
                             location.startsWith(item.href) && "bg-accent"
@@ -128,8 +128,8 @@ export function Header() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid w-[280px] gap-1 p-3">
+                        <NavigationMenuContent className="absolute left-0 top-full">
+                          <ul className="grid w-[280px] gap-1 p-3 bg-background border rounded-md shadow-lg">
                             {item.children.map((child) => (
                               <li key={child.label}>
                                 <div
@@ -171,7 +171,7 @@ export function Header() {
                 <form onSubmit={handleSearch} className="flex items-center gap-2">
                   <Input
                     type="search"
-                    placeholder="Cerca prodotti..."
+                    placeholder="Rechercher des produits..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-48 lg:w-64"
@@ -203,20 +203,13 @@ export function Header() {
               )}
 
               <div className="hidden lg:flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => setLocation("/configuratore-ascensore")}
                   data-testid="button-configure-elevator"
                 >
-                  Configura Ascensore
-                </Button>
-                <Button 
-                  size="sm" 
-                  onClick={() => setLocation("/contatti")}
-                  data-testid="button-contact"
-                >
-                  Contatti
+                  Configurer Ascenseur
                 </Button>
               </div>
 
@@ -269,18 +262,18 @@ export function Header() {
                       </div>
                     ))}
                     <div className="mt-4 pt-4 border-t flex flex-col gap-2">
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full"
                         onClick={() => navigateTo("/configuratore-ascensore")}
                       >
-                        Configura Ascensore
+                        Configurer Ascenseur
                       </Button>
-                      <Button 
+                      <Button
                         className="w-full"
                         onClick={() => navigateTo("/contatti")}
                       >
-                        Contatti
+                        Contacts
                       </Button>
                     </div>
                   </nav>

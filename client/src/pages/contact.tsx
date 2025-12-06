@@ -31,12 +31,12 @@ import { useToast } from "@/hooks/use-toast";
 import { createInquiry } from "@/lib/api";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Il nome deve avere almeno 2 caratteri"),
-  email: z.string().email("Inserisci un indirizzo email valido"),
+  name: z.string().min(2, "Le nom doit comporter au moins 2 caractères"),
+  email: z.string().email("Veuillez entrer une adresse email valide"),
   phone: z.string().optional(),
   company: z.string().optional(),
-  subject: z.string().min(1, "Seleziona un argomento"),
-  message: z.string().min(10, "Il messaggio deve avere almeno 10 caratteri"),
+  subject: z.string().min(1, "Sélectionnez un sujet"),
+  message: z.string().min(10, "Le message doit comporter au moins 10 caractères"),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -56,7 +56,7 @@ export default function Contact() {
       phone: "",
       company: "",
       subject: productCode ? "product-info" : "",
-      message: productCode ? `Richiesta informazioni per il prodotto: ${productCode}\n\n` : "",
+      message: productCode ? `Demande d'informations pour le produit : ${productCode}\n\n` : "",
     },
   });
 
@@ -65,14 +65,14 @@ export default function Contact() {
     onSuccess: () => {
       setIsSubmitted(true);
       toast({
-        title: "Messaggio inviato!",
-        description: "Ti risponderemo al più presto.",
+        title: "Message envoyé !",
+        description: "Nous vous répondrons dès que possible.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Errore",
-        description: error.message || "Si è verificato un errore. Riprova più tardi.",
+        title: "Erreur",
+        description: error.message || "Une erreur s'est produite. Veuillez réessayer plus tard.",
         variant: "destructive",
       });
     },
@@ -85,11 +85,11 @@ export default function Contact() {
   const isSubmitting = inquiryMutation.isPending;
 
   const subjects = [
-    { value: "product-info", label: "Informazioni prodotto" },
-    { value: "quote", label: "Richiesta preventivo" },
-    { value: "support", label: "Assistenza tecnica" },
-    { value: "partnership", label: "Collaborazione commerciale" },
-    { value: "other", label: "Altro" },
+    { value: "product-info", label: "Informations produit" },
+    { value: "quote", label: "Demande de devis" },
+    { value: "support", label: "Assistance technique" },
+    { value: "partnership", label: "Collaboration commerciale" },
+    { value: "other", label: "Autre" },
   ];
 
   return (
@@ -99,18 +99,18 @@ export default function Contact() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Contatti</span>
+              <span className="text-foreground">Contacts</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Contattaci</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Contactez-nous</h1>
             <p className="text-muted-foreground mt-2">
-              Siamo a tua disposizione per qualsiasi informazione o richiesta
+              Nous sommes à votre disposition pour toute information ou demande
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function Contact() {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Invia un messaggio</CardTitle>
+                  <CardTitle>Envoyer un message</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {isSubmitted ? (
@@ -128,9 +128,9 @@ export default function Contact() {
                       <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                       </div>
-                      <h3 className="text-xl font-semibold mb-2">Messaggio inviato!</h3>
+                      <h3 className="text-xl font-semibold mb-2">Message envoyé !</h3>
                       <p className="text-muted-foreground mb-6">
-                        Grazie per averci contattato. Ti risponderemo al più presto.
+                        Merci de nous avoir contactés. Nous vous répondrons dès que possible.
                       </p>
                       <Button
                         variant="outline"
@@ -140,7 +140,7 @@ export default function Contact() {
                         }}
                         data-testid="button-send-another"
                       >
-                        Invia un altro messaggio
+                        Envoyer un autre message
                       </Button>
                     </div>
                   ) : (
@@ -152,9 +152,9 @@ export default function Contact() {
                             name="name"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Nome *</FormLabel>
+                                <FormLabel>Nom *</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Il tuo nome" {...field} data-testid="input-contact-name" />
+                                  <Input placeholder="Votre nom" {...field} data-testid="input-contact-name" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -167,7 +167,7 @@ export default function Contact() {
                               <FormItem>
                                 <FormLabel>Email *</FormLabel>
                                 <FormControl>
-                                  <Input type="email" placeholder="La tua email" {...field} data-testid="input-contact-email" />
+                                  <Input type="email" placeholder="Votre email" {...field} data-testid="input-contact-email" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -181,9 +181,9 @@ export default function Contact() {
                             name="phone"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Telefono</FormLabel>
+                                <FormLabel>Téléphone</FormLabel>
                                 <FormControl>
-                                  <Input type="tel" placeholder="Il tuo numero" {...field} data-testid="input-contact-phone" />
+                                  <Input type="tel" placeholder="Votre numéro" {...field} data-testid="input-contact-phone" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -194,9 +194,9 @@ export default function Contact() {
                             name="company"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Azienda</FormLabel>
+                                <FormLabel>Entreprise</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Nome azienda" {...field} data-testid="input-contact-company" />
+                                  <Input placeholder="Nom de l'entreprise" {...field} data-testid="input-contact-company" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -209,11 +209,11 @@ export default function Contact() {
                           name="subject"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Argomento *</FormLabel>
+                              <FormLabel>Sujet *</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger data-testid="select-contact-subject">
-                                    <SelectValue placeholder="Seleziona un argomento" />
+                                    <SelectValue placeholder="Sélectionnez un sujet" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -234,10 +234,10 @@ export default function Contact() {
                           name="message"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Messaggio *</FormLabel>
+                              <FormLabel>Message *</FormLabel>
                               <FormControl>
                                 <Textarea
-                                  placeholder="Scrivi il tuo messaggio..."
+                                  placeholder="Écrivez votre message..."
                                   className="min-h-[150px] resize-none"
                                   {...field}
                                   data-testid="textarea-contact-message"
@@ -255,10 +255,10 @@ export default function Contact() {
                           data-testid="button-submit-contact"
                         >
                           {isSubmitting ? (
-                            <>Invio in corso...</>
+                            <>Envoi en cours...</>
                           ) : (
                             <>
-                              Invia messaggio
+                              Envoyer le message
                               <Send className="ml-2 h-4 w-4" />
                             </>
                           )}
@@ -273,7 +273,7 @@ export default function Contact() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Informazioni di contatto</CardTitle>
+                  <CardTitle className="text-lg">Informations de contact</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <a
@@ -285,7 +285,7 @@ export default function Contact() {
                       <Phone className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Telefono</p>
+                      <p className="font-medium">Téléphone</p>
                       <p className="text-sm text-muted-foreground">{companyInfo.phone}</p>
                     </div>
                   </a>
@@ -317,7 +317,7 @@ export default function Contact() {
                       <MapPin className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Indirizzo</p>
+                      <p className="font-medium">Adresse</p>
                       <p className="text-sm text-muted-foreground">
                         {companyInfo.address}
                         <br />
@@ -330,7 +330,7 @@ export default function Contact() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Orari di apertura</CardTitle>
+                  <CardTitle className="text-lg">Heures d'ouverture</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-start gap-3">
@@ -343,12 +343,12 @@ export default function Contact() {
                         <span className="font-medium">08:00 - 18:00</span>
                       </p>
                       <p className="flex justify-between mb-1">
-                        <span className="text-muted-foreground">Sabato</span>
+                        <span className="text-muted-foreground">Samedi</span>
                         <span className="font-medium">08:00 - 12:00</span>
                       </p>
                       <p className="flex justify-between">
-                        <span className="text-muted-foreground">Domenica</span>
-                        <span className="font-medium">Chiuso</span>
+                        <span className="text-muted-foreground">Dimanche</span>
+                        <span className="font-medium">Fermé</span>
                       </p>
                     </div>
                   </div>
@@ -357,18 +357,18 @@ export default function Contact() {
 
               <Card className="bg-primary text-primary-foreground">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-2">Hai bisogno di assistenza urgente?</h3>
+                  <h3 className="font-semibold text-lg mb-2">Besoin d'une assistance urgente ?</h3>
                   <p className="text-sm opacity-90 mb-4">
-                    Il nostro team di supporto tecnico è disponibile per aiutarti.
+                    Notre équipe de support technique est disponible pour vous aider.
                   </p>
-                  <Button 
-                    variant="secondary" 
-                    className="w-full" 
+                  <Button
+                    variant="secondary"
+                    className="w-full"
                     asChild
                   >
                     <a href={`tel:${companyInfo.phone.replace(/\s/g, "")}`} data-testid="button-urgent-call">
                       <Phone className="mr-2 h-4 w-4" />
-                      Chiamaci ora
+                      Appelez-nous maintenant
                     </a>
                   </Button>
                 </CardContent>

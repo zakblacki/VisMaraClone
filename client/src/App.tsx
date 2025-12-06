@@ -13,6 +13,8 @@ import PlatformConfigurator from "@/pages/platform-configurator";
 import Downloads from "@/pages/downloads";
 import Services from "@/pages/services";
 import Impianti from "@/pages/impianti";
+import LegalPages from "@/pages/legal-pages";
+import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -24,12 +26,19 @@ function Router() {
       <Route path="/prodotto/:slug" component={ProductDetail} />
       <Route path="/contatti" component={Contact} />
       <Route path="/configuratore-ascensore" component={ElevatorConfigurator} />
+      <Route path="/configuratori" component={ElevatorConfigurator} />
       <Route path="/configuratore-piattaforma" component={PlatformConfigurator} />
       <Route path="/download" component={Downloads} />
       <Route path="/servizi" component={Services} />
       <Route path="/servizi/:slug" component={Services} />
       <Route path="/impianti" component={Impianti} />
       <Route path="/impianti/:slug" component={Impianti} />
+      <Route path="/termini" component={() => <LegalPages />} />
+      <Route path="/privacy" component={() => <LegalPages />} />
+      <Route path="/cookie" component={() => <LegalPages />} />
+      <Route path="/chi-siamo" component={() => <LegalPages />} />
+      <Route path="/legal/:page" component={LegalPages} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

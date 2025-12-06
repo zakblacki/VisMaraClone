@@ -9,44 +9,44 @@ import { Badge } from "@/components/ui/badge";
 const downloadCategories = [
   {
     id: 1,
-    title: "Cataloghi Prodotti",
+    title: "Catalogues Produits",
     icon: BookOpen,
     items: [
-      { name: "Catalogo Generale 2024", size: "15.2 MB", type: "PDF" },
-      { name: "Limitatori di Velocità", size: "4.8 MB", type: "PDF" },
-      { name: "Operatori e Sospensioni", size: "6.2 MB", type: "PDF" },
-      { name: "Componenti LED", size: "2.1 MB", type: "PDF" },
+      { name: "Catalogue Général 2024", size: "15.2 MB", type: "PDF" },
+      { name: "Limiteurs de Vitesse", size: "4.8 MB", type: "PDF" },
+      { name: "Opérateurs et Suspensions", size: "6.2 MB", type: "PDF" },
+      { name: "Composants LED", size: "2.1 MB", type: "PDF" },
     ]
   },
   {
     id: 2,
-    title: "Schede Tecniche",
+    title: "Fiches Techniques",
     icon: FileText,
     items: [
-      { name: "Limitatore L0X-187", size: "1.2 MB", type: "PDF" },
-      { name: "Limitatore L0X-186", size: "1.1 MB", type: "PDF" },
-      { name: "Operatore Slim", size: "0.8 MB", type: "PDF" },
-      { name: "Connettori LED", size: "0.5 MB", type: "PDF" },
+      { name: "Limiteur L0X-187", size: "1.2 MB", type: "PDF" },
+      { name: "Limiteur L0X-186", size: "1.1 MB", type: "PDF" },
+      { name: "Opérateur Slim", size: "0.8 MB", type: "PDF" },
+      { name: "Connecteurs LED", size: "0.5 MB", type: "PDF" },
     ]
   },
   {
     id: 3,
-    title: "Certificazioni",
+    title: "Certifications",
     icon: Award,
     items: [
-      { name: "Certificazione CE", size: "0.3 MB", type: "PDF" },
+      { name: "Certification CE", size: "0.3 MB", type: "PDF" },
       { name: "ISO 9001:2015", size: "0.4 MB", type: "PDF" },
-      { name: "Dichiarazioni di Conformità", size: "1.5 MB", type: "PDF" },
+      { name: "Déclarations de Conformité", size: "1.5 MB", type: "PDF" },
     ]
   },
   {
     id: 4,
-    title: "Manuali Tecnici",
+    title: "Manuels Techniques",
     icon: Folder,
     items: [
-      { name: "Guida Installazione Limitatori", size: "3.2 MB", type: "PDF" },
-      { name: "Manuale Manutenzione", size: "4.5 MB", type: "PDF" },
-      { name: "Specifiche Tecniche Generali", size: "2.8 MB", type: "PDF" },
+      { name: "Guide d'Installation Limiteurs", size: "3.2 MB", type: "PDF" },
+      { name: "Manuel de Maintenance", size: "4.5 MB", type: "PDF" },
+      { name: "Spécifications Techniques Générales", size: "2.8 MB", type: "PDF" },
     ]
   }
 ];
@@ -65,7 +65,7 @@ export default function Downloads() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
@@ -74,9 +74,9 @@ export default function Downloads() {
               <ChevronRight className="h-4 w-4" />
               <span className="text-foreground">Download</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Area Download</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Espace Téléchargement</h1>
             <p className="text-muted-foreground mt-2">
-              Scarica cataloghi, schede tecniche e documentazione
+              Téléchargez catalogues, fiches techniques et documentation
             </p>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function Downloads() {
                     </div>
                     <div>
                       <CardTitle>{category.title}</CardTitle>
-                      <CardDescription>{category.items.length} documenti disponibili</CardDescription>
+                      <CardDescription>{category.items.length} documents disponibles</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -136,19 +136,19 @@ export default function Downloads() {
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                 <div>
                   <h3 className="text-xl font-semibold mb-2">
-                    Non trovi quello che cerchi?
+                    Vous ne trouvez pas ce que vous cherchez ?
                   </h3>
                   <p className="opacity-90">
-                    Contattaci per richiedere documentazione specifica o personalizzata per il tuo progetto.
+                    Contactez-nous pour demander une documentation spécifique ou personnalisée pour votre projet.
                   </p>
                 </div>
-                <Button 
-                  variant="secondary" 
-                  size="lg" 
+                <Button
+                  variant="secondary"
+                  size="lg"
                   onClick={() => setLocation("/contatti")}
                   data-testid="button-contact-downloads"
                 >
-                  Contattaci
+                  Contactez-nous
                 </Button>
               </div>
             </CardContent>

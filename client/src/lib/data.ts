@@ -4,40 +4,40 @@ import type { HeroSlide, ServiceCard, FeatureItem, NavItem, Product, Category } 
 export const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    title: "NUOVI LIMITATORI DI VELOCITÀ BIDIREZIONALI",
-    subtitle: "FRATELLI VISMARA SRL",
-    description: "Fratelli Vismara, progetta in sicurezza impianti per ascensori – ascensori su misura – Ascensori Milano – MRL – Impianti Gearless standard – produzione ricambi e componenti per ascensori – piattaforme elettriche elevatrici ed elevatori per disabili",
+    title: "NOUVEAUX LIMITEURS DE VITESSE BIDIRECTIONNELS",
+    subtitle: "Prodlift",
+    description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "speedGovernor",
-    ctaText: "Scopri di più",
+    ctaText: "En savoir plus",
     ctaLink: "/prodotti/limitatori",
     secondaryCta: {
-      text: "Configura la cabina",
+      text: "Configurer la cabine",
       link: "/configuratore-ascensore"
     }
   },
   {
     id: 2,
-    title: "NUOVI OPERATORI E SOSPENSIONI SLIM",
-    subtitle: "APERTURA LATERALE",
-    description: "Fratelli Vismara, progetta in sicurezza impianti per ascensori – ascensori su misura – Ascensori Milano – MRL – Impianti Gearless standard – produzione ricambi e componenti per ascensori – piattaforme elettriche elevatrici ed elevatori per disabili",
+    title: "NOUVEAUX OPÉRATEURS ET SUSPENSIONS SLIM",
+    subtitle: "OUVERTURE LATÉRALE",
+    description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "doorOperator",
-    ctaText: "Richiedi informazioni",
+    ctaText: "Demander des informations",
     ctaLink: "/contatti",
     secondaryCta: {
-      text: "Scarica il catalogo",
+      text: "Télécharger le catalogue",
       link: "/download"
     }
   },
   {
     id: 3,
-    title: "ELEVARSI VERSO IL FUTURO",
-    subtitle: "ASCENSORI E COMPONENTI",
-    description: "Fratelli Vismara, progetta in sicurezza impianti per ascensori – ascensori su misura – Ascensori Milano – MRL – Impianti Gearless standard – produzione ricambi e componenti per ascensori – piattaforme elettriche elevatrici ed elevatori per disabili",
+    title: "S'ÉLEVER VERS LE FUTUR",
+    subtitle: "ASCENSEURS ET COMPOSANTS",
+    description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "elevatorCabin",
-    ctaText: "Richiedi informazioni",
+    ctaText: "Demander des informations",
     ctaLink: "/contatti",
     secondaryCta: {
-      text: "Configura il tuo ascensore",
+      text: "Configurer votre ascenseur",
       link: "/configuratore-ascensore"
     }
   }
@@ -47,29 +47,29 @@ export const heroSlides: HeroSlide[] = [
 export const serviceCards: ServiceCard[] = [
   {
     id: 1,
-    title: "Sviluppo e progettazione",
-    description: "La progettazione di un ascensore è frutto di attenta analisi e creatività, dove forme, funzionalità ed estetica si fondono armoniosamente.",
+    title: "Développement et conception",
+    description: "La conception d'un ascenseur est le fruit d'une analyse minutieuse et de créativité, où formes, fonctionnalité et esthétique se fondent harmonieusement.",
     icon: "Compass",
     link: "/servizi/progettazione"
   },
   {
     id: 2,
-    title: "Servizi di attrezzeria",
-    description: "I servizi di attrezzeria e tranciatura offrono soluzioni precise e personalizzate per ogni esigenza produttiva.",
+    title: "Services d'outillage",
+    description: "Les services d'outillage et de découpage offrent des solutions précises et personnalisées pour chaque exigence de production.",
     icon: "Wrench",
     link: "/servizi/attrezzeria"
   },
   {
     id: 3,
-    title: "Tranciatura e stampaggi",
-    description: "I servizi di tranciatura e stampaggi offrono soluzioni versatili ed efficienti per la produzione di componenti.",
+    title: "Découpage et moulage",
+    description: "Les services de découpage et de moulage offrent des solutions polyvalentes et efficaces pour la production de composants.",
     icon: "Cog",
     link: "/servizi/stampaggi"
   },
   {
     id: 4,
-    title: "Componenti e ricambi",
-    description: "Il nostro catalogo di componenti per ascensori è un tesoro di soluzioni, con una vasta gamma di prodotti.",
+    title: "Composants et pièces de rechange",
+    description: "Notre catalogue de composants pour ascenseurs est un trésor de solutions, avec une vaste gamme de produits.",
     icon: "Package",
     link: "/catalogo"
   }
@@ -79,26 +79,26 @@ export const serviceCards: ServiceCard[] = [
 export const features: FeatureItem[] = [
   {
     id: 1,
-    title: "Collaborazione",
-    description: "In un'azienda di successo, la forza di un team è inestimabile. Un insieme di individui che collaborano in modo encomiabile. Con competenze complementari e obiettivi condivisi, sono in grado di raggiungere risultati straordinari.",
+    title: "Collaboration",
+    description: "Dans une entreprise prospère, la force d'une équipe est inestimable. Un ensemble d'individus qui collaborent de manière louable. Avec des compétences complémentaires et des objectifs partagés, ils sont capables d'atteindre des résultats extraordinaires.",
     icon: "Users"
   },
   {
     id: 2,
-    title: "Efficienza",
-    description: "Processi innovativi e materiali di qualità contribuiscono a ridurre i tempi di produzione. L'automazione intelligente e l'attenzione ai dettagli massimizzano l'efficienza, migliorando gli ascensori nel complesso.",
+    title: "Efficacité",
+    description: "Des processus innovants et des matériaux de qualité contribuent à réduire les temps de production. L'automatisation intelligente et l'attention aux détails maximisent l'efficacité, améliorant les ascenseurs dans leur ensemble.",
     icon: "Zap"
   },
   {
     id: 3,
-    title: "Progresso",
-    description: "Il progresso tecnologico nella produzione di ascensori ha rivoluzionato l'industria, rendendo questi dispositivi sempre più efficienti, sicuri e convenienti.",
+    title: "Progrès",
+    description: "Le progrès technologique dans la production d'ascenseurs a révolutionné l'industrie, rendant ces dispositifs de plus en plus efficaces, sûrs et pratiques.",
     icon: "TrendingUp"
   },
   {
     id: 4,
-    title: "Rispetto dei tempi",
-    description: "L'efficienza e la tempestività sono elementi chiave. Il rispetto dei tempi permette di soddisfare le aspettative dei clienti, offrendo prodotti di qualità e un servizio eccellente.",
+    title: "Respect des délais",
+    description: "L'efficacité et la rapidité sont des éléments clés. Le respect des délais permet de satisfaire les attentes des clients, offrant des produits de qualité et un excellent service.",
     icon: "Clock"
   }
 ];
@@ -106,60 +106,60 @@ export const features: FeatureItem[] = [
 // Navigation Items
 export const navItems: NavItem[] = [
   {
-    label: "Prodotti",
+    label: "Produits",
     href: "/catalogo",
     children: [
-      { label: "Limitatori di velocità", href: "/catalogo/limitatori" },
-      { label: "Operatori porta", href: "/catalogo/operatori" },
-      { label: "Componenti LED", href: "/catalogo/led" },
-      { label: "Sistemi di sicurezza", href: "/catalogo/sicurezza" },
-      { label: "Tutti i prodotti", href: "/catalogo" }
+      { label: "Limiteurs de vitesse", href: "/catalogo/limitatori" },
+      { label: "Opérateurs de porte", href: "/catalogo/operatori" },
+      { label: "Composants LED", href: "/catalogo/led" },
+      { label: "Systèmes de sécurité", href: "/catalogo/sicurezza" },
+      { label: "Tous les produits", href: "/catalogo" }
     ]
   },
   {
-    label: "Impianti",
+    label: "Installations",
     href: "/impianti",
     children: [
-      { label: "Ascensori Gearless MRL", href: "/impianti/gearless" },
-      { label: "Piattaforme elevatrici", href: "/impianti/piattaforme" },
-      { label: "Ascensori su misura", href: "/impianti/su-misura" }
+      { label: "Ascenseurs Gearless MRL", href: "/impianti/gearless" },
+      { label: "Plateformes élévatrices", href: "/impianti/piattaforme" },
+      { label: "Ascenseurs sur mesure", href: "/impianti/su-misura" }
     ]
   },
   {
-    label: "Servizi",
+    label: "Services",
     href: "/servizi",
     children: [
-      { label: "Progettazione", href: "/servizi/progettazione" },
-      { label: "Attrezzeria", href: "/servizi/attrezzeria" },
-      { label: "Tranciatura e stampaggi", href: "/servizi/stampaggi" }
+      { label: "Conception", href: "/servizi/progettazione" },
+      { label: "Outillage", href: "/servizi/attrezzeria" },
+      { label: "Découpage et moulage", href: "/servizi/stampaggi" }
     ]
   },
   {
-    label: "Configuratori",
+    label: "Configurateurs",
     href: "/configuratori",
     children: [
-      { label: "Configura ascensore", href: "/configuratore-ascensore" },
-      { label: "Configura piattaforma", href: "/configuratore-piattaforma" }
+      { label: "Configurer ascenseur", href: "/configuratore-ascensore" },
+      { label: "Configurer plateforme", href: "/configuratore-piattaforma" }
     ]
   },
   {
-    label: "Download",
+    label: "Téléchargement",
     href: "/download"
   },
   {
-    label: "Contatti",
+    label: "Contacts",
     href: "/contatti"
   }
 ];
 
 // Company Information
 export const companyInfo = {
-  name: "Fratelli Vismara Srl",
+  name: "Prodlift",
   phone: "+39 039 278 1193",
   email: "info@fratellivismara.it",
   address: "Via Padre Semeria, 12",
   city: "20851 Lissone (MB)",
-  country: "Italia",
+  country: "Italie",
   vatNumber: "IT00123456789",
   socialMedia: {
     linkedin: "https://linkedin.com/company/fratelli-vismara",
@@ -172,80 +172,80 @@ export const companyInfo = {
 export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "L0X-187",
-    name: "Limitatore di Velocità Bidirezionale ø240mm",
+    name: "Limiteur de Vitesse Bidirectionnel ø240mm",
     slug: "limitatore-velocita-bidirezionale-240mm",
-    description: "Limitatore di velocità bidirezionale con diametro puleggia 240mm. Speed governor bi-directional per applicazioni ascensoristiche.",
-    specifications: "Diametro puleggia: ø 240 mm\nVelocità nominale: configurabile\nCertificazione: CE",
+    description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 240mm. Speed governor bi-directional pour applications d'ascenseurs.",
+    specifications: "Diamètre poulie: ø 240 mm\nVitesse nominale: configurable\nCertification: CE",
     categoryId: null,
     image: "speedGovernor",
     featured: true
   },
   {
     code: "L0X-186",
-    name: "Limitatore di Velocità Bidirezionale ø150mm",
+    name: "Limiteur de Vitesse Bidirectionnel ø150mm",
     slug: "limitatore-velocita-bidirezionale-150mm",
-    description: "Limitatore di velocità bidirezionale con diametro puleggia 150mm. Compact speed governor per spazi ridotti.",
-    specifications: "Diametro puleggia: ø 150 mm\nVelocità nominale: configurabile\nCertificazione: CE",
+    description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 150mm. Compact speed governor pour espaces réduits.",
+    specifications: "Diamètre poulie: ø 150 mm\nVitesse nominale: configurable\nCertification: CE",
     categoryId: null,
     image: "speedGovernor",
     featured: true
   },
   {
     code: "700052",
-    name: "Connettore Tipo I per Striscia LED 220V AC",
+    name: "Connecteur Type I pour Bande LED 220V AC",
     slug: "connettore-tipo-i-led-220v",
-    description: "Connettore Tipo I per striscia LED 220V AC, larghezza 12mm, IP65, monocolore.",
-    specifications: "Tensione: 220V AC\nLarghezza: 12mm\nProtezione: IP65\nTipo: Monocolore",
+    description: "Connecteur Type I pour bande LED 220V AC, largeur 12mm, IP65, monochrome.",
+    specifications: "Tension: 220V AC\nLargeur: 12mm\nProtection: IP65\nType: Monochrome",
     categoryId: null,
     image: "ledConnector",
     featured: false
   },
   {
     code: "700056",
-    name: "Connettore Striscia LED 220V AC IP65",
+    name: "Connecteur Bande LED 220V AC IP65",
     slug: "connettore-striscia-led-ip65",
-    description: "Pin per connettore di striscia LED 220V AC SMD2835 IP65, larghezza 12mm, monocolore.",
-    specifications: "Tensione: 220V AC\nTipo LED: SMD2835\nProtezione: IP65\nLarghezza: 12mm",
+    description: "Pin pour connecteur de bande LED 220V AC SMD2835 IP65, largeur 12mm, monochrome.",
+    specifications: "Tension: 220V AC\nType LED: SMD2835\nProtection: IP65\nLargeur: 12mm",
     categoryId: null,
     image: "ledConnector",
     featured: false
   },
   {
     code: "700051",
-    name: "Cavo Raddrizzatore per Striscia LED 220-240V",
+    name: "Câble Redresseur pour Bande LED 220-240V",
     slug: "cavo-raddrizzatore-led-220v",
-    description: "Cavo raddrizzatore per striscia LED 220-240V AC IP65, larghezza 12mm, certificazione CE, monocolore.",
-    specifications: "Tensione: 220-240V AC\nProtezione: IP65\nLarghezza: 12mm\nCertificazione: CE",
+    description: "Câble redresseur pour bande LED 220-240V AC IP65, largeur 12mm, certification CE, monochrome.",
+    specifications: "Tension: 220-240V AC\nProtection: IP65\nLargeur: 12mm\nCertification: CE",
     categoryId: null,
     image: "ledConnector",
     featured: false
   },
   {
     code: "700053",
-    name: "Tappo Terminale per Striscia LED 220V AC",
+    name: "Bouchon Terminal pour Bande LED 220V AC",
     slug: "tappo-terminale-led-220v",
-    description: "Tappo terminale trasparente per striscia LED 220V AC IP65, larghezza 12mm.",
-    specifications: "Tensione: 220V AC\nProtezione: IP65\nLarghezza: 12mm\nColore: Trasparente",
+    description: "Bouchon terminal transparent pour bande LED 220V AC IP65, largeur 12mm.",
+    specifications: "Tension: 220V AC\nProtection: IP65\nLargeur: 12mm\nCouleur: Transparent",
     categoryId: null,
     image: "ledConnector",
     featured: false
   },
   {
     code: "OP-SLIM-01",
-    name: "Operatore Porta Slim Apertura Laterale",
+    name: "Opérateur Porte Slim Ouverture Latérale",
     slug: "operatore-porta-slim-laterale",
-    description: "Nuovo operatore porta slim con apertura laterale. Design compatto per installazioni con spazio ridotto.",
-    specifications: "Tipo apertura: Laterale\nAltezza soglia: 60mm\nMotore: Brushless DC",
+    description: "Nouvel opérateur porte slim avec ouverture latérale. Design compact pour installations avec espace réduit.",
+    specifications: "Type ouverture: Latérale\nHauteur seuil: 60mm\nMoteur: Brushless DC",
     categoryId: null,
     image: "doorOperator",
     featured: true
   },
   {
     code: "SUSP-SLIM-01",
-    name: "Sospensione Slim per Operatore",
+    name: "Suspension Slim pour Opérateur",
     slug: "sospensione-slim-operatore",
-    description: "Sistema di sospensione slim per operatori porta. Profilo ridotto per massimizzare lo spazio cabina.",
-    specifications: "Tipo: Sospensione slim\nMateriale: Alluminio anodizzato\nPortata: fino a 300kg",
+    description: "Système de suspension slim pour opérateurs de porte. Profil réduit pour maximiser l'espace cabine.",
+    specifications: "Type: Suspension slim\nMatériau: Aluminium anodisé\nCharge: jusqu'à 300kg",
     categoryId: null,
     image: "doorOperator",
     featured: true
@@ -255,39 +255,39 @@ export const sampleProducts: Omit<Product, "id">[] = [
 // Sample Categories
 export const sampleCategories: Omit<Category, "id">[] = [
   {
-    name: "Limitatori di velocità",
+    name: "Limiteurs de vitesse",
     slug: "limitatori",
-    description: "Limitatori di velocità bidirezionali e unidirezionali per ascensori",
+    description: "Limiteurs de vitesse bidirectionnels et unidirectionnels pour ascenseurs",
     icon: "Gauge"
   },
   {
-    name: "Operatori porta",
+    name: "Opérateurs de porte",
     slug: "operatori",
-    description: "Operatori e sospensioni per porte ascensore",
+    description: "Opérateurs et suspensions pour portes d'ascenseur",
     icon: "DoorOpen"
   },
   {
-    name: "Componenti LED",
+    name: "Composants LED",
     slug: "led",
-    description: "Connettori, strisce e accessori LED per illuminazione ascensori",
+    description: "Connecteurs, bandes et accessoires LED pour l'éclairage d'ascenseur",
     icon: "Lightbulb"
   },
   {
-    name: "Sistemi di sicurezza",
+    name: "Systèmes de sécurité",
     slug: "sicurezza",
-    description: "Componenti di sicurezza per impianti ascensoristici",
+    description: "Composants de sécurité pour systèmes d'ascenseurs",
     icon: "Shield"
   },
   {
-    name: "Pulsantiere",
+    name: "Panneaux de commande",
     slug: "pulsantiere",
-    description: "Pannelli di comando e pulsantiere per cabine ascensore",
+    description: "Panneaux de commande et boutons pour cabines d'ascenseur",
     icon: "Keyboard"
   },
   {
-    name: "Strutture e guide",
+    name: "Structures et guides",
     slug: "strutture",
-    description: "Guide, strutture e componenti meccanici per ascensori",
+    description: "Guides, structures et composants mécaniques pour ascenseurs",
     icon: "Layers"
   }
 ];
@@ -295,74 +295,74 @@ export const sampleCategories: Omit<Category, "id">[] = [
 // Elevator Configurator Options
 export const elevatorConfigOptions = {
   cabinTypes: [
-    { id: "standard", name: "Standard", description: "Cabina standard per edifici residenziali" },
-    { id: "panoramic", name: "Panoramica", description: "Cabina con pareti in vetro" },
-    { id: "freight", name: "Montacarichi", description: "Per trasporto merci" },
-    { id: "hospital", name: "Ospedaliero", description: "Dimensioni maggiorate per barelle" }
+    { id: "standard", name: "Standard", description: "Cabine standard pour bâtiments résidentiels" },
+    { id: "panoramic", name: "Panoramique", description: "Cabine avec parois en verre" },
+    { id: "freight", name: "Monte-charge", description: "Pour transport de marchandises" },
+    { id: "hospital", name: "Hospitalier", description: "Dimensions majorées pour brancards" }
   ],
   capacities: [
-    { id: "4", name: "4 persone", kg: 320 },
-    { id: "6", name: "6 persone", kg: 480 },
-    { id: "8", name: "8 persone", kg: 630 },
-    { id: "10", name: "10 persone", kg: 800 },
-    { id: "13", name: "13 persone", kg: 1000 },
-    { id: "16", name: "16 persone", kg: 1275 }
+    { id: "4", name: "4 personnes", kg: 320 },
+    { id: "6", name: "6 personnes", kg: 480 },
+    { id: "8", name: "8 personnes", kg: 630 },
+    { id: "10", name: "10 personnes", kg: 800 },
+    { id: "13", name: "13 personnes", kg: 1000 },
+    { id: "16", name: "16 personnes", kg: 1275 }
   ],
   doorTypes: [
-    { id: "telescopic-2", name: "Telescopica 2 ante", description: "Apertura laterale" },
-    { id: "telescopic-3", name: "Telescopica 3 ante", description: "Per passaggi ampi" },
-    { id: "central-2", name: "Centrale 2 ante", description: "Apertura centrale" },
-    { id: "central-4", name: "Centrale 4 ante", description: "Apertura rapida" }
+    { id: "telescopic-2", name: "Télescopique 2 vantaux", description: "Ouverture latérale" },
+    { id: "telescopic-3", name: "Télescopique 3 vantaux", description: "Pour passages larges" },
+    { id: "central-2", name: "Centrale 2 vantaux", description: "Ouverture centrale" },
+    { id: "central-4", name: "Centrale 4 vantaux", description: "Ouverture rapide" }
   ],
   finishMaterials: [
-    { id: "stainless-satin", name: "Acciaio inox satinato" },
-    { id: "stainless-mirror", name: "Acciaio inox specchio" },
-    { id: "laminate-wood", name: "Laminato effetto legno" },
-    { id: "laminate-stone", name: "Laminato effetto pietra" },
-    { id: "glass", name: "Vetro temperato" },
-    { id: "custom", name: "Personalizzato" }
+    { id: "stainless-satin", name: "Acier inox satiné" },
+    { id: "stainless-mirror", name: "Acier inox miroir" },
+    { id: "laminate-wood", name: "Stratifié effet bois" },
+    { id: "laminate-stone", name: "Stratifié effet pierre" },
+    { id: "glass", name: "Verre trempé" },
+    { id: "custom", name: "Personnalisé" }
   ],
   lighting: [
-    { id: "led-ceiling", name: "LED soffitto", description: "Illuminazione diffusa" },
-    { id: "led-strips", name: "Strisce LED", description: "Illuminazione perimetrale" },
-    { id: "spots", name: "Faretti", description: "Illuminazione puntuale" },
-    { id: "backlit", name: "Retroilluminato", description: "Pannelli luminosi" }
+    { id: "led-ceiling", name: "LED plafond", description: "Éclairage diffus" },
+    { id: "led-strips", name: "Bandes LED", description: "Éclairage périmétrique" },
+    { id: "spots", name: "Spots", description: "Éclairage ponctuel" },
+    { id: "backlit", name: "Rétroéclairé", description: "Panneaux lumineux" }
   ],
   controlPanels: [
-    { id: "standard", name: "Standard", description: "Pulsantiera base" },
-    { id: "touch", name: "Touch screen", description: "Display interattivo" },
-    { id: "premium", name: "Premium", description: "Finitura di pregio" }
+    { id: "standard", name: "Standard", description: "Panneau de base" },
+    { id: "touch", name: "Écran tactile", description: "Affichage interactif" },
+    { id: "premium", name: "Premium", description: "Finition de prestige" }
   ]
 };
 
 // Platform Configurator Options
 export const platformConfigOptions = {
   platformTypes: [
-    { id: "vertical", name: "Piattaforma verticale", description: "Per superare dislivelli" },
-    { id: "inclined", name: "Servoscala inclinato", description: "Segue la scala" },
-    { id: "cabin", name: "Miniascensore", description: "Con cabina chiusa" }
+    { id: "vertical", name: "Plateforme verticale", description: "Pour franchir des dénivelés" },
+    { id: "inclined", name: "Servoscala incliné", description: "Suit l'escalier" },
+    { id: "cabin", name: "Mini-ascenseur", description: "Avec cabine fermée" }
   ],
   capacities: [
-    { id: "250", name: "250 kg", description: "1 persona + carrozzina" },
-    { id: "315", name: "315 kg", description: "1-2 persone" },
-    { id: "400", name: "400 kg", description: "2 persone + carrozzina" }
+    { id: "250", name: "250 kg", description: "1 personne + fauteuil roulant" },
+    { id: "315", name: "315 kg", description: "1-2 personnes" },
+    { id: "400", name: "400 kg", description: "2 personnes + fauteuil roulant" }
   ],
   travelHeights: [
-    { id: "1", name: "Fino a 1 metro" },
-    { id: "3", name: "Fino a 3 metri" },
-    { id: "6", name: "Fino a 6 metri" },
-    { id: "12", name: "Fino a 12 metri" }
+    { id: "1", name: "Jusqu'à 1 mètre" },
+    { id: "3", name: "Jusqu'à 3 mètres" },
+    { id: "6", name: "Jusqu'à 6 mètres" },
+    { id: "12", name: "Jusqu'à 12 mètres" }
   ],
   rampTypes: [
-    { id: "manual", name: "Rampa manuale", description: "Apertura manuale" },
-    { id: "automatic", name: "Rampa automatica", description: "Apertura motorizzata" },
-    { id: "none", name: "Senza rampa", description: "Accesso a livello" }
+    { id: "manual", name: "Rampe manuelle", description: "Ouverture manuelle" },
+    { id: "automatic", name: "Rampe automatique", description: "Ouverture motorisée" },
+    { id: "none", name: "Sans rampe", description: "Accès au niveau" }
   ],
   safetyFeatures: [
-    { id: "photocells", name: "Fotocellule" },
-    { id: "emergency-stop", name: "Arresto di emergenza" },
-    { id: "overload", name: "Sensore sovraccarico" },
-    { id: "battery-backup", name: "Batteria di emergenza" },
-    { id: "intercom", name: "Interfono" }
+    { id: "photocells", name: "Photocellules" },
+    { id: "emergency-stop", name: "Arrêt d'urgence" },
+    { id: "overload", name: "Capteur de surcharge" },
+    { id: "battery-backup", name: "Batterie de secours" },
+    { id: "intercom", name: "Interphone" }
   ]
 };

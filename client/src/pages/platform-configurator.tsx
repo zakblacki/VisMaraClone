@@ -22,13 +22,13 @@ interface ConfigState {
 }
 
 const steps = [
-  { id: 1, name: "Tipo Piattaforma", key: "platformType" },
-  { id: 2, name: "Capacità", key: "capacity" },
-  { id: 3, name: "Altezza", key: "travelHeight" },
-  { id: 4, name: "Installazione", key: "indoor" },
-  { id: 5, name: "Rampa", key: "rampType" },
-  { id: 6, name: "Sicurezza", key: "safetyFeatures" },
-  { id: 7, name: "Riepilogo", key: "summary" },
+  { id: 1, name: "Type de plateforme", key: "platformType" },
+  { id: 2, name: "Capacité", key: "capacity" },
+  { id: 3, name: "Hauteur", key: "travelHeight" },
+  { id: 4, name: "Installation", key: "indoor" },
+  { id: 5, name: "Rampe", key: "rampType" },
+  { id: 6, name: "Sécurité", key: "safetyFeatures" },
+  { id: 7, name: "Résumé", key: "summary" },
 ];
 
 export default function PlatformConfigurator() {
@@ -82,25 +82,25 @@ export default function PlatformConfigurator() {
 
   const getSelectedLabel = (key: keyof ConfigState) => {
     const value = config[key];
-    
+
     switch (key) {
       case "platformType":
-        return platformConfigOptions.platformTypes.find((o) => o.id === value)?.name || "Non selezionato";
+        return platformConfigOptions.platformTypes.find((o) => o.id === value)?.name || "Non sélectionné";
       case "capacity":
-        return platformConfigOptions.capacities.find((o) => o.id === value)?.name || "Non selezionato";
+        return platformConfigOptions.capacities.find((o) => o.id === value)?.name || "Non sélectionné";
       case "travelHeight":
-        return platformConfigOptions.travelHeights.find((o) => o.id === value)?.name || "Non selezionato";
+        return platformConfigOptions.travelHeights.find((o) => o.id === value)?.name || "Non sélectionné";
       case "indoor":
-        return value ? "Interno" : "Esterno";
+        return value ? "Intérieur" : "Extérieur";
       case "rampType":
-        return platformConfigOptions.rampTypes.find((o) => o.id === value)?.name || "Non selezionato";
+        return platformConfigOptions.rampTypes.find((o) => o.id === value)?.name || "Non sélectionné";
       case "safetyFeatures":
         if (Array.isArray(value) && value.length > 0) {
           return value
             .map((id) => platformConfigOptions.safetyFeatures.find((f) => f.id === id)?.name)
             .join(", ");
         }
-        return "Nessuna";
+        return "Aucune";
       default:
         return String(value);
     }
@@ -126,7 +126,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{type.description}</p>
                   {config.platformType === type.id && (
                     <div className="mt-3">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -153,7 +153,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{cap.description}</p>
                   {config.capacity === cap.id && (
                     <div className="mt-2">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -179,7 +179,7 @@ export default function PlatformConfigurator() {
                   <p className="font-semibold">{height.name}</p>
                   {config.travelHeight === height.id && (
                     <div className="mt-2">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -203,13 +203,13 @@ export default function PlatformConfigurator() {
                 <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
                   <Home className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-semibold">Interno</h3>
+                <h3 className="font-semibold">Intérieur</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Installazione in ambiente chiuso
+                  Installation en intérieur
                 </p>
                 {config.indoor && (
                   <div className="mt-3">
-                    <Badge>Selezionato</Badge>
+                    <Badge>Sélectionné</Badge>
                   </div>
                 )}
               </CardContent>
@@ -226,13 +226,13 @@ export default function PlatformConfigurator() {
                 <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
                   <TreePine className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-semibold">Esterno</h3>
+                <h3 className="font-semibold">Extérieur</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Resistente agli agenti atmosferici
+                  Résistant aux intempéries
                 </p>
                 {!config.indoor && (
                   <div className="mt-3">
-                    <Badge>Selezionato</Badge>
+                    <Badge>Sélectionné</Badge>
                   </div>
                 )}
               </CardContent>
@@ -258,7 +258,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{ramp.description}</p>
                   {config.rampType === ramp.id && (
                     <div className="mt-3">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -271,7 +271,7 @@ export default function PlatformConfigurator() {
         return (
           <div className="max-w-lg mx-auto">
             <p className="text-muted-foreground mb-6 text-center">
-              Seleziona le funzionalità di sicurezza desiderate (almeno una)
+              Sélectionnez les fonctionnalités de sécurité souhaitées (au moins une)
             </p>
             <div className="space-y-3">
               {platformConfigOptions.safetyFeatures.map((feature) => (
@@ -303,31 +303,31 @@ export default function PlatformConfigurator() {
         return (
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-lg mb-4">Riepilogo configurazione</h3>
+              <h3 className="font-semibold text-lg mb-4">Résumé de la configuration</h3>
               <Card>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Tipo piattaforma</span>
+                    <span className="text-muted-foreground">Type de plateforme</span>
                     <span className="font-medium">{getSelectedLabel("platformType")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Capacità</span>
+                    <span className="text-muted-foreground">Capacité</span>
                     <span className="font-medium">{getSelectedLabel("capacity")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Altezza corsa</span>
+                    <span className="text-muted-foreground">Hauteur de course</span>
                     <span className="font-medium">{getSelectedLabel("travelHeight")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Installazione</span>
+                    <span className="text-muted-foreground">Installation</span>
                     <span className="font-medium">{getSelectedLabel("indoor")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Tipo rampa</span>
+                    <span className="text-muted-foreground">Type de rampe</span>
                     <span className="font-medium">{getSelectedLabel("rampType")}</span>
                   </div>
                   <div className="py-2">
-                    <span className="text-muted-foreground">Sicurezza</span>
+                    <span className="text-muted-foreground">Sécurité</span>
                     <p className="font-medium mt-1">{getSelectedLabel("safetyFeatures")}</p>
                   </div>
                 </CardContent>
@@ -337,20 +337,20 @@ export default function PlatformConfigurator() {
               <div className="aspect-[4/3] rounded-xl overflow-hidden mb-6">
                 <img
                   src={platformImg}
-                  alt="Anteprima piattaforma"
+                  alt="Aperçu de la plateforme"
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="text-muted-foreground mb-6">
-                La tua configurazione è pronta! Invia una richiesta per ricevere un preventivo personalizzato.
+                Votre configuration est prête ! Envoyez une demande pour recevoir un devis personnalisé.
               </p>
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto" 
+              <Button
+                size="lg"
+                className="w-full sm:w-auto"
                 onClick={() => setLocation("/contatti?subject=quote")}
                 data-testid="button-request-quote-platform"
               >
-                Richiedi preventivo
+                Demander un devis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -369,18 +369,18 @@ export default function PlatformConfigurator() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Configuratore Piattaforma</span>
+              <span className="text-foreground">Configurateur de plateforme</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Configura la tua Piattaforma</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Configurez votre plateforme</h1>
             <p className="text-muted-foreground mt-2">
-              Progetta la soluzione perfetta per l'accessibilità in pochi passaggi
+              Concevez la solution parfaite pour l'accessibilité en quelques étapes
             </p>
           </div>
         </div>
@@ -441,7 +441,7 @@ export default function PlatformConfigurator() {
               data-testid="button-platform-prev"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Indietro
+              Retour
             </Button>
             {currentStep < steps.length && (
               <Button
@@ -449,7 +449,7 @@ export default function PlatformConfigurator() {
                 disabled={!canProceed()}
                 data-testid="button-platform-next"
               >
-                Avanti
+                Suivant
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}

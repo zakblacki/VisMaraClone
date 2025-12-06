@@ -21,13 +21,13 @@ interface ConfigState {
 }
 
 const steps = [
-  { id: 1, name: "Tipo Cabina", key: "cabinType" },
-  { id: 2, name: "Capacità", key: "capacity" },
-  { id: 3, name: "Porta", key: "doorType" },
-  { id: 4, name: "Finiture", key: "finishMaterial" },
-  { id: 5, name: "Illuminazione", key: "lighting" },
-  { id: 6, name: "Pulsantiera", key: "controlPanel" },
-  { id: 7, name: "Riepilogo", key: "summary" },
+  { id: 1, name: "Type de cabine", key: "cabinType" },
+  { id: 2, name: "Capacité", key: "capacity" },
+  { id: 3, name: "Porte", key: "doorType" },
+  { id: 4, name: "Finitions", key: "finishMaterial" },
+  { id: 5, name: "Éclairage", key: "lighting" },
+  { id: 6, name: "Panneau de commande", key: "controlPanel" },
+  { id: 7, name: "Résumé", key: "summary" },
 ];
 
 export default function ElevatorConfigurator() {
@@ -70,8 +70,8 @@ export default function ElevatorConfigurator() {
 
   const getSelectedLabel = (key: keyof ConfigState) => {
     const value = config[key];
-    if (!value) return "Non selezionato";
-    
+    if (!value) return "Non sélectionné";
+
     switch (key) {
       case "cabinType":
         return elevatorConfigOptions.cabinTypes.find((o) => o.id === value)?.name;
@@ -141,7 +141,7 @@ export default function ElevatorConfigurator() {
                   <p className="text-sm text-muted-foreground">{cap.kg} kg</p>
                   {config.capacity === cap.id && (
                     <div className="mt-2">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -199,7 +199,7 @@ export default function ElevatorConfigurator() {
                   <h3 className="font-medium text-sm">{finish.name}</h3>
                   {config.finishMaterial === finish.id && (
                     <div className="mt-2">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -257,7 +257,7 @@ export default function ElevatorConfigurator() {
                   <p className="text-sm text-muted-foreground">{panel.description}</p>
                   {config.controlPanel === panel.id && (
                     <div className="mt-2">
-                      <Badge>Selezionato</Badge>
+                      <Badge>Sélectionné</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -270,7 +270,7 @@ export default function ElevatorConfigurator() {
         return (
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-lg mb-4">Riepilogo configurazione</h3>
+              <h3 className="font-semibold text-lg mb-4">Résumé de la configuration</h3>
               <Card>
                 <CardContent className="p-4 space-y-3">
                   {Object.entries(config).map(([key, value]) => (
@@ -288,20 +288,20 @@ export default function ElevatorConfigurator() {
               <div className="aspect-[4/3] rounded-xl overflow-hidden mb-6">
                 <img
                   src={elevatorCabinImg}
-                  alt="Anteprima configurazione"
+                  alt="Aperçu de la configuration"
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="text-muted-foreground mb-6">
-                La tua configurazione è pronta! Invia una richiesta per ricevere un preventivo personalizzato.
+                Votre configuration est prête ! Envoyez une demande pour recevoir un devis personnalisé.
               </p>
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto" 
+              <Button
+                size="lg"
+                className="w-full sm:w-auto"
                 onClick={() => setLocation("/contatti?subject=quote")}
                 data-testid="button-request-quote-config"
               >
-                Richiedi preventivo
+                Demander un devis
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -320,18 +320,18 @@ export default function ElevatorConfigurator() {
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 lg:px-8 py-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-              <button 
+              <button
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
                 Home
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Configuratore Ascensore</span>
+              <span className="text-foreground">Configurateur d'ascenseur</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Configura il tuo Ascensore</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Configurez votre ascenseur</h1>
             <p className="text-muted-foreground mt-2">
-              Personalizza ogni dettaglio del tuo ascensore in pochi semplici passaggi
+              Personnalisez chaque détail de votre ascenseur en quelques étapes simples
             </p>
           </div>
         </div>
@@ -392,7 +392,7 @@ export default function ElevatorConfigurator() {
               data-testid="button-prev-step"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Indietro
+              Retour
             </Button>
             {currentStep < steps.length && (
               <Button
@@ -400,7 +400,7 @@ export default function ElevatorConfigurator() {
                 disabled={!canProceed()}
                 data-testid="button-next-step"
               >
-                Avanti
+                Suivant
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}

@@ -19,47 +19,47 @@ const imageMap: Record<string, string> = {
 
 export function ProductsSection() {
   const [, setLocation] = useLocation();
-  
+
   const { data: featuredProducts = [], isLoading } = useQuery({
     queryKey: ["products", "featured"],
     queryFn: getFeaturedProducts,
   });
-  
+
   return (
     <section className="py-16 lg:py-24 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
           <div className="lg:sticky lg:top-32">
             <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-              Ricambi e componenti per ascensori
+              Pièces de rechange et composants pour ascenseurs
             </p>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Un vasto catalogo tutto per te
+              Un vaste catalogue rien que pour vous
             </h2>
             <p className="text-muted-foreground mb-6">
-              Naviga nella sezione dei componenti e ricambi per ascensori di 
-              Fratelli Vismara per trovare quello che fa al caso tuo. Siamo qui 
-              per fornirti soluzioni su misura e assistenza professionale.
+              Naviguez dans la section des composants et pièces de rechange pour ascenseurs de
+              Prodlift pour trouver ce qui vous convient. Nous sommes là
+              pour vous fournir des solutions sur mesure et une assistance professionnelle.
             </p>
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-6">
-              <img 
+              <img
                 src={catalogImg}
-                alt="Catalogo componenti ascensori"
+                alt="Catalogue de composants d'ascenseurs"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <Badge variant="secondary" className="bg-white/90 text-foreground">
-                  +500 prodotti
+                  +500 produits
                 </Badge>
               </div>
             </div>
-            <Button 
-              className="w-full" 
+            <Button
+              className="w-full"
               onClick={() => setLocation("/catalogo")}
               data-testid="button-view-catalog"
             >
-              Scopri il catalogo completo
+              Découvrez le catalogue complet
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -72,8 +72,8 @@ export function ProductsSection() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
                 {featuredProducts.slice(0, 6).map((product, index) => (
-                  <Card 
-                    key={product.id} 
+                  <Card
+                    key={product.id}
                     className="group h-full hover-elevate cursor-pointer transition-all overflow-visible"
                     onClick={() => setLocation(`/prodotto/${product.slug}`)}
                   >
@@ -86,7 +86,7 @@ export function ProductsSection() {
                       />
                       {product.featured && (
                         <Badge className="absolute top-3 right-3" variant="default">
-                          In evidenza
+                          En vedette
                         </Badge>
                       )}
                     </div>

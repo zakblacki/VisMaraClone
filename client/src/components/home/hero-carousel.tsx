@@ -36,7 +36,7 @@ export function HeroCarousel() {
 
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
+
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
@@ -49,10 +49,10 @@ export function HeroCarousel() {
             key={slide.id}
             className={cn(
               "absolute inset-0 transition-all duration-700 ease-in-out",
-              index === currentSlide 
-                ? "opacity-100 translate-x-0" 
-                : index < currentSlide 
-                  ? "opacity-0 -translate-x-full" 
+              index === currentSlide
+                ? "opacity-100 translate-x-0"
+                : index < currentSlide
+                  ? "opacity-0 -translate-x-full"
                   : "opacity-0 translate-x-full"
             )}
           >
@@ -69,18 +69,18 @@ export function HeroCarousel() {
                     {slide.description}
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 lg:gap-4">
-                    <Button 
-                      size="lg" 
-                      className="w-full sm:w-auto" 
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto"
                       onClick={() => setLocation(slide.ctaLink)}
                       data-testid={`button-hero-cta-${slide.id}`}
                     >
                       {slide.ctaText}
                     </Button>
                     {slide.secondaryCta && (
-                      <Button 
-                        variant="outline" 
-                        size="lg" 
+                      <Button
+                        variant="outline"
+                        size="lg"
                         className="w-full sm:w-auto"
                         onClick={() => setLocation(slide.secondaryCta!.link)}
                         data-testid={`button-hero-secondary-${slide.id}`}
@@ -111,7 +111,7 @@ export function HeroCarousel() {
       <button
         onClick={prevSlide}
         className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-background/80 backdrop-blur-sm border shadow-lg flex items-center justify-center hover-elevate transition-all z-20"
-        aria-label="Slide precedente"
+        aria-label="Diapositive précédente"
         data-testid="button-hero-prev"
       >
         <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -119,7 +119,7 @@ export function HeroCarousel() {
       <button
         onClick={nextSlide}
         className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-background/80 backdrop-blur-sm border shadow-lg flex items-center justify-center hover-elevate transition-all z-20"
-        aria-label="Slide successivo"
+        aria-label="Diapositive suivante"
         data-testid="button-hero-next"
       >
         <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -132,11 +132,11 @@ export function HeroCarousel() {
             onClick={() => goToSlide(index)}
             className={cn(
               "w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full transition-all",
-              index === currentSlide 
-                ? "bg-primary w-8 lg:w-10" 
+              index === currentSlide
+                ? "bg-primary w-8 lg:w-10"
                 : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
             )}
-            aria-label={`Vai alla slide ${index + 1}`}
+            aria-label={`Aller à la diapositive ${index + 1}`}
             data-testid={`button-hero-dot-${index}`}
           />
         ))}

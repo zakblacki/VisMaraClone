@@ -5,24 +5,24 @@ import { Card, CardContent } from "@/components/ui/card";
 const ctaItems = [
   {
     id: 1,
-    title: "Configura la cabina",
-    description: "Personalizza il tuo ascensore con il nostro configuratore interattivo",
+    title: "Configurer la cabine",
+    description: "Personnalisez votre ascenseur avec notre configurateur interactif",
     icon: Settings,
     href: "/configuratore-ascensore",
     color: "bg-primary/10 text-primary"
   },
   {
     id: 2,
-    title: "Configura la piattaforma",
-    description: "Progetta la soluzione perfetta per l'accessibilità",
+    title: "Configurer la plateforme",
+    description: "Concevez la solution parfaite pour l'accessibilité",
     icon: Accessibility,
     href: "/configuratore-piattaforma",
     color: "bg-chart-2/20 text-chart-2"
   },
   {
     id: 3,
-    title: "Scarica i cataloghi",
-    description: "Accedi alla nostra documentazione tecnica completa",
+    title: "Télécharger les catalogues",
+    description: "Accédez à notre documentation technique complète",
     icon: Download,
     href: "/download",
     color: "bg-chart-3/20 text-chart-3"

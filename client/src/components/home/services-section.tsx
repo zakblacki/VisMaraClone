@@ -16,14 +16,14 @@ export function ServicesSection() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-            I nostri servizi
+            Nos services
           </p>
           <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4">
-            Soluzioni Complete per Ascensori
+            Solutions complètes pour ascenseurs
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Dalla progettazione alla produzione, offriamo servizi integrati per soddisfare 
-            ogni esigenza nel settore ascensoristico.
+            De la conception à la production, nous offrons des services intégrés pour répondre
+            à tous les besoins dans le secteur des ascenseurs.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export function ServicesSection() {
                       {service.description}
                     </p>
                     <span className="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      Scopri di più
+                      En savoir plus
                       <ArrowRight className="h-4 w-4" />
                     </span>
                   </CardContent>
