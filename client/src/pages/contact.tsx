@@ -37,6 +37,7 @@ const contactFormSchema = z.object({
   company: z.string().optional(),
   subject: z.string().min(1, "Sélectionnez un sujet"),
   message: z.string().min(10, "Le message doit comporter au moins 10 caractères"),
+  website: z.string().optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -57,6 +58,7 @@ export default function Contact() {
       company: "",
       subject: productCode ? "product-info" : "",
       message: productCode ? `Demande d'informations pour le produit : ${productCode}\n\n` : "",
+      website: "",
     },
   });
 
@@ -244,6 +246,24 @@ export default function Contact() {
                                 />
                               </FormControl>
                               <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="website"
+                          render={({ field }) => (
+                            <FormItem className="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+                              <FormLabel>Website</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  autoComplete="off"
+                                  tabIndex={-1}
+                                  {...field}
+                                />
+                              </FormControl>
                             </FormItem>
                           )}
                         />

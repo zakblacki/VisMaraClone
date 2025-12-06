@@ -24,6 +24,12 @@ export function Footer() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
+    const honeypot = formData.get("website") as string;
+    
+    if (honeypot) {
+      console.log("Bot detected");
+      return;
+    }
     
     if (!email || !email.includes("@")) {
       alert("Veuillez entrer une adresse e-mail valide");
@@ -34,7 +40,7 @@ export function Footer() {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website: honeypot }),
       });
 
       if (!response.ok) {
@@ -196,7 +202,15 @@ export function Footer() {
 
             <div className="mt-6">
               <h5 className="font-medium text-sm mb-2">{t("footer.newsletter")}</h5>
-              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2 relative">
+                <input
+                  type="text"
+                  name="website"
+                  autoComplete="off"
+                  tabIndex={-1}
+                  className="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden"
+                  aria-hidden="true"
+                />
                 <Input
                   type="email"
                   name="email"

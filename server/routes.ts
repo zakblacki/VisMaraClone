@@ -197,6 +197,12 @@ export async function registerRoutes(
 
   app.post("/api/inquiries", async (req, res) => {
     try {
+      // Honeypot check - if website field is filled, it's likely a bot
+      if (req.body.website) {
+        console.log("Bot detected - honeypot field filled");
+        return res.status(201).json({ message: "Inquiry submitted" });
+      }
+      
       const result = insertInquirySchema.safeParse(req.body);
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -223,6 +229,12 @@ export async function registerRoutes(
 
   app.post("/api/newsletter", async (req, res) => {
     try {
+      // Honeypot check - if website field is filled, it's likely a bot
+      if (req.body.website) {
+        console.log("Bot detected - honeypot field filled");
+        return res.status(201).json({ message: "Subscription successful" });
+      }
+      
       const result = z.object({
         email: z.string().email(),
       }).safeParse(req.body);
