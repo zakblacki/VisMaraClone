@@ -5,11 +5,125 @@ import { insertInquirySchema, insertElevatorConfigSchema, insertPlatformConfigSc
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { sendContactEmail, sendNewsletterEmail } from "./email";
+import crypto from "crypto";
+
+// Simple password hashing (for demo - in production use bcrypt)
+function hashPassword(password: string): string {
+  return crypto.createHash("sha256").update(password).digest("hex");
+}
+
+// Simple token generation
+function generateToken(): string {
+  return crypto.randomBytes(32).toString("hex");
+}
+
+// In-memory token store (in production use Redis or database)
+const tokens: Map<string, { userId: number; expiresAt: Date }> = new Map();
+
+// Auth middleware for protected routes
+function requireAuth(req: any, res: any, next: any) {
+  const token = req.headers.authorization?.replace("Bearer ", "");
+  if (!token) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  const session = tokens.get(token);
+  if (!session || session.expiresAt < new Date()) {
+    tokens.delete(token);
+    return res.status(401).json({ message: "Session expired" });
+  }
+
+  req.userId = session.userId;
+  next();
+}
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+
+  // Auth routes
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const result = z.object({
+        username: z.string(),
+        password: z.string(),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      const user = await storage.getUserByUsername(result.data.username);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid username or password" });
+      }
+
+      const hashedPassword = hashPassword(result.data.password);
+      if (user.password !== hashedPassword) {
+        return res.status(401).json({ message: "Invalid username or password" });
+      }
+
+      const token = generateToken();
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      tokens.set(token, { userId: user.id, expiresAt });
+
+      res.json({ token, user: { id: user.id, username: user.username } });
+    } catch (error) {
+      console.error("Error logging in:", error);
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    if (token) {
+      tokens.delete(token);
+    }
+    res.json({ message: "Logged out successfully" });
+  });
+
+  app.get("/api/auth/me", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const session = tokens.get(token);
+    if (!session || session.expiresAt < new Date()) {
+      tokens.delete(token!);
+      return res.status(401).json({ message: "Session expired" });
+    }
+
+    const user = await storage.getUser(session.userId);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    res.json({ user: { id: user.id, username: user.username } });
+  });
+
+  // Create default admin user if not exists
+  app.post("/api/auth/setup", async (_req, res) => {
+    try {
+      const existingAdmin = await storage.getUserByUsername("admin");
+      if (existingAdmin) {
+        return res.status(400).json({ message: "Admin user already exists" });
+      }
+
+      const hashedPassword = hashPassword("admin123");
+      const user = await storage.createUser({
+        username: "admin",
+        password: hashedPassword,
+      });
+
+      res.status(201).json({ message: "Admin user created", user: { id: user.id, username: user.username } });
+    } catch (error) {
+      console.error("Error creating admin user:", error);
+      res.status(500).json({ message: "Failed to create admin user" });
+    }
+  });
   
   app.get("/api/products", async (_req, res) => {
     try {
@@ -158,8 +272,8 @@ export async function registerRoutes(
     }
   });
 
-  // Admin endpoints for products
-  app.post("/api/products", async (req, res) => {
+  // Admin endpoints for products (protected)
+  app.post("/api/products", requireAuth, async (req, res) => {
     try {
       const result = z.object({
         code: z.string(),
@@ -184,8 +298,13 @@ export async function registerRoutes(
     }
   });
 
-  app.put("/api/products/:id", async (req, res) => {
+  app.put("/api/products/:id", requireAuth, async (req, res) => {
     try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid product ID" });
+      }
+      
       const result = z.object({
         code: z.string().optional(),
         name: z.string().optional(),
@@ -194,7 +313,7 @@ export async function registerRoutes(
         specifications: z.string().optional(),
         image: z.string().optional(),
         featured: z.boolean().optional(),
-        categoryId: z.string().optional(),
+        categoryId: z.number().optional(),
       }).safeParse(req.body);
 
       if (!result.success) {
@@ -202,7 +321,7 @@ export async function registerRoutes(
         return res.status(400).json({ message: error.message });
       }
 
-      const product = await storage.updateProduct(req.params.id, result.data);
+      const product = await storage.updateProduct(id, result.data);
       res.status(200).json(product);
     } catch (error) {
       console.error("Error updating product:", error);
@@ -210,9 +329,13 @@ export async function registerRoutes(
     }
   });
 
-  app.delete("/api/products/:id", async (req, res) => {
+  app.delete("/api/products/:id", requireAuth, async (req, res) => {
     try {
-      await storage.deleteProduct(req.params.id);
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid product ID" });
+      }
+      await storage.deleteProduct(id);
       res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -233,7 +356,11 @@ export async function registerRoutes(
 
   app.get("/api/products/:productId/pdfs", async (req, res) => {
     try {
-      const pdfs = await storage.getPdfsByProduct(req.params.productId);
+      const productId = parseInt(req.params.productId, 10);
+      if (isNaN(productId)) {
+        return res.status(400).json({ message: "Invalid product ID" });
+      }
+      const pdfs = await storage.getPdfsByProduct(productId);
       res.json(pdfs);
     } catch (error) {
       console.error("Error fetching product PDFs:", error);
@@ -241,13 +368,13 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/pdfs", async (req, res) => {
+  app.post("/api/pdfs", requireAuth, async (req, res) => {
     try {
       const result = z.object({
         name: z.string(),
         filename: z.string(),
         url: z.string(),
-        productId: z.string().optional(),
+        productId: z.number().optional(),
         type: z.string(),
       }).safeParse(req.body);
 
@@ -264,9 +391,13 @@ export async function registerRoutes(
     }
   });
 
-  app.delete("/api/pdfs/:id", async (req, res) => {
+  app.delete("/api/pdfs/:id", requireAuth, async (req, res) => {
     try {
-      await storage.deletePdf(req.params.id);
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid PDF ID" });
+      }
+      await storage.deletePdf(id);
       res.status(200).json({ message: "PDF deleted successfully" });
     } catch (error) {
       console.error("Error deleting PDF:", error);

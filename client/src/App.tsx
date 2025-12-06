@@ -14,6 +14,7 @@ import Downloads from "@/pages/downloads";
 import Services from "@/pages/services";
 import Impianti from "@/pages/impianti";
 import LegalPages from "@/pages/legal-pages";
+import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
 
@@ -38,7 +39,8 @@ function Router() {
       <Route path="/cookie" component={() => <LegalPages />} />
       <Route path="/chi-siamo" component={() => <LegalPages />} />
       <Route path="/legal/:page" component={LegalPages} />
-      <Route path="/admin" component={AdminDashboard} />
+      <Route path="/admin" component={AdminLogin} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

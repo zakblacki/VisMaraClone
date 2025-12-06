@@ -128,8 +128,8 @@ export function Header() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="absolute left-0 top-full">
-                          <ul className="grid w-[280px] gap-1 p-3 bg-background border rounded-md shadow-lg">
+                        <NavigationMenuContent>
+                          <ul className="grid w-[280px] gap-1 p-3">
                             {item.children.map((child) => (
                               <li key={child.label}>
                                 <div

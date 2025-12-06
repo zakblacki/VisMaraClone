@@ -25,17 +25,17 @@ import {
 } from "@shared/schema";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
+  getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
   getProducts(): Promise<Product[]>;
   getProductBySlug(slug: string): Promise<Product | undefined>;
-  getProductsByCategory(categoryId: string): Promise<Product[]>;
+  getProductsByCategory(categoryId: number): Promise<Product[]>;
   getFeaturedProducts(): Promise<Product[]>;
   createProduct(product: InsertProduct): Promise<Product>;
-  updateProduct(id: string, product: Partial<InsertProduct>): Promise<Product>;
-  deleteProduct(id: string): Promise<void>;
+  updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product>;
+  deleteProduct(id: number): Promise<void>;
   
   getCategories(): Promise<Category[]>;
   getCategoryBySlug(slug: string): Promise<Category | undefined>;
@@ -48,13 +48,13 @@ export interface IStorage {
   createPlatformConfig(config: InsertPlatformConfig): Promise<PlatformConfig>;
   
   getPdfs(): Promise<Pdf[]>;
-  getPdfsByProduct(productId: string): Promise<Pdf[]>;
+  getPdfsByProduct(productId: number): Promise<Pdf[]>;
   createPdf(pdf: InsertPdf): Promise<Pdf>;
-  deletePdf(id: string): Promise<void>;
+  deletePdf(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
+  async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
@@ -65,10 +65,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    await db.insert(users).values(insertUser);
-    const user = await this.getUserByUsername(insertUser.username);
-    if (!user) throw new Error("Failed to create user");
-    return user;
+    const [created] = await db.insert(users).values(insertUser).returning();
+    if (!created) throw new Error("Failed to create user");
+    return created;
   }
 
   async getProducts(): Promise<Product[]> {
@@ -80,7 +79,7 @@ export class DatabaseStorage implements IStorage {
     return product;
   }
 
-  async getProductsByCategory(categoryId: string): Promise<Product[]> {
+  async getProductsByCategory(categoryId: number): Promise<Product[]> {
     return db.select().from(products).where(eq(products.categoryId, categoryId));
   }
 
@@ -89,20 +88,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createProduct(product: InsertProduct): Promise<Product> {
-    await db.insert(products).values(product);
-    const created = await this.getProductBySlug(product.slug);
+    const [created] = await db.insert(products).values(product).returning();
     if (!created) throw new Error("Failed to create product");
     return created;
   }
 
-  async updateProduct(id: string, product: Partial<InsertProduct>): Promise<Product> {
-    await db.update(products).set(product).where(eq(products.id, id));
-    const [updated] = await db.select().from(products).where(eq(products.id, id));
+  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product> {
+    const [updated] = await db.update(products).set(product).where(eq(products.id, id)).returning();
     if (!updated) throw new Error("Failed to update product");
     return updated;
   }
 
-  async deleteProduct(id: string): Promise<void> {
+  async deleteProduct(id: number): Promise<void> {
     await db.delete(products).where(eq(products.id, id));
   }
 
@@ -116,16 +113,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
-    await db.insert(categories).values(category);
-    const created = await this.getCategoryBySlug(category.slug);
+    const [created] = await db.insert(categories).values(category).returning();
     if (!created) throw new Error("Failed to create category");
     return created;
   }
 
   async createInquiry(inquiry: InsertInquiry): Promise<Inquiry> {
-    const result = await db.insert(inquiries).values(inquiry);
-    const insertId = result[0].insertId;
-    const [created] = await db.select().from(inquiries).where(eq(inquiries.id, insertId.toString()));
+    const [created] = await db.insert(inquiries).values(inquiry).returning();
     if (!created) throw new Error("Failed to create inquiry");
     return created;
   }
@@ -135,17 +129,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createElevatorConfig(config: InsertElevatorConfig): Promise<ElevatorConfig> {
-    const result = await db.insert(elevatorConfigurations).values(config);
-    const insertId = result[0].insertId;
-    const [created] = await db.select().from(elevatorConfigurations).where(eq(elevatorConfigurations.id, insertId.toString()));
+    const [created] = await db.insert(elevatorConfigurations).values(config).returning();
     if (!created) throw new Error("Failed to create elevator config");
     return created;
   }
 
   async createPlatformConfig(config: InsertPlatformConfig): Promise<PlatformConfig> {
-    const result = await db.insert(platformConfigurations).values(config);
-    const insertId = result[0].insertId;
-    const [created] = await db.select().from(platformConfigurations).where(eq(platformConfigurations.id, insertId.toString()));
+    const [created] = await db.insert(platformConfigurations).values(config).returning();
     if (!created) throw new Error("Failed to create platform config");
     return created;
   }
@@ -154,19 +144,17 @@ export class DatabaseStorage implements IStorage {
     return db.select().from(pdfs);
   }
 
-  async getPdfsByProduct(productId: string): Promise<Pdf[]> {
+  async getPdfsByProduct(productId: number): Promise<Pdf[]> {
     return db.select().from(pdfs).where(eq(pdfs.productId, productId));
   }
 
   async createPdf(pdf: InsertPdf): Promise<Pdf> {
-    const result = await db.insert(pdfs).values(pdf);
-    const insertId = result[0].insertId;
-    const [created] = await db.select().from(pdfs).where(eq(pdfs.id, insertId.toString()));
+    const [created] = await db.insert(pdfs).values(pdf).returning();
     if (!created) throw new Error("Failed to create pdf");
     return created;
   }
 
-  async deletePdf(id: string): Promise<void> {
+  async deletePdf(id: number): Promise<void> {
     await db.delete(pdfs).where(eq(pdfs.id, id));
   }
 }
