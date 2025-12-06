@@ -132,11 +132,9 @@ Les cookies sont généralement conservés pendant une période définie ou jusq
 Pour des questions sur les cookies, contactez-nous à cookies@prodlift.com
     `
   },
-  "chi-siamo": {
+  "about-us": {
     title: "Qui Sommes-Nous",
     content: `
-# Qui Sommes-Nous
-
 ## Notre Histoire
 
 PRODLIFT est une entreprise Algéro-Italienne née de l'alliance stratégique entre des acteurs expérimentés du secteur des ascenseurs en Algérie et en Italie. Fondée avec la volonté de répondre aux besoins croissants du marché algérien et africain en matière de solutions verticales, PRODLIFT incarne une nouvelle génération d'industriels engagés dans le développement local, l'innovation technologique et la formation des compétences.
@@ -197,10 +195,10 @@ export default function LegalPages() {
   // Determine page from URL path
   let pageKey: keyof typeof legalContent = "termini";
   
-  if (location.includes("/termini")) pageKey = "termini";
+  if (location.includes("/terms")) pageKey = "termini";
   else if (location.includes("/privacy")) pageKey = "privacy";
-  else if (location.includes("/cookie")) pageKey = "cookie";
-  else if (location.includes("/chi-siamo")) pageKey = "chi-siamo";
+  else if (location.includes("/cookies")) pageKey = "cookie";
+  else if (location.includes("/about-us")) pageKey = "about-us";
   else if (params.page) pageKey = params.page as keyof typeof legalContent;
   
   const page = legalContent[pageKey];

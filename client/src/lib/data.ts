@@ -9,10 +9,10 @@ export const heroSlides: HeroSlide[] = [
     description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "speedGovernor",
     ctaText: "En savoir plus",
-    ctaLink: "/prodotti/limitatori",
+    ctaLink: "/product/limitatore-velocita-bidirezionale-240mm",
     secondaryCta: {
       text: "Configurer la cabine",
-      link: "/configuratore-ascensore"
+      link: "/elevator-configurator"
     }
   },
   {
@@ -22,7 +22,7 @@ export const heroSlides: HeroSlide[] = [
     description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "doorOperator",
     ctaText: "Demander des informations",
-    ctaLink: "/contatti",
+    ctaLink: "/contact",
     secondaryCta: {
       text: "Télécharger le catalogue",
       link: "/download"
@@ -35,10 +35,10 @@ export const heroSlides: HeroSlide[] = [
     description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "elevatorCabin",
     ctaText: "Demander des informations",
-    ctaLink: "/contatti",
+    ctaLink: "/contact",
     secondaryCta: {
       text: "Configurer votre ascenseur",
-      link: "/configuratore-ascensore"
+      link: "/elevator-configurator"
     }
   }
 ];
@@ -50,28 +50,28 @@ export const serviceCards: ServiceCard[] = [
     title: "Développement et conception",
     description: "La conception d'un ascenseur est le fruit d'une analyse minutieuse et de créativité, où formes, fonctionnalité et esthétique se fondent harmonieusement.",
     icon: "Compass",
-    link: "/servizi/progettazione"
+    link: "/services/design"
   },
   {
     id: 2,
     title: "Services d'outillage",
     description: "Les services d'outillage et de découpage offrent des solutions précises et personnalisées pour chaque exigence de production.",
     icon: "Wrench",
-    link: "/servizi/attrezzeria"
+    link: "/services/tooling"
   },
   {
     id: 3,
     title: "Découpage et moulage",
     description: "Les services de découpage et de moulage offrent des solutions polyvalentes et efficaces pour la production de composants.",
     icon: "Cog",
-    link: "/servizi/stampaggi"
+    link: "/services/stamping"
   },
   {
     id: 4,
     title: "Composants et pièces de rechange",
     description: "Notre catalogue de composants pour ascenseurs est un trésor de solutions, avec une vaste gamme de produits.",
     icon: "Package",
-    link: "/catalogo"
+    link: "/catalog"
   }
 ];
 
@@ -103,43 +103,43 @@ export const features: FeatureItem[] = [
   }
 ];
 
-// Navigation Items
+// Navigation Items with translation keys
 export const navItems: NavItem[] = [
   {
     label: "Produits",
-    href: "/catalogo",
+    href: "/catalog",
     children: [
-      { label: "Limiteurs de vitesse", href: "/catalogo/limitatori" },
-      { label: "Opérateurs de porte", href: "/catalogo/operatori" },
-      { label: "Composants LED", href: "/catalogo/led" },
-      { label: "Systèmes de sécurité", href: "/catalogo/sicurezza" },
-      { label: "Tous les produits", href: "/catalogo" }
+      { label: "Limiteurs de vitesse", href: "/catalog/limitatori" },
+      { label: "Opérateurs de porte", href: "/catalog/operatori" },
+      { label: "Composants LED", href: "/catalog/led" },
+      { label: "Systèmes de sécurité", href: "/catalog/sicurezza" },
+      { label: "Tous les produits", href: "/catalog" }
     ]
   },
   {
     label: "Installations",
-    href: "/impianti",
+    href: "/installations",
     children: [
-      { label: "Ascenseurs Gearless MRL", href: "/impianti/gearless" },
-      { label: "Plateformes élévatrices", href: "/impianti/piattaforme" },
-      { label: "Ascenseurs sur mesure", href: "/impianti/su-misura" }
+      { label: "Ascenseurs Gearless MRL", href: "/installations/gearless" },
+      { label: "Plateformes élévatrices", href: "/installations/piattaforme" },
+      { label: "Ascenseurs sur mesure", href: "/installations/su-misura" }
     ]
   },
   {
     label: "Services",
-    href: "/servizi",
+    href: "/services",
     children: [
-      { label: "Conception", href: "/servizi/progettazione" },
-      { label: "Outillage", href: "/servizi/attrezzeria" },
-      { label: "Découpage et moulage", href: "/servizi/stampaggi" }
+      { label: "Conception", href: "/services/design" },
+      { label: "Outillage", href: "/services/tooling" },
+      { label: "Découpage et moulage", href: "/services/stamping" }
     ]
   },
   {
     label: "Configurateurs",
-    href: "/configuratori",
+    href: "/configurators",
     children: [
-      { label: "Configurer ascenseur", href: "/configuratore-ascensore" },
-      { label: "Configurer plateforme", href: "/configuratore-piattaforma" }
+      { label: "Configurer ascenseur", href: "/elevator-configurator" },
+      { label: "Configurer plateforme", href: "/platform-configurator" }
     ]
   },
   {
@@ -148,7 +148,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: "Contacts",
-    href: "/contatti"
+    href: "/contact"
   }
 ];
 
