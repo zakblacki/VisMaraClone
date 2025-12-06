@@ -132,7 +132,7 @@ const impiantiData: Record<string, {
   }
 };
 
-export default function Impianti() {
+export default function Installations() {
   const [, setLocation] = useLocation();
   const params = useParams();
   const impiantoSlug = params.slug || "gearless";

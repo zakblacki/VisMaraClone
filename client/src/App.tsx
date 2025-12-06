@@ -13,7 +13,7 @@ import ElevatorConfigurator from "@/pages/elevator-configurator";
 import PlatformConfigurator from "@/pages/platform-configurator";
 import Downloads from "@/pages/downloads";
 import Services from "@/pages/services";
-import Impianti from "@/pages/impianti";
+import Installations from "@/pages/installations";
 import LegalPages from "@/pages/legal-pages";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
@@ -43,8 +43,8 @@ function Router() {
       <Route path="/download" component={Downloads} />
       <Route path="/servizi" component={Services} />
       <Route path="/servizi/:slug" component={Services} />
-      <Route path="/impianti" component={Impianti} />
-      <Route path="/impianti/:slug" component={Impianti} />
+      <Route path="/impianti" component={Installations} />
+      <Route path="/impianti/:slug" component={Installations} />
       <Route path="/termini" component={() => <LegalPages />} />
       <Route path="/privacy" component={() => <LegalPages />} />
       <Route path="/cookie" component={() => <LegalPages />} />
