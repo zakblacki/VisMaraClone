@@ -286,7 +286,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="font-medium">Téléphone</p>
-                      <p className="text-sm text-muted-foreground">{companyInfo.phone}</p>
+                      <p className="text-sm text-muted-foreground">{companyInfo.phone} / {companyInfo.phone2}</p>
                     </div>
                   </a>
 
@@ -338,16 +338,12 @@ export default function Contact() {
                       <Clock className="h-5 w-5 text-primary" />
                     </div>
                     <div className="text-sm">
-                      <p className="flex justify-between mb-1">
-                        <span className="text-muted-foreground">Lun - Ven</span>
-                        <span className="font-medium">08:00 - 18:00</span>
+                      <p className="flex justify-between gap-4 mb-1">
+                        <span className="text-muted-foreground">Dim - Jeu</span>
+                        <span className="font-medium">08:00 - 17:00</span>
                       </p>
-                      <p className="flex justify-between mb-1">
-                        <span className="text-muted-foreground">Samedi</span>
-                        <span className="font-medium">08:00 - 12:00</span>
-                      </p>
-                      <p className="flex justify-between">
-                        <span className="text-muted-foreground">Dimanche</span>
+                      <p className="flex justify-between gap-4">
+                        <span className="text-muted-foreground">Ven - Sam</span>
                         <span className="font-medium">Fermé</span>
                       </p>
                     </div>

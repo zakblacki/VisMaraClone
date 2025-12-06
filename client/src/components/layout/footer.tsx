@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Clock
 } from "lucide-react";
+import logoImage from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { companyInfo, navItems } from "@/lib/data";
@@ -63,9 +64,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-primary rounded-md flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">FV</span>
-              </div>
+              <img 
+                src={logoImage} 
+                alt="Prodlift Logo" 
+                className="h-12 w-auto object-contain"
+              />
               <div>
                 <h3 className="font-bold text-lg">{companyInfo.name}</h3>
                 <p className="text-sm text-muted-foreground">Ascenseurs et Composants</p>
@@ -150,7 +153,7 @@ export function Footer() {
                   data-testid="footer-link-phone"
                 >
                   <Phone className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                  <span>{companyInfo.phone}</span>
+                  <span>{companyInfo.phone} / {companyInfo.phone2}</span>
                 </a>
               </li>
               <li>

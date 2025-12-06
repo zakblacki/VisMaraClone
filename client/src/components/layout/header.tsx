@@ -10,6 +10,7 @@ import {
   Sun,
   Moon
 } from "lucide-react";
+import logoImage from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -69,15 +70,7 @@ export function Header() {
                 data-testid="link-phone"
               >
                 <Phone className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{companyInfo.phone}</span>
-              </a>
-              <a
-                href={`tel:${companyInfo.phone2?.replace(/\s/g, '') || ''}`}
-                className="hidden sm:flex items-center gap-2 hover:opacity-80 transition-opacity"
-                data-testid="link-phone-2"
-              >
-                <Phone className="h-3.5 w-3.5" />
-                <span>{companyInfo.phone2}</span>
+                <span className="hidden sm:inline">{companyInfo.phone} / {companyInfo.phone2}</span>
               </a>
               <div className="hidden md:flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" />
@@ -112,9 +105,11 @@ export function Header() {
               onClick={() => setLocation("/")}
               data-testid="link-logo"
             >
-              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary rounded-md flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg lg:text-xl">FV</span>
-              </div>
+              <img 
+                src={logoImage} 
+                alt="Prodlift Logo" 
+                className="h-10 lg:h-12 w-auto object-contain"
+              />
               <div className="hidden sm:block">
                 <h1 className="font-bold text-base lg:text-lg text-foreground leading-tight">
                   Prodlift
