@@ -139,7 +139,7 @@ export function Header() {
                         >
                           {t(item.label)}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="left-0">
+                        <NavigationMenuContent>
                           <ul className="grid w-[280px] gap-1 p-3">
                             {item.children.map((child) => (
                               <li key={child.label}>
