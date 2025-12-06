@@ -4,16 +4,16 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "tsx script/build.ts",
+    "dev": "NODE_ENV=development npx tsx server/index.ts",
+    "build": "npx tsx script/build.ts",
     "start": "NODE_ENV=production node dist/index.cjs",
     "test": "npm run typecheck && npm run lint && npm run build",
     "check": "tsc",
     "typecheck": "tsc",
     "lint": "tsc --noEmit",
     "db:push": "drizzle-kit push",
-    "db:seed": "tsx server/seed.ts",
-    "db:setup": "tsx server/setup-db.ts"
+    "db:seed": "npx tsx server/seed.ts",
+    "db:setup": "npx tsx server/setup-db.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
