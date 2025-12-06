@@ -3,6 +3,7 @@ import { ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { useLanguage } from "@/lib/i18n";
 
 const legalContent: Record<string, { title: string; content: string }> = {
   "termini": {
@@ -191,8 +192,8 @@ Pour en savoir plus sur Prodlift, veuillez nous contacter à prodlift.dc@gmail.c
 export default function LegalPages() {
   const [location, setLocation] = useLocation();
   const params = useParams();
+  const { t } = useLanguage();
   
-  // Determine page from URL path
   let pageKey: keyof typeof legalContent = "termini";
   
   if (location.includes("/terms")) pageKey = "termini";
@@ -209,9 +210,9 @@ export default function LegalPages() {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Page non trouvée</h1>
+            <h1 className="text-2xl font-bold mb-4">{t("legal.not_found")}</h1>
             <Button onClick={() => setLocation("/")}>
-              Retour à l'accueil
+              {t("legal.back_home")}
             </Button>
           </div>
         </main>
@@ -231,7 +232,7 @@ export default function LegalPages() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
               <span className="text-foreground">{page.title}</span>
@@ -270,7 +271,7 @@ export default function LegalPages() {
                 onClick={() => setLocation("/")}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Retour à l'accueil
+                {t("legal.back_home")}
               </Button>
             </div>
           </div>

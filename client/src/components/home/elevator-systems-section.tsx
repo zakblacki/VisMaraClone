@@ -92,7 +92,7 @@ export function ElevatorSystemsSection() {
 
             <Button
               size="lg"
-              onClick={() => setLocation("/contatti")}
+              onClick={() => setLocation("/contact")}
               data-testid="button-request-info"
             >
               Demander plus d'informations

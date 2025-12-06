@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 import { platformConfigOptions } from "@/lib/data";
 
 import platformImg from "@assets/generated_images/accessibility_platform_lift.png";
@@ -21,18 +22,9 @@ interface ConfigState {
   safetyFeatures: string[];
 }
 
-const steps = [
-  { id: 1, name: "Type de plateforme", key: "platformType" },
-  { id: 2, name: "Capacité", key: "capacity" },
-  { id: 3, name: "Hauteur", key: "travelHeight" },
-  { id: 4, name: "Installation", key: "indoor" },
-  { id: 5, name: "Rampe", key: "rampType" },
-  { id: 6, name: "Sécurité", key: "safetyFeatures" },
-  { id: 7, name: "Résumé", key: "summary" },
-];
-
 export default function PlatformConfigurator() {
   const [, setLocation] = useLocation();
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [config, setConfig] = useState<ConfigState>({
     platformType: "",
@@ -42,6 +34,16 @@ export default function PlatformConfigurator() {
     rampType: "",
     safetyFeatures: [],
   });
+
+  const steps = [
+    { id: 1, name: t("platform.step.type"), key: "platformType" },
+    { id: 2, name: t("platform.step.capacity"), key: "capacity" },
+    { id: 3, name: t("platform.step.height"), key: "travelHeight" },
+    { id: 4, name: t("platform.step.installation"), key: "indoor" },
+    { id: 5, name: t("platform.step.ramp"), key: "rampType" },
+    { id: 6, name: t("platform.step.safety"), key: "safetyFeatures" },
+    { id: 7, name: t("configurator.summary"), key: "summary" },
+  ];
 
   const updateConfig = <K extends keyof ConfigState>(key: K, value: ConfigState[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }));
@@ -85,22 +87,22 @@ export default function PlatformConfigurator() {
 
     switch (key) {
       case "platformType":
-        return platformConfigOptions.platformTypes.find((o) => o.id === value)?.name || "Non sélectionné";
+        return platformConfigOptions.platformTypes.find((o) => o.id === value)?.name || t("configurator.not_selected");
       case "capacity":
-        return platformConfigOptions.capacities.find((o) => o.id === value)?.name || "Non sélectionné";
+        return platformConfigOptions.capacities.find((o) => o.id === value)?.name || t("configurator.not_selected");
       case "travelHeight":
-        return platformConfigOptions.travelHeights.find((o) => o.id === value)?.name || "Non sélectionné";
+        return platformConfigOptions.travelHeights.find((o) => o.id === value)?.name || t("configurator.not_selected");
       case "indoor":
-        return value ? "Intérieur" : "Extérieur";
+        return value ? t("platform.indoor") : t("platform.outdoor");
       case "rampType":
-        return platformConfigOptions.rampTypes.find((o) => o.id === value)?.name || "Non sélectionné";
+        return platformConfigOptions.rampTypes.find((o) => o.id === value)?.name || t("configurator.not_selected");
       case "safetyFeatures":
         if (Array.isArray(value) && value.length > 0) {
           return value
             .map((id) => platformConfigOptions.safetyFeatures.find((f) => f.id === id)?.name)
             .join(", ");
         }
-        return "Aucune";
+        return t("configurator.none");
       default:
         return String(value);
     }
@@ -126,7 +128,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{type.description}</p>
                   {config.platformType === type.id && (
                     <div className="mt-3">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -153,7 +155,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{cap.description}</p>
                   {config.capacity === cap.id && (
                     <div className="mt-2">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -179,7 +181,7 @@ export default function PlatformConfigurator() {
                   <p className="font-semibold">{height.name}</p>
                   {config.travelHeight === height.id && (
                     <div className="mt-2">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -203,13 +205,13 @@ export default function PlatformConfigurator() {
                 <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
                   <Home className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-semibold">Intérieur</h3>
+                <h3 className="font-semibold">{t("platform.indoor")}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Installation en intérieur
+                  {t("platform.indoor_install")}
                 </p>
                 {config.indoor && (
                   <div className="mt-3">
-                    <Badge>Sélectionné</Badge>
+                    <Badge>{t("configurator.selected")}</Badge>
                   </div>
                 )}
               </CardContent>
@@ -226,13 +228,13 @@ export default function PlatformConfigurator() {
                 <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
                   <TreePine className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-semibold">Extérieur</h3>
+                <h3 className="font-semibold">{t("platform.outdoor")}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Résistant aux intempéries
+                  {t("platform.outdoor_weather")}
                 </p>
                 {!config.indoor && (
                   <div className="mt-3">
-                    <Badge>Sélectionné</Badge>
+                    <Badge>{t("configurator.selected")}</Badge>
                   </div>
                 )}
               </CardContent>
@@ -258,7 +260,7 @@ export default function PlatformConfigurator() {
                   <p className="text-sm text-muted-foreground">{ramp.description}</p>
                   {config.rampType === ramp.id && (
                     <div className="mt-3">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -271,7 +273,7 @@ export default function PlatformConfigurator() {
         return (
           <div className="max-w-lg mx-auto">
             <p className="text-muted-foreground mb-6 text-center">
-              Sélectionnez les fonctionnalités de sécurité souhaitées (au moins une)
+              {t("platform.select_safety")}
             </p>
             <div className="space-y-3">
               {platformConfigOptions.safetyFeatures.map((feature) => (
@@ -303,31 +305,31 @@ export default function PlatformConfigurator() {
         return (
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-lg mb-4">Résumé de la configuration</h3>
+              <h3 className="font-semibold text-lg mb-4">{t("configurator.config_summary")}</h3>
               <Card>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Type de plateforme</span>
+                    <span className="text-muted-foreground">{t("platform.step.type")}</span>
                     <span className="font-medium">{getSelectedLabel("platformType")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Capacité</span>
+                    <span className="text-muted-foreground">{t("platform.step.capacity")}</span>
                     <span className="font-medium">{getSelectedLabel("capacity")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Hauteur de course</span>
+                    <span className="text-muted-foreground">{t("platform.travel_height")}</span>
                     <span className="font-medium">{getSelectedLabel("travelHeight")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Installation</span>
+                    <span className="text-muted-foreground">{t("platform.step.installation")}</span>
                     <span className="font-medium">{getSelectedLabel("indoor")}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-muted-foreground">Type de rampe</span>
+                    <span className="text-muted-foreground">{t("platform.ramp_type")}</span>
                     <span className="font-medium">{getSelectedLabel("rampType")}</span>
                   </div>
                   <div className="py-2">
-                    <span className="text-muted-foreground">Sécurité</span>
+                    <span className="text-muted-foreground">{t("platform.step.safety")}</span>
                     <p className="font-medium mt-1">{getSelectedLabel("safetyFeatures")}</p>
                   </div>
                 </CardContent>
@@ -337,20 +339,20 @@ export default function PlatformConfigurator() {
               <div className="aspect-[4/3] rounded-xl overflow-hidden mb-6">
                 <img
                   src={platformImg}
-                  alt="Aperçu de la plateforme"
+                  alt={t("platform.config_preview")}
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="text-muted-foreground mb-6">
-                Votre configuration est prête ! Envoyez une demande pour recevoir un devis personnalisé.
+                {t("configurator.config_ready")}
               </p>
               <Button
                 size="lg"
                 className="w-full sm:w-auto"
-                onClick={() => setLocation("/contatti?subject=quote")}
+                onClick={() => setLocation("/contact?subject=quote")}
                 data-testid="button-request-quote-platform"
               >
-                Demander un devis
+                {t("configurator.request_quote")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -373,14 +375,14 @@ export default function PlatformConfigurator() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Configurateur de plateforme</span>
+              <span className="text-foreground">{t("platform.configurator")}</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Configurez votre plateforme</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">{t("platform.configure_title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Concevez la solution parfaite pour l'accessibilité en quelques étapes
+              {t("platform.configure_subtitle")}
             </p>
           </div>
         </div>
@@ -441,7 +443,7 @@ export default function PlatformConfigurator() {
               data-testid="button-platform-prev"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Retour
+              {t("configurator.back")}
             </Button>
             {currentStep < steps.length && (
               <Button
@@ -449,7 +451,7 @@ export default function PlatformConfigurator() {
                 disabled={!canProceed()}
                 data-testid="button-platform-next"
               >
-                Suivant
+                {t("configurator.next")}
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}

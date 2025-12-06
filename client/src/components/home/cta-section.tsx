@@ -41,7 +41,7 @@ export function CTASection() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button
                 size="lg"
-                onClick={() => setLocation("/contatti")}
+                onClick={() => setLocation("/contact")}
                 data-testid="button-request-quote"
               >
                 Demander un devis

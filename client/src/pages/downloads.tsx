@@ -6,32 +6,33 @@ import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/lib/i18n";
 import type { Pdf } from "@shared/schema";
 
 interface CategoryConfig {
-  title: string;
+  titleKey: string;
   icon: typeof BookOpen;
   types: string[];
 }
 
 const categoryConfigs: CategoryConfig[] = [
   {
-    title: "Catalogues Produits",
+    titleKey: "downloads.category.catalogs",
     icon: BookOpen,
     types: ["catalogue", "catalog"],
   },
   {
-    title: "Fiches Techniques",
+    titleKey: "downloads.category.datasheets",
     icon: FileText,
     types: ["fiche", "datasheet", "technique"],
   },
   {
-    title: "Certifications",
+    titleKey: "downloads.category.certifications",
     icon: Award,
     types: ["certification", "certificat", "certificate"],
   },
   {
-    title: "Manuels Techniques",
+    titleKey: "downloads.category.manuals",
     icon: Folder,
     types: ["manuel", "manual", "guide"],
   }
@@ -47,14 +48,14 @@ function getIconForType(type: string): typeof BookOpen {
   return FileText;
 }
 
-function getCategoryForPdf(pdf: Pdf): string {
+function getCategoryKeyForPdf(pdf: Pdf): string {
   const lowerType = (pdf.type || "").toLowerCase();
   for (const config of categoryConfigs) {
     if (config.types.some(t => lowerType.includes(t))) {
-      return config.title;
+      return config.titleKey;
     }
   }
-  return "Autres Documents";
+  return "downloads.category.other";
 }
 
 function formatFileSize(bytes?: number): string {
@@ -65,6 +66,7 @@ function formatFileSize(bytes?: number): string {
 
 export default function Downloads() {
   const [, setLocation] = useLocation();
+  const { t } = useLanguage();
 
   const { data: pdfs = [], isLoading, error } = useQuery<Pdf[]>({
     queryKey: ["/api/pdfs"],
@@ -76,21 +78,19 @@ export default function Downloads() {
     }
   };
 
-  // Group PDFs by category
   const groupedPdfs = pdfs.reduce((acc, pdf) => {
-    const category = getCategoryForPdf(pdf);
-    if (!acc[category]) {
-      acc[category] = [];
+    const categoryKey = getCategoryKeyForPdf(pdf);
+    if (!acc[categoryKey]) {
+      acc[categoryKey] = [];
     }
-    acc[category].push(pdf);
+    acc[categoryKey].push(pdf);
     return acc;
   }, {} as Record<string, Pdf[]>);
 
-  // Build categories array with proper icons
-  const categories = Object.entries(groupedPdfs).map(([title, items]) => {
-    const config = categoryConfigs.find(c => c.title === title);
+  const categories = Object.entries(groupedPdfs).map(([titleKey, items]) => {
+    const config = categoryConfigs.find(c => c.titleKey === titleKey);
     return {
-      title,
+      titleKey,
       icon: config?.icon || FileText,
       items,
     };
@@ -107,14 +107,14 @@ export default function Downloads() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Download</span>
+              <span className="text-foreground">{t("nav.download")}</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Espace Téléchargement</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">{t("downloads.title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Téléchargez catalogues, fiches techniques et documentation
+              {t("downloads.subtitle")}
             </p>
           </div>
         </div>
@@ -127,13 +127,13 @@ export default function Downloads() {
           ) : error ? (
             <Card>
               <CardContent className="p-6 text-center text-muted-foreground">
-                Erreur lors du chargement des documents. Veuillez réessayer.
+                {t("downloads.error_loading")}
               </CardContent>
             </Card>
           ) : categories.length === 0 ? (
             <Card>
               <CardContent className="p-6 text-center text-muted-foreground">
-                Aucun document disponible pour le moment.
+                {t("downloads.no_documents")}
               </CardContent>
             </Card>
           ) : (
@@ -146,8 +146,8 @@ export default function Downloads() {
                         <category.icon className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <CardTitle>{category.title}</CardTitle>
-                        <CardDescription>{category.items.length} documents disponibles</CardDescription>
+                        <CardTitle>{t(category.titleKey)}</CardTitle>
+                        <CardDescription>{category.items.length} {t("downloads.documents_available")}</CardDescription>
                       </div>
                     </div>
                   </CardHeader>
@@ -192,19 +192,19 @@ export default function Downloads() {
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                 <div>
                   <h3 className="text-xl font-semibold mb-2">
-                    Vous ne trouvez pas ce que vous cherchez ?
+                    {t("downloads.not_found")}
                   </h3>
                   <p className="opacity-90">
-                    Contactez-nous pour demander une documentation spécifique ou personnalisée pour votre projet.
+                    {t("downloads.contact_for_docs")}
                   </p>
                 </div>
                 <Button
                   variant="secondary"
                   size="lg"
-                  onClick={() => setLocation("/contatti")}
+                  onClick={() => setLocation("/contact")}
                   data-testid="button-contact-downloads"
                 >
-                  Contactez-nous
+                  {t("downloads.contact_us")}
                 </Button>
               </div>
             </CardContent>

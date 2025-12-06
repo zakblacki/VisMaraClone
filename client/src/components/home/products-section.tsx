@@ -50,7 +50,7 @@ export function ProductsSection() {
               <Card
                 key={product.id}
                 className="group h-full hover-elevate cursor-pointer transition-all overflow-visible border-0 shadow-sm"
-                onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                onClick={() => setLocation(`/product/${product.slug}`)}
                 data-testid={`card-product-${product.id}`}
               >
                 <div className="aspect-square relative bg-muted/30 rounded-t-lg overflow-hidden">
@@ -91,7 +91,7 @@ export function ProductsSection() {
         <div className="text-center mt-12">
           <Button
             size="lg"
-            onClick={() => setLocation("/catalogo")}
+            onClick={() => setLocation("/catalog")}
             data-testid="button-view-catalog"
           >
             Voir tous les produits

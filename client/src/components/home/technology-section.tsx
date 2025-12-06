@@ -51,7 +51,7 @@ export function TechnologySection() {
               size="lg"
               variant="outline"
               className="border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white hover:text-foreground"
-              onClick={() => setLocation("/servizi/attrezzeria")}
+              onClick={() => setLocation("/services/attrezzeria")}
               data-testid="button-learn-more-tech"
             >
               En savoir plus

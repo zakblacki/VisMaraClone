@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 import { elevatorConfigOptions } from "@/lib/data";
 
 import elevatorCabinImg from "@assets/generated_images/luxury_elevator_cabin_interior.png";
@@ -20,18 +21,9 @@ interface ConfigState {
   controlPanel: string;
 }
 
-const steps = [
-  { id: 1, name: "Type de cabine", key: "cabinType" },
-  { id: 2, name: "Capacité", key: "capacity" },
-  { id: 3, name: "Porte", key: "doorType" },
-  { id: 4, name: "Finitions", key: "finishMaterial" },
-  { id: 5, name: "Éclairage", key: "lighting" },
-  { id: 6, name: "Panneau de commande", key: "controlPanel" },
-  { id: 7, name: "Résumé", key: "summary" },
-];
-
 export default function ElevatorConfigurator() {
   const [, setLocation] = useLocation();
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [config, setConfig] = useState<ConfigState>({
     cabinType: "",
@@ -41,6 +33,16 @@ export default function ElevatorConfigurator() {
     lighting: "",
     controlPanel: "",
   });
+
+  const steps = [
+    { id: 1, name: t("elevator.step.cabin_type"), key: "cabinType" },
+    { id: 2, name: t("elevator.step.capacity"), key: "capacity" },
+    { id: 3, name: t("elevator.step.door"), key: "doorType" },
+    { id: 4, name: t("elevator.step.finish"), key: "finishMaterial" },
+    { id: 5, name: t("elevator.step.lighting"), key: "lighting" },
+    { id: 6, name: t("elevator.step.control_panel"), key: "controlPanel" },
+    { id: 7, name: t("configurator.summary"), key: "summary" },
+  ];
 
   const updateConfig = (key: keyof ConfigState, value: string) => {
     setConfig((prev) => ({ ...prev, [key]: value }));
@@ -70,7 +72,7 @@ export default function ElevatorConfigurator() {
 
   const getSelectedLabel = (key: keyof ConfigState) => {
     const value = config[key];
-    if (!value) return "Non sélectionné";
+    if (!value) return t("configurator.not_selected");
 
     switch (key) {
       case "cabinType":
@@ -141,7 +143,7 @@ export default function ElevatorConfigurator() {
                   <p className="text-sm text-muted-foreground">{cap.kg} kg</p>
                   {config.capacity === cap.id && (
                     <div className="mt-2">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -199,7 +201,7 @@ export default function ElevatorConfigurator() {
                   <h3 className="font-medium text-sm">{finish.name}</h3>
                   {config.finishMaterial === finish.id && (
                     <div className="mt-2">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -257,7 +259,7 @@ export default function ElevatorConfigurator() {
                   <p className="text-sm text-muted-foreground">{panel.description}</p>
                   {config.controlPanel === panel.id && (
                     <div className="mt-2">
-                      <Badge>Sélectionné</Badge>
+                      <Badge>{t("configurator.selected")}</Badge>
                     </div>
                   )}
                 </CardContent>
@@ -270,7 +272,7 @@ export default function ElevatorConfigurator() {
         return (
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-lg mb-4">Résumé de la configuration</h3>
+              <h3 className="font-semibold text-lg mb-4">{t("configurator.config_summary")}</h3>
               <Card>
                 <CardContent className="p-4 space-y-3">
                   {Object.entries(config).map(([key, value]) => (
@@ -288,20 +290,20 @@ export default function ElevatorConfigurator() {
               <div className="aspect-[4/3] rounded-xl overflow-hidden mb-6">
                 <img
                   src={elevatorCabinImg}
-                  alt="Aperçu de la configuration"
+                  alt={t("elevator.config_preview")}
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="text-muted-foreground mb-6">
-                Votre configuration est prête ! Envoyez une demande pour recevoir un devis personnalisé.
+                {t("configurator.config_ready")}
               </p>
               <Button
                 size="lg"
                 className="w-full sm:w-auto"
-                onClick={() => setLocation("/contatti?subject=quote")}
+                onClick={() => setLocation("/contact?subject=quote")}
                 data-testid="button-request-quote-config"
               >
-                Demander un devis
+                {t("configurator.request_quote")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -324,14 +326,14 @@ export default function ElevatorConfigurator() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Configurateur d'ascenseur</span>
+              <span className="text-foreground">{t("elevator.configurator")}</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Configurez votre ascenseur</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">{t("elevator.configure_title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Personnalisez chaque détail de votre ascenseur en quelques étapes simples
+              {t("elevator.configure_subtitle")}
             </p>
           </div>
         </div>
@@ -392,7 +394,7 @@ export default function ElevatorConfigurator() {
               data-testid="button-prev-step"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Retour
+              {t("configurator.back")}
             </Button>
             {currentStep < steps.length && (
               <Button
@@ -400,7 +402,7 @@ export default function ElevatorConfigurator() {
                 disabled={!canProceed()}
                 data-testid="button-next-step"
               >
-                Suivant
+                {t("configurator.next")}
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             )}
