@@ -1,0 +1,25 @@
+This platform is a replicate clone from https://fratellivismara.it note that this is a wordpress site.
+
+My codebase is a fullstack modular with backend database mysql and admin panel back-office where users can add pdf catalog or add edit or remove products CRUD operations with email support when sending contact form or newsletter the goal is not to make it hardcoded so that admin can full autnomous access if he want to change image or some specefic content like in the header or footer or frontend landing page.
+
+But it is not finished yet some features are not  implemented which you should do and I still have some issues I want you to fix them.
+
+1) there is no authentication login when visiting http://localhost:3000/admin I tried to logout but no sign in login page
+
+2)I want to also update the logo of the company in the header, and footer, and the one in favicon in the tab bar onglet currently displaying replit icon
+
+3) in http://localhost:3000/download replace the pdf mockup data with real pdf to download view which can be uploaded by admin from admin panel because when I try to download pdf nothing happen it doesn't work 
+
+3) in the header the dropdown "Configurators" "Services" "Installations" and "Produits" are displaying showing white blank and also they are the wrong position 
+
+4) the pdf documentation button is also not working for example http://localhost:3000/prodotto/pulsantiera-cabina-standard
+
+5) when user send a contact form, or apply to newsletter where does the data goes ? does is it sent by email to the company email if not fix it
+
+6) I tried to add, or edit, or delete a product or add a pdf but the changes are not reflecting nothing happened in frontend fix
+http://localhost:3000/admin
+
+7) on the hero section frontend fix buttons left on the slider not visible correctly 
+
+8) On the frontend update the middle section for featured product to look like https://fratellivismara.it/ for example they are showing some featured products in the frontend https://fratellivismara.it
+
