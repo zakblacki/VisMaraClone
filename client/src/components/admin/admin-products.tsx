@@ -58,12 +58,16 @@ export default function AdminProducts() {
     setEditingProduct(null);
   };
 
-  const handleDelete = async (productId: string) => {
+  const handleDelete = async (productId: number) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) return;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/products/${productId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {

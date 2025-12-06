@@ -1,5 +1,8 @@
 import nodemailer from "nodemailer";
 
+// Check if SMTP is configured
+const SMTP_CONFIGURED = !!(process.env.SMTP_USER && process.env.SMTP_PASS);
+
 // Email configuration
 const EMAIL_CONFIG = {
   host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -11,10 +14,14 @@ const EMAIL_CONFIG = {
   },
 };
 
-const COMPANY_EMAIL = process.env.COMPANY_EMAIL || "info@fratellivismara.it";
+const COMPANY_EMAIL = process.env.COMPANY_EMAIL || "info@prodlift.com";
 
-// Create transporter
-const transporter = nodemailer.createTransport(EMAIL_CONFIG);
+// Create transporter only if SMTP is configured
+const transporter = SMTP_CONFIGURED ? nodemailer.createTransport(EMAIL_CONFIG) : null;
+
+if (!SMTP_CONFIGURED) {
+  console.log("SMTP not configured - email notifications disabled. Set SMTP_USER and SMTP_PASS to enable email.");
+}
 
 export async function sendContactEmail(data: {
   name: string;
@@ -25,9 +32,19 @@ export async function sendContactEmail(data: {
   message: string;
   productCode?: string;
 }) {
+  if (!transporter) {
+    console.log("Email not sent (SMTP not configured):", {
+      type: "contact",
+      from: data.email,
+      subject: data.subject,
+    });
+    return { success: true, skipped: true };
+  }
+
   const mailOptions = {
     from: EMAIL_CONFIG.auth.user,
     to: COMPANY_EMAIL,
+    replyTo: data.email,
     subject: `Nouvelle demande de contact: ${data.subject}`,
     html: `
       <h2>Nouvelle demande de contact</h2>
@@ -52,6 +69,14 @@ export async function sendContactEmail(data: {
 }
 
 export async function sendNewsletterEmail(email: string) {
+  if (!transporter) {
+    console.log("Email not sent (SMTP not configured):", {
+      type: "newsletter",
+      email: email,
+    });
+    return { success: true, skipped: true };
+  }
+
   const mailOptions = {
     from: EMAIL_CONFIG.auth.user,
     to: COMPANY_EMAIL,

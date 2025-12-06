@@ -1,62 +1,100 @@
 import { useLocation } from "wouter";
-import { ChevronRight, Download, FileText, BookOpen, Award, Folder } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronRight, Download, FileText, BookOpen, Award, Folder, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import type { Pdf } from "@shared/schema";
 
-const downloadCategories = [
+interface CategoryConfig {
+  title: string;
+  icon: typeof BookOpen;
+  types: string[];
+}
+
+const categoryConfigs: CategoryConfig[] = [
   {
-    id: 1,
     title: "Catalogues Produits",
     icon: BookOpen,
-    items: [
-      { name: "Catalogue Général 2024", size: "15.2 MB", type: "PDF" },
-      { name: "Limiteurs de Vitesse", size: "4.8 MB", type: "PDF" },
-      { name: "Opérateurs et Suspensions", size: "6.2 MB", type: "PDF" },
-      { name: "Composants LED", size: "2.1 MB", type: "PDF" },
-    ]
+    types: ["catalogue", "catalog"],
   },
   {
-    id: 2,
     title: "Fiches Techniques",
     icon: FileText,
-    items: [
-      { name: "Limiteur L0X-187", size: "1.2 MB", type: "PDF" },
-      { name: "Limiteur L0X-186", size: "1.1 MB", type: "PDF" },
-      { name: "Opérateur Slim", size: "0.8 MB", type: "PDF" },
-      { name: "Connecteurs LED", size: "0.5 MB", type: "PDF" },
-    ]
+    types: ["fiche", "datasheet", "technique"],
   },
   {
-    id: 3,
     title: "Certifications",
     icon: Award,
-    items: [
-      { name: "Certification CE", size: "0.3 MB", type: "PDF" },
-      { name: "ISO 9001:2015", size: "0.4 MB", type: "PDF" },
-      { name: "Déclarations de Conformité", size: "1.5 MB", type: "PDF" },
-    ]
+    types: ["certification", "certificat", "certificate"],
   },
   {
-    id: 4,
     title: "Manuels Techniques",
     icon: Folder,
-    items: [
-      { name: "Guide d'Installation Limiteurs", size: "3.2 MB", type: "PDF" },
-      { name: "Manuel de Maintenance", size: "4.5 MB", type: "PDF" },
-      { name: "Spécifications Techniques Générales", size: "2.8 MB", type: "PDF" },
-    ]
+    types: ["manuel", "manual", "guide"],
   }
 ];
+
+function getIconForType(type: string): typeof BookOpen {
+  const lowerType = type.toLowerCase();
+  for (const config of categoryConfigs) {
+    if (config.types.some(t => lowerType.includes(t))) {
+      return config.icon;
+    }
+  }
+  return FileText;
+}
+
+function getCategoryForPdf(pdf: Pdf): string {
+  const lowerType = (pdf.type || "").toLowerCase();
+  for (const config of categoryConfigs) {
+    if (config.types.some(t => lowerType.includes(t))) {
+      return config.title;
+    }
+  }
+  return "Autres Documents";
+}
+
+function formatFileSize(bytes?: number): string {
+  if (!bytes) return "";
+  const mb = bytes / (1024 * 1024);
+  return `${mb.toFixed(1)} MB`;
+}
 
 export default function Downloads() {
   const [, setLocation] = useLocation();
 
-  const handleDownload = (fileName: string) => {
-    console.log(`Downloading ${fileName}`);
+  const { data: pdfs = [], isLoading, error } = useQuery<Pdf[]>({
+    queryKey: ["/api/pdfs"],
+  });
+
+  const handleDownload = (pdf: Pdf) => {
+    if (pdf.url) {
+      window.open(pdf.url, "_blank");
+    }
   };
+
+  // Group PDFs by category
+  const groupedPdfs = pdfs.reduce((acc, pdf) => {
+    const category = getCategoryForPdf(pdf);
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(pdf);
+    return acc;
+  }, {} as Record<string, Pdf[]>);
+
+  // Build categories array with proper icons
+  const categories = Object.entries(groupedPdfs).map(([title, items]) => {
+    const config = categoryConfigs.find(c => c.title === title);
+    return {
+      title,
+      icon: config?.icon || FileText,
+      items,
+    };
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -82,54 +120,72 @@ export default function Downloads() {
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 py-8 lg:py-12">
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-            {downloadCategories.map((category) => (
-              <Card key={category.id}>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <category.icon className="h-6 w-6 text-primary" />
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : error ? (
+            <Card>
+              <CardContent className="p-6 text-center text-muted-foreground">
+                Erreur lors du chargement des documents. Veuillez réessayer.
+              </CardContent>
+            </Card>
+          ) : categories.length === 0 ? (
+            <Card>
+              <CardContent className="p-6 text-center text-muted-foreground">
+                Aucun document disponible pour le moment.
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+              {categories.map((category, catIndex) => (
+                <Card key={catIndex}>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <category.icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <CardTitle>{category.title}</CardTitle>
+                        <CardDescription>{category.items.length} documents disponibles</CardDescription>
+                      </div>
                     </div>
-                    <div>
-                      <CardTitle>{category.title}</CardTitle>
-                      <CardDescription>{category.items.length} documents disponibles</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {category.items.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover-elevate transition-colors"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                          <div className="min-w-0">
-                            <p className="font-medium text-sm truncate">{item.name}</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <Badge variant="outline" className="text-xs">
-                                {item.type}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">{item.size}</span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {category.items.map((pdf) => (
+                        <div
+                          key={pdf.id}
+                          className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover-elevate transition-colors"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                            <div className="min-w-0">
+                              <p className="font-medium text-sm truncate">{pdf.name}</p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <Badge variant="outline" className="text-xs">
+                                  PDF
+                                </Badge>
+                                <span className="text-xs text-muted-foreground">{pdf.type}</span>
+                              </div>
                             </div>
                           </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDownload(pdf)}
+                            data-testid={`button-download-pdf-${pdf.id}`}
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDownload(item.name)}
-                          data-testid={`button-download-${category.id}-${index}`}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <Card className="mt-8 bg-primary text-primary-foreground">
             <CardContent className="p-6 lg:p-8">

@@ -64,10 +64,14 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
         ? `/api/products/${product.id}`
         : "/api/products";
       const method = product ? "PUT" : "POST";
+      const token = localStorage.getItem("adminToken");
 
       const response = await fetch(endpoint, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(formData),
       });
 
