@@ -139,7 +139,9 @@ Pour des questions sur les cookies, contactez-nous à cookies@prodlift.com
 
 ## Notre Histoire
 
-Prodlift est une entreprise leader dans la conception et la fabrication de systèmes d'ascenseurs et de composants de haute qualité depuis 1965. Avec plus de 50 ans d'expérience, nous avons établi une réputation solide dans l'industrie des ascenseurs.
+PRODLIFT est une entreprise Algéro-Italienne née de l'alliance stratégique entre des acteurs expérimentés du secteur des ascenseurs en Algérie et en Italie. Fondée avec la volonté de répondre aux besoins croissants du marché algérien et africain en matière de solutions verticales, PRODLIFT incarne une nouvelle génération d'industriels engagés dans le développement local, l'innovation technologique et la formation des compétences.
+
+Face à une demande nationale en forte croissance – estimée à plusieurs centaines de milliers d'unités d'ici 2026 en lien avec les vastes programmes de logements, d'infrastructures et de bâtiments publics –, PRODLIFT se positionne comme un acteur central de la filière ascensoriste en Algérie, avec une vision industrielle et durable.
 
 ## Notre Mission
 
@@ -183,7 +185,7 @@ Nos produits sont certifiés selon les normes internationales :
 
 ## Contactez-Nous
 
-Pour en savoir plus sur Prodlift, veuillez nous contacter à info@prodlift.com ou appeler +33 (0) 1 23 45 67 89
+Pour en savoir plus sur Prodlift, veuillez nous contacter à prodlift.dc@gmail.com ou appeler 0770 52 54 64 / 0770 25 77 77
     `
   }
 };

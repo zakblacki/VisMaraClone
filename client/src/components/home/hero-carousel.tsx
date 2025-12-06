@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { heroSlides } from "@/lib/data";
@@ -108,14 +108,6 @@ export function HeroCarousel() {
         ))}
       </div>
 
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-background/80 backdrop-blur-sm border shadow-lg flex items-center justify-center hover-elevate transition-all z-30 pointer-events-auto"
-        aria-label="Diapositive précédente"
-        data-testid="button-hero-prev"
-      >
-        <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6" />
-      </button>
       <button
         onClick={nextSlide}
         className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-background/80 backdrop-blur-sm border shadow-lg flex items-center justify-center hover-elevate transition-all z-30 pointer-events-auto"

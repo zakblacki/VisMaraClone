@@ -9,7 +9,6 @@ import { getFeaturedProducts } from "@/lib/api";
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
 import ledConnectorImg from "@assets/generated_images/led_connector_component.png";
-import catalogImg from "@assets/generated_images/elevator_control_panel_buttons.png";
 
 const imageMap: Record<string, string> = {
   speedGovernor: speedGovernorImg,
@@ -26,83 +25,78 @@ export function ProductsSection() {
   });
 
   return (
-    <section className="py-16 lg:py-24 bg-muted/30">
+    <section className="py-16 lg:py-24 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
-          <div className="lg:sticky lg:top-32">
-            <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-              Pièces de rechange et composants pour ascenseurs
-            </p>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Un vaste catalogue rien que pour vous
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              Naviguez dans la section des composants et pièces de rechange pour ascenseurs de
-              Prodlift pour trouver ce qui vous convient. Nous sommes là
-              pour vous fournir des solutions sur mesure et une assistance professionnelle.
-            </p>
-            <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-6">
-              <img
-                src={catalogImg}
-                alt="Catalogue de composants d'ascenseurs"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <Badge variant="secondary" className="bg-white/90 text-foreground">
-                  +500 produits
-                </Badge>
-              </div>
-            </div>
-            <Button
-              className="w-full"
-              onClick={() => setLocation("/catalogo")}
-              data-testid="button-view-catalog"
-            >
-              Découvrez le catalogue complet
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+        <div className="text-center mb-12">
+          <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+            Produits en vedette
+          </p>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            Découvrez nos produits phares
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Une sélection de nos meilleurs composants et systèmes pour ascenseurs,
+            conçus avec précision et qualité.
+          </p>
+        </div>
 
-          <div className="lg:col-span-2">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-                {featuredProducts.slice(0, 6).map((product, index) => (
-                  <Card
-                    key={product.id}
-                    className="group h-full hover-elevate cursor-pointer transition-all overflow-visible"
-                    onClick={() => setLocation(`/prodotto/${product.slug}`)}
-                  >
-                    <div className="aspect-square relative bg-muted/50">
-                      <img
-                        src={imageMap[product.image || 'speedGovernor']}
-                        alt={product.name}
-                        className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                        data-testid={`img-product-${index}`}
-                      />
-                      {product.featured && (
-                        <Badge className="absolute top-3 right-3" variant="default">
-                          En vedette
-                        </Badge>
-                      )}
-                    </div>
-                    <CardContent className="p-4">
-                      <p className="text-xs text-muted-foreground mb-1">
-                        {product.code}
-                      </p>
-                      <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                        {product.name}
-                      </h3>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.slice(0, 8).map((product, index) => (
+              <Card
+                key={product.id}
+                className="group h-full hover-elevate cursor-pointer transition-all overflow-visible border-0 shadow-sm"
+                onClick={() => setLocation(`/prodotto/${product.slug}`)}
+                data-testid={`card-product-${product.id}`}
+              >
+                <div className="aspect-square relative bg-muted/30 rounded-t-lg overflow-hidden">
+                  <img
+                    src={imageMap[product.image || 'speedGovernor']}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                    data-testid={`img-product-${index}`}
+                  />
+                  {product.featured && (
+                    <Badge className="absolute top-3 left-3" variant="default" size="sm">
+                      Nouveau
+                    </Badge>
+                  )}
+                </div>
+                <CardContent className="p-4 text-center">
+                  <p className="text-xs text-primary font-medium mb-1">
+                    {product.code}
+                  </p>
+                  <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-primary transition-colors mb-2">
+                    {product.name}
+                  </h3>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-primary"
+                    data-testid={`button-view-product-${product.id}`}
+                  >
+                    Voir détails
+                    <ArrowRight className="ml-1 h-3 w-3" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        <div className="text-center mt-12">
+          <Button
+            size="lg"
+            onClick={() => setLocation("/catalogo")}
+            data-testid="button-view-catalog"
+          >
+            Voir tous les produits
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </div>
     </section>

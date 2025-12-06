@@ -155,16 +155,17 @@ export const navItems: NavItem[] = [
 // Company Information
 export const companyInfo = {
   name: "Prodlift",
-  phone: "+39 039 278 1193",
-  email: "info@fratellivismara.it",
-  address: "Via Padre Semeria, 12",
-  city: "20851 Lissone (MB)",
-  country: "Italie",
-  vatNumber: "IT00123456789",
+  phone: "0770 52 54 64",
+  phone2: "0770 25 77 77",
+  email: "prodlift.dc@gmail.com",
+  address: "P6F9+F88",
+  city: "Dar El Beïda",
+  country: "Algérie",
+  vatNumber: "DZ00123456789",
   socialMedia: {
-    linkedin: "https://linkedin.com/company/fratelli-vismara",
+    linkedin: "https://linkedin.com/company/prodlift",
     facebook: "https://www.facebook.com/profile.php?id=61584695818350",
-    instagram: "https://instagram.com/fratellivismara"
+    instagram: "https://instagram.com/prodlift"
   }
 };
 

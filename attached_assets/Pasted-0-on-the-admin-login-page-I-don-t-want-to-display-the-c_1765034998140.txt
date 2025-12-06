@@ -1,0 +1,27 @@
+0) on the admin login page I don't want to display the credentials demo 
+
+1) when possible try to apply cache data, images in the platform codebase to optimize website load 
+
+2) Import add some demo data mockup in database for products and pdf catalog....etc to be able to view to see all options features 
+
+3) Update the phone number in the platform with this two  : 0770 52 54 64 / 0770 25 77 77
+
+4) replace the current email in the platform with this one prodlift.dc@gmail.com
+
+5) and the current adress with this one P6F9+F88, Dar El Beïda
+
+6) when I press on some route button link it works but it start displaying from the bottom of the page I have to scroll up to see weird 
+
+7) rename all current italian files .tsx to english using naming convention and make sure the change is compatible for no issues 
+
+
+8) replace and use this presentation of the company in here /chi-siamo "Notre histoire" section
+
+PRODLIFT est une entreprise Algéro-Italienne née de l’alliance stratégique entre des acteurs expérimentés du secteur des ascenseurs en Algérie et en Italie. Fondée avec la volonté de répondre aux besoins croissants du marché algérien et africain en matière de solutions verticales, PRODLIFT incarne une nouvelle génération d’industriels engagés dans le développement local, l’innovation technologique et la formation des compétences.
+Face à une demande nationale en forte croissance – estimée à plusieurs centaines de milliers d’unités d’ici 2026 en lien avec les vastes programmes de logements, d’infrastructures et de bâtiments publics –, PRODLIFT se positionne comme un acteur central de la filière ascensoriste en Algérie, avec une vision industrielle et durable.
+
+9) in the header the dropdown "Configurators" "Services" "Installations" and "Produits" are displaying showing on the wrong position 
+
+10) on the hero section frontend delete remove this button left on the slider not visible correctly 
+
+11) On the frontend update the middle section for featured product to look like https://fratellivismara.it/ for example they are showing some featured products in the frontend https://fratellivismara.it

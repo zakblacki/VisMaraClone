@@ -69,9 +69,17 @@ export function Header() {
                 <Phone className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">{companyInfo.phone}</span>
               </a>
+              <a
+                href={`tel:${companyInfo.phone2?.replace(/\s/g, '') || ''}`}
+                className="hidden sm:flex items-center gap-2 hover:opacity-80 transition-opacity"
+                data-testid="link-phone-2"
+              >
+                <Phone className="h-3.5 w-3.5" />
+                <span>{companyInfo.phone2}</span>
+              </a>
               <div className="hidden md:flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" />
-                <span>{companyInfo.address} – {companyInfo.city}</span>
+                <span>{companyInfo.address}, {companyInfo.city}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
