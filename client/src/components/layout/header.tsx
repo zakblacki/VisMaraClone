@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { navItems, companyInfo } from "@/lib/data";
 import { useTheme } from "@/components/theme-provider";
+import { LanguageSelector, useLanguage } from "@/lib/i18n";
 
 export function Header() {
   const [location, setLocation] = useLocation();
@@ -41,11 +42,12 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { t } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setLocation(`/catalogo?search=${encodeURIComponent(searchQuery)}`);
+      setLocation(`/catalog?search=${encodeURIComponent(searchQuery)}`);
       setIsSearchOpen(false);
     }
   };
@@ -82,7 +84,8 @@ export function Header() {
                 <span>{companyInfo.address}, {companyInfo.city}</span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <LanguageSelector />
               <Button
                 variant="ghost"
                 size="icon"
@@ -134,7 +137,7 @@ export function Header() {
                             location.startsWith(item.href) && "bg-accent"
                           )}
                         >
-                          {item.label}
+                          {t(item.label)}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           <ul className="grid w-[280px] gap-1 p-3">
@@ -149,7 +152,7 @@ export function Header() {
                                   data-testid={`link-nav-${child.label.toLowerCase().replace(/\s/g, '-')}`}
                                 >
                                   <div className="text-sm font-medium leading-none">
-                                    {child.label}
+                                    {t(child.label)}
                                   </div>
                                 </div>
                               </li>
@@ -166,7 +169,7 @@ export function Header() {
                         )}
                         data-testid={`link-nav-${item.label.toLowerCase()}`}
                       >
-                        {item.label}
+                        {t(item.label)}
                       </div>
                     )}
                   </NavigationMenuItem>
@@ -179,7 +182,7 @@ export function Header() {
                 <form onSubmit={handleSearch} className="flex items-center gap-2">
                   <Input
                     type="search"
-                    placeholder="Rechercher des produits..."
+                    placeholder={t("header.search_placeholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-48 lg:w-64"
@@ -214,10 +217,10 @@ export function Header() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setLocation("/configuratore-ascensore")}
+                  onClick={() => setLocation("/elevator-configurator")}
                   data-testid="button-configure-elevator"
                 >
-                  Configurer Ascenseur
+                  {t("header.configure_elevator")}
                 </Button>
               </div>
 
@@ -242,7 +245,7 @@ export function Header() {
                         {item.children ? (
                           <Collapsible>
                             <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-md hover-elevate">
-                              <span className="font-medium">{item.label}</span>
+                              <span className="font-medium">{t(item.label)}</span>
                               <ChevronDown className="h-4 w-4" />
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -253,7 +256,7 @@ export function Header() {
                                     onClick={() => navigateTo(child.href)}
                                     className="text-left p-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover-elevate"
                                   >
-                                    {child.label}
+                                    {t(child.label)}
                                   </button>
                                 ))}
                               </div>
@@ -264,7 +267,7 @@ export function Header() {
                             onClick={() => navigateTo(item.href)}
                             className="text-left w-full p-3 rounded-md font-medium hover-elevate"
                           >
-                            {item.label}
+                            {t(item.label)}
                           </button>
                         )}
                       </div>
@@ -273,15 +276,15 @@ export function Header() {
                       <Button
                         variant="outline"
                         className="w-full"
-                        onClick={() => navigateTo("/configuratore-ascensore")}
+                        onClick={() => navigateTo("/elevator-configurator")}
                       >
-                        Configurer Ascenseur
+                        {t("header.configure_elevator")}
                       </Button>
                       <Button
                         className="w-full"
-                        onClick={() => navigateTo("/contatti")}
+                        onClick={() => navigateTo("/contact")}
                       >
-                        Contacts
+                        {t("nav.contact")}
                       </Button>
                     </div>
                   </nav>

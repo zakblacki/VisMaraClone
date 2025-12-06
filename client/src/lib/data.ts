@@ -103,51 +103,51 @@ export const features: FeatureItem[] = [
   }
 ];
 
-// Navigation Items with translation keys
+// Navigation Items with translation keys (use i18n t() function to translate labels)
 export const navItems: NavItem[] = [
   {
-    label: "Produits",
+    label: "nav.products",
     href: "/catalog",
     children: [
-      { label: "Limiteurs de vitesse", href: "/catalog/limitatori" },
-      { label: "Opérateurs de porte", href: "/catalog/operatori" },
-      { label: "Composants LED", href: "/catalog/led" },
-      { label: "Systèmes de sécurité", href: "/catalog/sicurezza" },
-      { label: "Tous les produits", href: "/catalog" }
+      { label: "nav.speed_limiters", href: "/catalog/limitatori" },
+      { label: "nav.door_operators", href: "/catalog/operatori" },
+      { label: "nav.led_components", href: "/catalog/led" },
+      { label: "nav.safety_systems", href: "/catalog/sicurezza" },
+      { label: "nav.all_products", href: "/catalog" }
     ]
   },
   {
-    label: "Installations",
+    label: "nav.installations",
     href: "/installations",
     children: [
-      { label: "Ascenseurs Gearless MRL", href: "/installations/gearless" },
-      { label: "Plateformes élévatrices", href: "/installations/piattaforme" },
-      { label: "Ascenseurs sur mesure", href: "/installations/su-misura" }
+      { label: "nav.gearless_elevators", href: "/installations/gearless" },
+      { label: "nav.lift_platforms", href: "/installations/platforms" },
+      { label: "nav.custom_elevators", href: "/installations/custom" }
     ]
   },
   {
-    label: "Services",
+    label: "nav.services",
     href: "/services",
     children: [
-      { label: "Conception", href: "/services/design" },
-      { label: "Outillage", href: "/services/tooling" },
-      { label: "Découpage et moulage", href: "/services/stamping" }
+      { label: "nav.design", href: "/services/design" },
+      { label: "nav.tooling", href: "/services/tooling" },
+      { label: "nav.stamping", href: "/services/stamping" }
     ]
   },
   {
-    label: "Configurateurs",
+    label: "nav.configurators",
     href: "/configurators",
     children: [
-      { label: "Configurer ascenseur", href: "/elevator-configurator" },
-      { label: "Configurer plateforme", href: "/platform-configurator" }
+      { label: "nav.configure_elevator", href: "/elevator-configurator" },
+      { label: "nav.configure_platform", href: "/platform-configurator" }
     ]
   },
   {
-    label: "Téléchargement",
+    label: "nav.download",
     href: "/download"
   },
   {
-    label: "Contacts",
+    label: "nav.contact",
     href: "/contact"
   }
 ];

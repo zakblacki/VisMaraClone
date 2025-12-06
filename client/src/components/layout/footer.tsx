@@ -6,15 +6,18 @@ import {
   Facebook,
   Linkedin,
   Instagram,
-  ExternalLink
+  ExternalLink,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { companyInfo, navItems } from "@/lib/data";
+import { useLanguage } from "@/lib/i18n";
 
 export function Footer() {
   const [, setLocation] = useLocation();
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,9 +72,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-md">
-              Depuis 1965, Prodlift conçoit et produit des ascenseurs, des plateformes élévatrices
-              et des composants de haute qualité. Notre expérience et innovation nous rendent
-              une référence dans le secteur des ascenseurs.
+              {t("footer.description")}
             </p>
             <div className="flex items-center gap-3">
               <a
@@ -105,42 +106,42 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Liens rapides</h4>
+            <h4 className="font-semibold mb-4">{t("footer.quick_links")}</h4>
             <ul className="space-y-2">
               {navItems.slice(0, 4).map((item) => (
                 <li key={item.label}>
-                  <FooterLink href={item.href}>{item.label}</FooterLink>
+                  <FooterLink href={item.href}>{t(item.label)}</FooterLink>
                 </li>
               ))}
               <li>
-                <FooterLink href="/chi-siamo">Qui sommes-nous</FooterLink>
+                <FooterLink href="/about-us">{t("footer.about_us")}</FooterLink>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Produits</h4>
+            <h4 className="font-semibold mb-4">{t("footer.products")}</h4>
             <ul className="space-y-2">
               <li>
-                <FooterLink href="/catalogo?categoria=limitatori">Limiteurs de vitesse</FooterLink>
+                <FooterLink href="/catalog?category=limitatori">{t("footer.speed_limiters")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalogo?categoria=operatori">Opérateurs de porte</FooterLink>
+                <FooterLink href="/catalog?category=operatori">{t("footer.door_operators")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalogo?categoria=led">Composants LED</FooterLink>
+                <FooterLink href="/catalog?category=led">{t("footer.led_components")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalogo?categoria=sicurezza">Systèmes de sécurité</FooterLink>
+                <FooterLink href="/catalog?category=sicurezza">{t("footer.safety_systems")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/configuratore-piattaforma">Plateformes élévatrices</FooterLink>
+                <FooterLink href="/platform-configurator">{t("footer.lift_platforms")}</FooterLink>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Contacts</h4>
+            <h4 className="font-semibold mb-4">{t("footer.contacts")}</h4>
             <ul className="space-y-3">
               <li>
                 <a
@@ -179,13 +180,24 @@ export function Footer() {
               </li>
             </ul>
 
+            <div className="mt-4">
+              <h5 className="font-medium text-sm mb-2 flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                {t("footer.opening_hours")}
+              </h5>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>{t("footer.sunday_thursday")}</li>
+                <li>{t("footer.friday_saturday")}</li>
+              </ul>
+            </div>
+
             <div className="mt-6">
-              <h5 className="font-medium text-sm mb-2">Newsletter</h5>
+              <h5 className="font-medium text-sm mb-2">{t("footer.newsletter")}</h5>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input
                   type="email"
                   name="email"
-                  placeholder="Votre email"
+                  placeholder={t("footer.email_placeholder")}
                   className="flex-1"
                   required
                   data-testid="input-newsletter-email"
@@ -202,11 +214,11 @@ export function Footer() {
       <div className="border-t bg-muted/50">
         <div className="container mx-auto px-4 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© {currentYear} {companyInfo.name}. Tous droits réservés.</p>
+            <p>© {currentYear} {companyInfo.name}. {t("footer.rights_reserved")}</p>
             <div className="flex items-center gap-4 flex-wrap justify-center">
-              <FooterLink href="/privacy">Politique de confidentialité</FooterLink>
-              <FooterLink href="/cookie">Politique des cookies</FooterLink>
-              <FooterLink href="/termini">Termes et Conditions</FooterLink>
+              <FooterLink href="/privacy">{t("footer.privacy")}</FooterLink>
+              <FooterLink href="/cookies">{t("footer.cookies")}</FooterLink>
+              <FooterLink href="/terms">{t("footer.terms")}</FooterLink>
             </div>
           </div>
         </div>
