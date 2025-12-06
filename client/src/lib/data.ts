@@ -163,7 +163,7 @@ export const companyInfo = {
   vatNumber: "IT00123456789",
   socialMedia: {
     linkedin: "https://linkedin.com/company/fratelli-vismara",
-    facebook: "https://facebook.com/fratellivismara",
+    facebook: "https://www.facebook.com/profile.php?id=61584695818350",
     instagram: "https://instagram.com/fratellivismara"
   }
 };
