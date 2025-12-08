@@ -457,6 +457,36 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/products/bulk-import", requireAuth, async (req, res) => {
+    try {
+      const productSchema = z.object({
+        code: z.string(),
+        name: z.string(),
+        slug: z.string(),
+        description: z.string().optional(),
+        specifications: z.string().optional(),
+        image: z.string().optional(),
+        featured: z.boolean().optional(),
+        categoryId: z.number().optional(),
+      });
+
+      const result = z.object({
+        products: z.array(productSchema),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      const created = await storage.createProducts(result.data.products);
+      res.status(201).json({ message: `${created.length} products imported successfully`, products: created });
+    } catch (error) {
+      console.error("Error importing products:", error);
+      res.status(500).json({ message: "Failed to import products" });
+    }
+  });
+
   // PDF endpoints
   app.get("/api/pdfs", async (_req, res) => {
     try {
