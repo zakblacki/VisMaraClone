@@ -135,16 +135,16 @@ export function Footer() {
             <h4 className="font-semibold mb-4">{t("footer.products")}</h4>
             <ul className="space-y-2">
               <li>
-                <FooterLink href="/catalog?category=limitatori">{t("footer.speed_limiters")}</FooterLink>
+                <FooterLink href="/catalog/speed-limiters">{t("footer.speed_limiters")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalog?category=operatori">{t("footer.door_operators")}</FooterLink>
+                <FooterLink href="/catalog/door-operators">{t("footer.door_operators")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalog?category=led">{t("footer.led_components")}</FooterLink>
+                <FooterLink href="/catalog/led">{t("footer.led_components")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="/catalog?category=sicurezza">{t("footer.safety_systems")}</FooterLink>
+                <FooterLink href="/catalog/safety-systems">{t("footer.safety_systems")}</FooterLink>
               </li>
               <li>
                 <FooterLink href="/platform-configurator">{t("footer.lift_platforms")}</FooterLink>

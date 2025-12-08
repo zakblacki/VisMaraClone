@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useSearch, useLocation } from "wouter";
+import { useState, useMemo, useEffect } from "react";
+import { useSearch, useLocation, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Filter, Grid3X3, List, ChevronRight, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
@@ -29,13 +29,19 @@ const imageMap: Record<string, string> = {
 
 export default function Catalog() {
   const [, setLocation] = useLocation();
+  const params = useParams<{ category?: string }>();
   const searchParams = useSearch();
   const urlSearchQuery = new URLSearchParams(searchParams).get("search") || "";
+  const urlCategory = params.category || "all";
 
   const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>(urlCategory);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("name");
+
+  useEffect(() => {
+    setSelectedCategory(urlCategory);
+  }, [urlCategory]);
 
   const { data: products = [], isLoading: productsLoading } = useQuery({
     queryKey: ["products"],
@@ -118,7 +124,17 @@ export default function Catalog() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select 
+                value={selectedCategory} 
+                onValueChange={(value) => {
+                  setSelectedCategory(value);
+                  if (value === "all") {
+                    setLocation("/catalog");
+                  } else {
+                    setLocation(`/catalog/${value}`);
+                  }
+                }}
+              >
                 <SelectTrigger className="w-[180px]" data-testid="select-category">
                   <Filter className="h-4 w-4 mr-2" />
                   <SelectValue placeholder="Catégorie" />

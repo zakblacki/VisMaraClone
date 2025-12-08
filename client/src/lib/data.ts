@@ -9,7 +9,7 @@ export const heroSlides: HeroSlide[] = [
     description: "Prodlift, conçoit en toute sécurité des systèmes d'ascenseurs – ascenseurs sur mesure – Ascenseurs Alger – MRL – Systèmes Gearless standard – production de pièces de rechange et composants pour ascenseurs – plateformes élévatrices électriques et élévateurs pour personnes handicapées",
     image: "speedGovernor",
     ctaText: "En savoir plus",
-    ctaLink: "/product/limitatore-velocita-bidirezionale-240mm",
+    ctaLink: "/product/speed-limiter-bidirectional-240mm",
     secondaryCta: {
       text: "Configurer la cabine",
       link: "/elevator-configurator"
@@ -109,10 +109,10 @@ export const navItems: NavItem[] = [
     label: "nav.products",
     href: "/catalog",
     children: [
-      { label: "nav.speed_limiters", href: "/catalog/limitatori" },
-      { label: "nav.door_operators", href: "/catalog/operatori" },
+      { label: "nav.speed_limiters", href: "/catalog/speed-limiters" },
+      { label: "nav.door_operators", href: "/catalog/door-operators" },
       { label: "nav.led_components", href: "/catalog/led" },
-      { label: "nav.safety_systems", href: "/catalog/sicurezza" },
+      { label: "nav.safety_systems", href: "/catalog/safety-systems" },
       { label: "nav.all_products", href: "/catalog" }
     ]
   },
@@ -174,7 +174,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "L0X-187",
     name: "Limiteur de Vitesse Bidirectionnel ø240mm",
-    slug: "limitatore-velocita-bidirezionale-240mm",
+    slug: "speed-limiter-bidirectional-240mm",
     description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 240mm. Speed governor bi-directional pour applications d'ascenseurs.",
     specifications: "Diamètre poulie: ø 240 mm\nVitesse nominale: configurable\nCertification: CE",
     categoryId: null,
@@ -184,7 +184,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "L0X-186",
     name: "Limiteur de Vitesse Bidirectionnel ø150mm",
-    slug: "limitatore-velocita-bidirezionale-150mm",
+    slug: "speed-limiter-bidirectional-150mm",
     description: "Limiteur de vitesse bidirectionnel avec diamètre de poulie 150mm. Compact speed governor pour espaces réduits.",
     specifications: "Diamètre poulie: ø 150 mm\nVitesse nominale: configurable\nCertification: CE",
     categoryId: null,
@@ -194,7 +194,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "700052",
     name: "Connecteur Type I pour Bande LED 220V AC",
-    slug: "connettore-tipo-i-led-220v",
+    slug: "led-connector-type-i-220v",
     description: "Connecteur Type I pour bande LED 220V AC, largeur 12mm, IP65, monochrome.",
     specifications: "Tension: 220V AC\nLargeur: 12mm\nProtection: IP65\nType: Monochrome",
     categoryId: null,
@@ -204,7 +204,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "700056",
     name: "Connecteur Bande LED 220V AC IP65",
-    slug: "connettore-striscia-led-ip65",
+    slug: "led-strip-connector-ip65",
     description: "Pin pour connecteur de bande LED 220V AC SMD2835 IP65, largeur 12mm, monochrome.",
     specifications: "Tension: 220V AC\nType LED: SMD2835\nProtection: IP65\nLargeur: 12mm",
     categoryId: null,
@@ -214,7 +214,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "700051",
     name: "Câble Redresseur pour Bande LED 220-240V",
-    slug: "cavo-raddrizzatore-led-220v",
+    slug: "led-rectifier-cable-220v",
     description: "Câble redresseur pour bande LED 220-240V AC IP65, largeur 12mm, certification CE, monochrome.",
     specifications: "Tension: 220-240V AC\nProtection: IP65\nLargeur: 12mm\nCertification: CE",
     categoryId: null,
@@ -224,7 +224,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "700053",
     name: "Bouchon Terminal pour Bande LED 220V AC",
-    slug: "tappo-terminale-led-220v",
+    slug: "led-terminal-cap-220v",
     description: "Bouchon terminal transparent pour bande LED 220V AC IP65, largeur 12mm.",
     specifications: "Tension: 220V AC\nProtection: IP65\nLargeur: 12mm\nCouleur: Transparent",
     categoryId: null,
@@ -234,7 +234,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "OP-SLIM-01",
     name: "Opérateur Porte Slim Ouverture Latérale",
-    slug: "operatore-porta-slim-laterale",
+    slug: "slim-door-operator-lateral",
     description: "Nouvel opérateur porte slim avec ouverture latérale. Design compact pour installations avec espace réduit.",
     specifications: "Type ouverture: Latérale\nHauteur seuil: 60mm\nMoteur: Brushless DC",
     categoryId: null,
@@ -244,7 +244,7 @@ export const sampleProducts: Omit<Product, "id">[] = [
   {
     code: "SUSP-SLIM-01",
     name: "Suspension Slim pour Opérateur",
-    slug: "sospensione-slim-operatore",
+    slug: "slim-suspension-operator",
     description: "Système de suspension slim pour opérateurs de porte. Profil réduit pour maximiser l'espace cabine.",
     specifications: "Type: Suspension slim\nMatériau: Aluminium anodisé\nCharge: jusqu'à 300kg",
     categoryId: null,
@@ -257,13 +257,13 @@ export const sampleProducts: Omit<Product, "id">[] = [
 export const sampleCategories: Omit<Category, "id">[] = [
   {
     name: "Limiteurs de vitesse",
-    slug: "limitatori",
+    slug: "speed-limiters",
     description: "Limiteurs de vitesse bidirectionnels et unidirectionnels pour ascenseurs",
     icon: "Gauge"
   },
   {
     name: "Opérateurs de porte",
-    slug: "operatori",
+    slug: "door-operators",
     description: "Opérateurs et suspensions pour portes d'ascenseur",
     icon: "DoorOpen"
   },
@@ -275,19 +275,19 @@ export const sampleCategories: Omit<Category, "id">[] = [
   },
   {
     name: "Systèmes de sécurité",
-    slug: "sicurezza",
+    slug: "safety-systems",
     description: "Composants de sécurité pour systèmes d'ascenseurs",
     icon: "Shield"
   },
   {
     name: "Panneaux de commande",
-    slug: "pulsantiere",
+    slug: "control-panels",
     description: "Panneaux de commande et boutons pour cabines d'ascenseur",
     icon: "Keyboard"
   },
   {
     name: "Structures et guides",
-    slug: "strutture",
+    slug: "structures",
     description: "Guides, structures et composants mécaniques pour ascenseurs",
     icon: "Layers"
   }

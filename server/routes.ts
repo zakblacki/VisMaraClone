@@ -195,6 +195,89 @@ export async function registerRoutes(
     }
   });
 
+  // Admin endpoints for categories (protected)
+  app.post("/api/categories", requireAuth, async (req, res) => {
+    try {
+      const result = z.object({
+        name: z.string(),
+        slug: z.string(),
+        description: z.string().optional(),
+        icon: z.string().optional(),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      const category = await storage.createCategory(result.data);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error("Error creating category:", error);
+      res.status(500).json({ message: "Failed to create category" });
+    }
+  });
+
+  app.put("/api/categories/:id", requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid category ID" });
+      }
+      
+      const result = z.object({
+        name: z.string().optional(),
+        slug: z.string().optional(),
+        description: z.string().optional(),
+        icon: z.string().optional(),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      const category = await storage.updateCategory(id, result.data);
+      res.status(200).json(category);
+    } catch (error) {
+      console.error("Error updating category:", error);
+      res.status(500).json({ message: "Failed to update category" });
+    }
+  });
+
+  app.delete("/api/categories/:id", requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid category ID" });
+      }
+      await storage.deleteCategory(id);
+      res.status(200).json({ message: "Category deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      res.status(500).json({ message: "Failed to delete category" });
+    }
+  });
+
+  app.post("/api/categories/bulk-delete", requireAuth, async (req, res) => {
+    try {
+      const result = z.object({
+        ids: z.array(z.number()),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      await storage.deleteCategories(result.data.ids);
+      res.status(200).json({ message: "Categories deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting categories:", error);
+      res.status(500).json({ message: "Failed to delete categories" });
+    }
+  });
+
   app.post("/api/inquiries", async (req, res) => {
     try {
       // Honeypot check - if website field is filled, it's likely a bot

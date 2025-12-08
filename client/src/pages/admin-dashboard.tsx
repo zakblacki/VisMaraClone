@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminProducts from "@/components/admin/admin-products";
 import AdminPDFs from "@/components/admin/admin-pdfs";
+import AdminCategories from "@/components/admin/admin-categories";
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -134,6 +135,13 @@ export default function AdminDashboard() {
                     className="w-full justify-start"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
+                    Catégories
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     Fichiers PDF
                   </Button>
                 </nav>
@@ -143,13 +151,18 @@ export default function AdminDashboard() {
 
           <div className="lg:col-span-3">
             <Tabs defaultValue="products" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="products" data-testid="tab-products">Produits</TabsTrigger>
+                <TabsTrigger value="categories" data-testid="tab-categories">Catégories</TabsTrigger>
                 <TabsTrigger value="pdfs" data-testid="tab-pdfs">Fichiers PDF</TabsTrigger>
               </TabsList>
 
               <TabsContent value="products" className="mt-6">
                 <AdminProducts />
+              </TabsContent>
+
+              <TabsContent value="categories" className="mt-6">
+                <AdminCategories />
               </TabsContent>
 
               <TabsContent value="pdfs" className="mt-6">

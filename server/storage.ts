@@ -40,6 +40,9 @@ export interface IStorage {
   getCategories(): Promise<Category[]>;
   getCategoryBySlug(slug: string): Promise<Category | undefined>;
   createCategory(category: InsertCategory): Promise<Category>;
+  updateCategory(id: number, category: Partial<InsertCategory>): Promise<Category>;
+  deleteCategory(id: number): Promise<void>;
+  deleteCategories(ids: number[]): Promise<void>;
   
   createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
   getInquiries(): Promise<Inquiry[]>;
@@ -116,6 +119,22 @@ export class DatabaseStorage implements IStorage {
     const [created] = await db.insert(categories).values(category).returning();
     if (!created) throw new Error("Failed to create category");
     return created;
+  }
+
+  async updateCategory(id: number, category: Partial<InsertCategory>): Promise<Category> {
+    const [updated] = await db.update(categories).set(category).where(eq(categories.id, id)).returning();
+    if (!updated) throw new Error("Failed to update category");
+    return updated;
+  }
+
+  async deleteCategory(id: number): Promise<void> {
+    await db.delete(categories).where(eq(categories.id, id));
+  }
+
+  async deleteCategories(ids: number[]): Promise<void> {
+    for (const id of ids) {
+      await db.delete(categories).where(eq(categories.id, id));
+    }
   }
 
   async createInquiry(inquiry: InsertInquiry): Promise<Inquiry> {

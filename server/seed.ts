@@ -23,11 +23,11 @@ async function seed() {
     const productsWithCategories = sampleProducts.map((product) => {
       let categoryId: number | null = null;
       
-      if (product.slug.includes("limitatore") || product.slug.includes("velocita")) {
-        categoryId = categoryMap.get("limitatori") || null;
-      } else if (product.slug.includes("operatore") || product.slug.includes("sospensione")) {
-        categoryId = categoryMap.get("operatori") || null;
-      } else if (product.slug.includes("led") || product.slug.includes("connettore") || product.slug.includes("cavo") || product.slug.includes("tappo")) {
+      if (product.slug.includes("speed-limiter")) {
+        categoryId = categoryMap.get("speed-limiters") || null;
+      } else if (product.slug.includes("door-operator") || product.slug.includes("suspension")) {
+        categoryId = categoryMap.get("door-operators") || null;
+      } else if (product.slug.includes("led-")) {
         categoryId = categoryMap.get("led") || null;
       }
 
@@ -49,23 +49,23 @@ async function seed() {
     const samplePdfs = [
       {
         name: "Fiche technique - Limiteur de Vitesse 240mm",
-        filename: "limitatore-240mm-datasheet.pdf",
-        url: "/documents/limitatore-240mm-datasheet.pdf",
-        productId: productMap.get("limitatore-velocita-bidirezionale-240mm") || null,
+        filename: "speed-limiter-240mm-datasheet.pdf",
+        url: "/documents/speed-limiter-240mm-datasheet.pdf",
+        productId: productMap.get("speed-limiter-bidirectional-240mm") || null,
         type: "datasheet",
       },
       {
         name: "Manuel d'installation - Limiteur de Vitesse",
-        filename: "limitatore-installation-guide.pdf",
-        url: "/documents/limitatore-installation-guide.pdf",
-        productId: productMap.get("limitatore-velocita-bidirezionale-240mm") || null,
+        filename: "speed-limiter-installation-guide.pdf",
+        url: "/documents/speed-limiter-installation-guide.pdf",
+        productId: productMap.get("speed-limiter-bidirectional-240mm") || null,
         type: "manual",
       },
       {
         name: "Fiche technique - Opérateur Porte Slim",
-        filename: "operatore-slim-datasheet.pdf",
-        url: "/documents/operatore-slim-datasheet.pdf",
-        productId: productMap.get("operatore-porta-slim-laterale") || null,
+        filename: "door-operator-slim-datasheet.pdf",
+        url: "/documents/door-operator-slim-datasheet.pdf",
+        productId: productMap.get("slim-door-operator-lateral") || null,
         type: "datasheet",
       },
       {
