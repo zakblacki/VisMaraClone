@@ -568,5 +568,168 @@ export async function registerRoutes(
     }
   });
 
+  // SEO endpoints
+  app.get("/robots.txt", (req, res) => {
+    const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+    const host = req.get("host") || "localhost:5000";
+    const baseUrl = `${protocol}://${host}`;
+    
+    const robotsTxt = `# Robots.txt for Prodlift
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: ${baseUrl}/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /api/
+`;
+    
+    res.set("Content-Type", "text/plain");
+    res.send(robotsTxt);
+  });
+
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+      const host = req.get("host") || "localhost:5000";
+      const baseUrl = `${protocol}://${host}`;
+      
+      const products = await storage.getProducts();
+      const categories = await storage.getCategories();
+      
+      const today = new Date().toISOString().split("T")[0];
+      
+      let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Static pages -->
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/products</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/about</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/contact</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/elevator-configurator</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/platform-configurator</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+`;
+
+      // Add category pages
+      for (const category of categories) {
+        sitemap += `  <url>
+    <loc>${baseUrl}/categories/${category.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+`;
+      }
+
+      // Add product pages
+      for (const product of products) {
+        sitemap += `  <url>
+    <loc>${baseUrl}/products/${product.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+      }
+
+      sitemap += `</urlset>`;
+      
+      res.set("Content-Type", "application/xml");
+      res.send(sitemap);
+    } catch (error) {
+      console.error("Error generating sitemap:", error);
+      res.status(500).send("Error generating sitemap");
+    }
+  });
+
+  app.get("/llms.txt", async (_req, res) => {
+    try {
+      const products = await storage.getProducts();
+      const categories = await storage.getCategories();
+      
+      let llmsTxt = `# Prodlift - Industrial Elevator Components
+
+## About
+Prodlift is a leading manufacturer and supplier of industrial elevator components, safety devices, and lifting equipment. We specialize in elevator limiters, operators, safety systems, and platform lifts.
+
+## Main Sections
+- Home: Main landing page with company overview
+- Products: Complete catalog of elevator components and safety devices
+- Categories: Product categories organized by type
+- Elevator Configurator: Interactive tool to configure elevator systems
+- Platform Configurator: Interactive tool to configure platform lifts
+- About: Company information and history
+- Contact: Contact form and business information
+
+## Product Categories
+`;
+
+      for (const category of categories) {
+        llmsTxt += `- ${category.name}: ${category.description || "Category of products"}\n`;
+      }
+
+      llmsTxt += `
+## Products (${products.length} total)
+`;
+
+      for (const product of products.slice(0, 20)) {
+        llmsTxt += `- ${product.name} (${product.code}): ${product.description?.substring(0, 100) || "Industrial component"}...\n`;
+      }
+
+      if (products.length > 20) {
+        llmsTxt += `... and ${products.length - 20} more products\n`;
+      }
+
+      llmsTxt += `
+## Contact Information
+Visit our contact page for inquiries and support.
+
+## Technical Specifications
+All products come with detailed technical specifications and PDF documentation available on individual product pages.
+`;
+      
+      res.set("Content-Type", "text/plain");
+      res.send(llmsTxt);
+    } catch (error) {
+      console.error("Error generating llms.txt:", error);
+      res.status(500).send("Error generating llms.txt");
+    }
+  });
+
   return httpServer;
 }
