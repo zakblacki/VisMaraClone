@@ -296,19 +296,31 @@ export default function Contact() {
                   <CardTitle className="text-lg">Informations de contact</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <a
-                    href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
-                    className="flex items-start gap-3 p-3 rounded-lg hover-elevate transition-colors"
-                    data-testid="link-contact-phone"
-                  >
+                  <div className="flex items-start gap-3 p-3 rounded-lg">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Phone className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <p className="font-medium">Téléphone</p>
-                      <p className="text-sm text-muted-foreground">{companyInfo.phone} / {companyInfo.phone2}</p>
+                      <p className="text-sm text-muted-foreground">
+                        <a
+                          href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
+                          className="hover:text-foreground transition-colors"
+                          data-testid="link-contact-phone-1"
+                        >
+                          {companyInfo.phone}
+                        </a>
+                        {" / "}
+                        <a
+                          href={`tel:${companyInfo.phone2.replace(/\s/g, "")}`}
+                          className="hover:text-foreground transition-colors"
+                          data-testid="link-contact-phone-2"
+                        >
+                          {companyInfo.phone2}
+                        </a>
+                      </p>
                     </div>
-                  </a>
+                  </div>
 
                   <a
                     href={`mailto:${companyInfo.email}`}

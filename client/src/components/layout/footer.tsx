@@ -9,7 +9,9 @@ import {
   ExternalLink,
   Clock
 } from "lucide-react";
-import logoImage from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
+import logoDark from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
+import logoLight from "@assets/Logo_Prodlift_Colori_Positivo_1765173734938.png";
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { companyInfo, navItems } from "@/lib/data";
@@ -19,6 +21,7 @@ export function Footer() {
   const [, setLocation] = useLocation();
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
+  const { theme } = useTheme();
 
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +74,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img 
-                src={logoImage} 
+                src={theme === "dark" ? logoDark : logoLight} 
                 alt="Prodlift Logo" 
                 className="h-12 w-auto object-contain"
               />
@@ -153,14 +156,26 @@ export function Footer() {
             <h4 className="font-semibold mb-4">{t("footer.contacts")}</h4>
             <ul className="space-y-3">
               <li>
-                <a
-                  href={`tel:${companyInfo.phone.replace(/\s/g, '')}`}
-                  className="flex items-start gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  data-testid="footer-link-phone"
-                >
+                <div className="flex items-start gap-2 text-sm text-muted-foreground">
                   <Phone className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                  <span>{companyInfo.phone} / {companyInfo.phone2}</span>
-                </a>
+                  <span>
+                    <a
+                      href={`tel:${companyInfo.phone.replace(/\s/g, '')}`}
+                      className="hover:text-foreground transition-colors"
+                      data-testid="footer-link-phone-1"
+                    >
+                      {companyInfo.phone}
+                    </a>
+                    {" / "}
+                    <a
+                      href={`tel:${companyInfo.phone2.replace(/\s/g, '')}`}
+                      className="hover:text-foreground transition-colors"
+                      data-testid="footer-link-phone-2"
+                    >
+                      {companyInfo.phone2}
+                    </a>
+                  </span>
+                </div>
               </li>
               <li>
                 <a

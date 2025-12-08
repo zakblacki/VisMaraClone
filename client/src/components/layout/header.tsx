@@ -10,7 +10,8 @@ import {
   Sun,
   Moon
 } from "lucide-react";
-import logoImage from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
+import logoDark from "@assets/Logo_Prodlift_Colori_Negativo_1765061581364.png";
+import logoLight from "@assets/Logo_Prodlift_Colori_Positivo_1765173734938.png";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -64,14 +65,26 @@ export function Header() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-10 text-sm">
             <div className="flex items-center gap-6 flex-wrap">
-              <a
-                href={`tel:${companyInfo.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                data-testid="link-phone"
-              >
+              <div className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{companyInfo.phone} / {companyInfo.phone2}</span>
-              </a>
+                <span className="hidden sm:inline">
+                  <a
+                    href={`tel:${companyInfo.phone.replace(/\s/g, '')}`}
+                    className="hover:opacity-80 transition-opacity"
+                    data-testid="link-phone-1"
+                  >
+                    {companyInfo.phone}
+                  </a>
+                  {" / "}
+                  <a
+                    href={`tel:${companyInfo.phone2.replace(/\s/g, '')}`}
+                    className="hover:opacity-80 transition-opacity"
+                    data-testid="link-phone-2"
+                  >
+                    {companyInfo.phone2}
+                  </a>
+                </span>
+              </div>
               <div className="hidden md:flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" />
                 <span>{companyInfo.address}, {companyInfo.city}</span>
@@ -106,7 +119,7 @@ export function Header() {
               data-testid="link-logo"
             >
               <img 
-                src={logoImage} 
+                src={theme === "dark" ? logoDark : logoLight} 
                 alt="Prodlift Logo" 
                 className="h-10 lg:h-12 w-auto object-contain"
               />

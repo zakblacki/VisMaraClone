@@ -15,6 +15,7 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const loginMutation = useMutation({
     mutationFn: async (data: { username: string; password: string }) => {
@@ -40,6 +41,10 @@ export default function AdminLogin() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) {
+      console.log("Bot detected");
+      return;
+    }
     if (!username.trim() || !password.trim()) {
       toast({
         title: "Erreur",
@@ -65,6 +70,16 @@ export default function AdminLogin() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              autoComplete="off"
+              tabIndex={-1}
+              className="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden"
+              aria-hidden="true"
+            />
             <div className="space-y-2">
               <Label htmlFor="username">Nom d'utilisateur</Label>
               <div className="relative">
