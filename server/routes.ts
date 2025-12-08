@@ -438,6 +438,25 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/products/bulk-delete", requireAuth, async (req, res) => {
+    try {
+      const result = z.object({
+        ids: z.array(z.number()),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      await storage.deleteProducts(result.data.ids);
+      res.status(200).json({ message: "Products deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting products:", error);
+      res.status(500).json({ message: "Failed to delete products" });
+    }
+  });
+
   // PDF endpoints
   app.get("/api/pdfs", async (_req, res) => {
     try {
@@ -497,6 +516,25 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error deleting PDF:", error);
       res.status(500).json({ message: "Failed to delete PDF" });
+    }
+  });
+
+  app.post("/api/pdfs/bulk-delete", requireAuth, async (req, res) => {
+    try {
+      const result = z.object({
+        ids: z.array(z.number()),
+      }).safeParse(req.body);
+
+      if (!result.success) {
+        const error = fromZodError(result.error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      await storage.deletePdfs(result.data.ids);
+      res.status(200).json({ message: "PDFs deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting PDFs:", error);
+      res.status(500).json({ message: "Failed to delete PDFs" });
     }
   });
 

@@ -54,6 +54,8 @@ export interface IStorage {
   getPdfsByProduct(productId: number): Promise<Pdf[]>;
   createPdf(pdf: InsertPdf): Promise<Pdf>;
   deletePdf(id: number): Promise<void>;
+  deleteProducts(ids: number[]): Promise<void>;
+  deletePdfs(ids: number[]): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -175,6 +177,18 @@ export class DatabaseStorage implements IStorage {
 
   async deletePdf(id: number): Promise<void> {
     await db.delete(pdfs).where(eq(pdfs.id, id));
+  }
+
+  async deleteProducts(ids: number[]): Promise<void> {
+    for (const id of ids) {
+      await db.delete(products).where(eq(products.id, id));
+    }
+  }
+
+  async deletePdfs(ids: number[]): Promise<void> {
+    for (const id of ids) {
+      await db.delete(pdfs).where(eq(pdfs.id, id));
+    }
   }
 }
 

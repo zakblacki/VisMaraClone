@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 
 interface PDFFile {
-  id: string;
+  id: number;
   name: string;
   url: string;
   uploadedAt: string;
@@ -24,6 +25,7 @@ export default function AdminPDFs() {
   const [pdfs, setPdfs] = useState<PDFFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedPdfs, setSelectedPdfs] = useState<Set<number>>(new Set());
 
   // Fetch PDFs on mount
   useState(() => {
@@ -92,12 +94,16 @@ export default function AdminPDFs() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?")) return;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/pdfs/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
@@ -108,6 +114,54 @@ export default function AdminPDFs() {
     } catch (error) {
       console.error("Error:", error);
       alert("Erreur lors de la suppression du fichier");
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedPdfs.size === 0) return;
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer ${selectedPdfs.size} fichier(s) ?`)) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const ids = Array.from(selectedPdfs);
+      const response = await fetch("/api/pdfs/bulk-delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ids }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la suppression");
+      }
+
+      setPdfs((prev) => prev.filter((pdf) => !selectedPdfs.has(pdf.id)));
+      setSelectedPdfs(new Set());
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Erreur lors de la suppression des fichiers");
+    }
+  };
+
+  const togglePdfSelection = (id: number) => {
+    setSelectedPdfs((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedPdfs.size === pdfs.length) {
+      setSelectedPdfs(new Set());
+    } else {
+      setSelectedPdfs(new Set(pdfs.map((p) => p.id)));
     }
   };
 
@@ -148,8 +202,28 @@ export default function AdminPDFs() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Fichiers PDF ({pdfs.length})</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
+          <div className="flex items-center gap-4">
+            {pdfs.length > 0 && (
+              <Checkbox
+                checked={pdfs.length > 0 && selectedPdfs.size === pdfs.length}
+                onCheckedChange={toggleSelectAll}
+                data-testid="checkbox-select-all-pdfs"
+              />
+            )}
+            <CardTitle>Fichiers PDF ({pdfs.length})</CardTitle>
+          </div>
+          {selectedPdfs.size > 0 && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleBulkDelete}
+              data-testid="button-bulk-delete-pdfs"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Supprimer ({selectedPdfs.size})
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           {pdfs.length === 0 ? (
@@ -161,8 +235,13 @@ export default function AdminPDFs() {
               {pdfs.map((pdf) => (
                 <div
                   key={pdf.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50"
+                  className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50"
                 >
+                  <Checkbox
+                    checked={selectedPdfs.has(pdf.id)}
+                    onCheckedChange={() => togglePdfSelection(pdf.id)}
+                    data-testid={`checkbox-pdf-${pdf.id}`}
+                  />
                   <div className="flex-1">
                     <p className="font-medium">{pdf.name}</p>
                     <p className="text-sm text-muted-foreground">
