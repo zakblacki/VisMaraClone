@@ -12,6 +12,8 @@ import { useLanguage } from "@/lib/i18n";
 import { platformConfigOptions } from "@/lib/data";
 
 import platformImg from "@assets/generated_images/accessibility_platform_lift.png";
+import platformTypesImg from "@assets/generated_images/platform_lift_types.png";
+import safetyFeaturesImg from "@assets/generated_images/platform_safety_features.png";
 
 interface ConfigState {
   platformType: string;
@@ -112,28 +114,33 @@ export default function PlatformConfigurator() {
     switch (currentStep) {
       case 1:
         return (
-          <div className="grid sm:grid-cols-3 gap-4">
-            {platformConfigOptions.platformTypes.map((type) => (
-              <Card
-                key={type.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.platformType === type.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("platformType", type.id)}
-                data-testid={`option-platform-${type.id}`}
-              >
-                <CardContent className="p-4 text-center">
-                  <h3 className="font-semibold mb-2">{type.name}</h3>
-                  <p className="text-sm text-muted-foreground">{type.description}</p>
-                  {config.platformType === type.id && (
-                    <div className="mt-3">
-                      <Badge>{t("configurator.selected")}</Badge>
-                    </div>
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={platformTypesImg} alt={t("platform.step.type")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {platformConfigOptions.platformTypes.map((type) => (
+                <Card
+                  key={type.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.platformType === type.id && "ring-2 ring-primary"
                   )}
-                </CardContent>
-              </Card>
-            ))}
+                  onClick={() => updateConfig("platformType", type.id)}
+                  data-testid={`option-platform-${type.id}`}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-semibold mb-2">{type.name}</h3>
+                    <p className="text-sm text-muted-foreground">{type.description}</p>
+                    {config.platformType === type.id && (
+                      <div className="mt-3">
+                        <Badge>{t("configurator.selected")}</Badge>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
@@ -271,32 +278,37 @@ export default function PlatformConfigurator() {
 
       case 6:
         return (
-          <div className="max-w-lg mx-auto">
-            <p className="text-muted-foreground mb-6 text-center">
-              {t("platform.select_safety")}
-            </p>
-            <div className="space-y-3">
-              {platformConfigOptions.safetyFeatures.map((feature) => (
-                <Card
-                  key={feature.id}
-                  className={cn(
-                    "cursor-pointer transition-all hover-elevate overflow-visible",
-                    config.safetyFeatures.includes(feature.id) && "ring-2 ring-primary"
-                  )}
-                  onClick={() => toggleSafetyFeature(feature.id)}
-                  data-testid={`option-safety-${feature.id}`}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3">
-                      <Checkbox
-                        checked={config.safetyFeatures.includes(feature.id)}
-                        className="pointer-events-none"
-                      />
-                      <span className="font-medium">{feature.name}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={safetyFeaturesImg} alt={t("platform.step.safety")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="max-w-lg mx-auto">
+              <p className="text-muted-foreground mb-6 text-center">
+                {t("platform.select_safety")}
+              </p>
+              <div className="space-y-3">
+                {platformConfigOptions.safetyFeatures.map((feature) => (
+                  <Card
+                    key={feature.id}
+                    className={cn(
+                      "cursor-pointer transition-all hover-elevate overflow-visible",
+                      config.safetyFeatures.includes(feature.id) && "ring-2 ring-primary"
+                    )}
+                    onClick={() => toggleSafetyFeature(feature.id)}
+                    data-testid={`option-safety-${feature.id}`}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <Checkbox
+                          checked={config.safetyFeatures.includes(feature.id)}
+                          className="pointer-events-none"
+                        />
+                        <span className="font-medium">{feature.name}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         );

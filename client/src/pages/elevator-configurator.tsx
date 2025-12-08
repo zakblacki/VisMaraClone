@@ -11,6 +11,11 @@ import { useLanguage } from "@/lib/i18n";
 import { elevatorConfigOptions } from "@/lib/data";
 
 import elevatorCabinImg from "@assets/generated_images/luxury_elevator_cabin_interior.png";
+import cabinTypesImg from "@assets/generated_images/four_elevator_cabin_types.png";
+import finishMaterialsImg from "@assets/generated_images/elevator_finish_material_samples.png";
+import lightingOptionsImg from "@assets/generated_images/elevator_lighting_options.png";
+import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
+import controlPanelImg from "@assets/generated_images/elevator_control_panel_buttons.png";
 
 interface ConfigState {
   cabinType: string;
@@ -96,32 +101,37 @@ export default function ElevatorConfigurator() {
     switch (currentStep) {
       case 1:
         return (
-          <div className="grid sm:grid-cols-2 gap-4">
-            {elevatorConfigOptions.cabinTypes.map((type) => (
-              <Card
-                key={type.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.cabinType === type.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("cabinType", type.id)}
-                data-testid={`option-cabin-${type.id}`}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold">{type.name}</h3>
-                      <p className="text-sm text-muted-foreground">{type.description}</p>
-                    </div>
-                    {config.cabinType === type.id && (
-                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="h-4 w-4 text-primary-foreground" />
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={cabinTypesImg} alt={t("elevator.step.cabin_type")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {elevatorConfigOptions.cabinTypes.map((type) => (
+                <Card
+                  key={type.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.cabinType === type.id && "ring-2 ring-primary"
+                  )}
+                  onClick={() => updateConfig("cabinType", type.id)}
+                  data-testid={`option-cabin-${type.id}`}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-semibold">{type.name}</h3>
+                        <p className="text-sm text-muted-foreground">{type.description}</p>
                       </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      {config.cabinType === type.id && (
+                        <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                          <Check className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
@@ -154,117 +164,137 @@ export default function ElevatorConfigurator() {
 
       case 3:
         return (
-          <div className="grid sm:grid-cols-2 gap-4">
-            {elevatorConfigOptions.doorTypes.map((door) => (
-              <Card
-                key={door.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.doorType === door.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("doorType", door.id)}
-                data-testid={`option-door-${door.id}`}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold">{door.name}</h3>
-                      <p className="text-sm text-muted-foreground">{door.description}</p>
-                    </div>
-                    {config.doorType === door.id && (
-                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="h-4 w-4 text-primary-foreground" />
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={doorOperatorImg} alt={t("elevator.step.door")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {elevatorConfigOptions.doorTypes.map((door) => (
+                <Card
+                  key={door.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.doorType === door.id && "ring-2 ring-primary"
+                  )}
+                  onClick={() => updateConfig("doorType", door.id)}
+                  data-testid={`option-door-${door.id}`}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-semibold">{door.name}</h3>
+                        <p className="text-sm text-muted-foreground">{door.description}</p>
                       </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      {config.doorType === door.id && (
+                        <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                          <Check className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
       case 4:
         return (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {elevatorConfigOptions.finishMaterials.map((finish) => (
-              <Card
-                key={finish.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.finishMaterial === finish.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("finishMaterial", finish.id)}
-                data-testid={`option-finish-${finish.id}`}
-              >
-                <CardContent className="p-4 text-center">
-                  <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-br from-muted to-muted-foreground/20" />
-                  <h3 className="font-medium text-sm">{finish.name}</h3>
-                  {config.finishMaterial === finish.id && (
-                    <div className="mt-2">
-                      <Badge>{t("configurator.selected")}</Badge>
-                    </div>
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={finishMaterialsImg} alt={t("elevator.step.finish")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {elevatorConfigOptions.finishMaterials.map((finish) => (
+                <Card
+                  key={finish.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.finishMaterial === finish.id && "ring-2 ring-primary"
                   )}
-                </CardContent>
-              </Card>
-            ))}
+                  onClick={() => updateConfig("finishMaterial", finish.id)}
+                  data-testid={`option-finish-${finish.id}`}
+                >
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-br from-muted to-muted-foreground/20" />
+                    <h3 className="font-medium text-sm">{finish.name}</h3>
+                    {config.finishMaterial === finish.id && (
+                      <div className="mt-2">
+                        <Badge>{t("configurator.selected")}</Badge>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
       case 5:
         return (
-          <div className="grid sm:grid-cols-2 gap-4">
-            {elevatorConfigOptions.lighting.map((light) => (
-              <Card
-                key={light.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.lighting === light.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("lighting", light.id)}
-                data-testid={`option-lighting-${light.id}`}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold">{light.name}</h3>
-                      <p className="text-sm text-muted-foreground">{light.description}</p>
-                    </div>
-                    {config.lighting === light.id && (
-                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="h-4 w-4 text-primary-foreground" />
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={lightingOptionsImg} alt={t("elevator.step.lighting")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {elevatorConfigOptions.lighting.map((light) => (
+                <Card
+                  key={light.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.lighting === light.id && "ring-2 ring-primary"
+                  )}
+                  onClick={() => updateConfig("lighting", light.id)}
+                  data-testid={`option-lighting-${light.id}`}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-semibold">{light.name}</h3>
+                        <p className="text-sm text-muted-foreground">{light.description}</p>
                       </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      {config.lighting === light.id && (
+                        <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                          <Check className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
       case 6:
         return (
-          <div className="grid sm:grid-cols-3 gap-4">
-            {elevatorConfigOptions.controlPanels.map((panel) => (
-              <Card
-                key={panel.id}
-                className={cn(
-                  "cursor-pointer transition-all hover-elevate overflow-visible",
-                  config.controlPanel === panel.id && "ring-2 ring-primary"
-                )}
-                onClick={() => updateConfig("controlPanel", panel.id)}
-                data-testid={`option-panel-${panel.id}`}
-              >
-                <CardContent className="p-4 text-center">
-                  <h3 className="font-semibold">{panel.name}</h3>
-                  <p className="text-sm text-muted-foreground">{panel.description}</p>
-                  {config.controlPanel === panel.id && (
-                    <div className="mt-2">
-                      <Badge>{t("configurator.selected")}</Badge>
-                    </div>
+          <div className="space-y-6">
+            <div className="rounded-xl overflow-hidden">
+              <img src={controlPanelImg} alt={t("elevator.step.control_panel")} className="w-full h-48 object-cover" />
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {elevatorConfigOptions.controlPanels.map((panel) => (
+                <Card
+                  key={panel.id}
+                  className={cn(
+                    "cursor-pointer transition-all hover-elevate overflow-visible",
+                    config.controlPanel === panel.id && "ring-2 ring-primary"
                   )}
-                </CardContent>
-              </Card>
-            ))}
+                  onClick={() => updateConfig("controlPanel", panel.id)}
+                  data-testid={`option-panel-${panel.id}`}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-semibold">{panel.name}</h3>
+                    <p className="text-sm text-muted-foreground">{panel.description}</p>
+                    {config.controlPanel === panel.id && (
+                      <div className="mt-2">
+                        <Badge>{t("configurator.selected")}</Badge>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         );
 
