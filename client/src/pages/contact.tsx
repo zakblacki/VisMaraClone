@@ -29,20 +29,22 @@ import {
 import { companyInfo } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { createInquiry } from "@/lib/api";
+import { useLanguage } from "@/lib/i18n";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Le nom doit comporter au moins 2 caractères"),
-  email: z.string().email("Veuillez entrer une adresse email valide"),
+  name: z.string().min(2),
+  email: z.string().email(),
   phone: z.string().optional(),
   company: z.string().optional(),
-  subject: z.string().min(1, "Sélectionnez un sujet"),
-  message: z.string().min(10, "Le message doit comporter au moins 10 caractères"),
+  subject: z.string().min(1),
+  message: z.string().min(10),
   website: z.string().optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const searchParams = useSearch();
   const productCode = new URLSearchParams(searchParams).get("product") || "";
@@ -57,7 +59,7 @@ export default function Contact() {
       phone: "",
       company: "",
       subject: productCode ? "product-info" : "",
-      message: productCode ? `Demande d'informations pour le produit : ${productCode}\n\n` : "",
+      message: productCode ? `${t("contact.product_request")}: ${productCode}\n\n` : "",
       website: "",
     },
   });
@@ -67,14 +69,14 @@ export default function Contact() {
     onSuccess: () => {
       setIsSubmitted(true);
       toast({
-        title: "Message envoyé !",
-        description: "Nous vous répondrons dès que possible.",
+        title: t("contact.toast_success_title"),
+        description: t("contact.toast_success_desc"),
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Erreur",
-        description: error.message || "Une erreur s'est produite. Veuillez réessayer plus tard.",
+        title: t("contact.toast_error_title"),
+        description: error.message || t("contact.toast_error_desc"),
         variant: "destructive",
       });
     },
@@ -87,11 +89,11 @@ export default function Contact() {
   const isSubmitting = inquiryMutation.isPending;
 
   const subjects = [
-    { value: "product-info", label: "Informations produit" },
-    { value: "quote", label: "Demande de devis" },
-    { value: "support", label: "Assistance technique" },
-    { value: "partnership", label: "Collaboration commerciale" },
-    { value: "other", label: "Autre" },
+    { value: "product-info", labelKey: "contact.subject.product_info" },
+    { value: "quote", labelKey: "contact.subject.quote" },
+    { value: "support", labelKey: "contact.subject.support" },
+    { value: "partnership", labelKey: "contact.subject.partnership" },
+    { value: "other", labelKey: "contact.subject.other" },
   ];
 
   return (
@@ -105,14 +107,14 @@ export default function Contact() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Contacts</span>
+              <span className="text-foreground">{t("nav.contact")}</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Contactez-nous</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">{t("contact.title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Nous sommes à votre disposition pour toute information ou demande
+              {t("contact.available_help")}
             </p>
           </div>
         </div>
@@ -122,7 +124,7 @@ export default function Contact() {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Envoyer un message</CardTitle>
+                  <CardTitle>{t("contact.send_message")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {isSubmitted ? (
@@ -130,9 +132,9 @@ export default function Contact() {
                       <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                       </div>
-                      <h3 className="text-xl font-semibold mb-2">Message envoyé !</h3>
+                      <h3 className="text-xl font-semibold mb-2">{t("contact.message_sent")}</h3>
                       <p className="text-muted-foreground mb-6">
-                        Merci de nous avoir contactés. Nous vous répondrons dès que possible.
+                        {t("contact.message_sent_desc")}
                       </p>
                       <Button
                         variant="outline"
@@ -142,7 +144,7 @@ export default function Contact() {
                         }}
                         data-testid="button-send-another"
                       >
-                        Envoyer un autre message
+                        {t("contact.send_another")}
                       </Button>
                     </div>
                   ) : (
@@ -154,9 +156,9 @@ export default function Contact() {
                             name="name"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Nom *</FormLabel>
+                                <FormLabel>{t("contact.form.name_required")}</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Votre nom" {...field} data-testid="input-contact-name" />
+                                  <Input placeholder={t("contact.form.name_placeholder")} {...field} data-testid="input-contact-name" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -167,9 +169,9 @@ export default function Contact() {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Email *</FormLabel>
+                                <FormLabel>{t("contact.form.email_required")}</FormLabel>
                                 <FormControl>
-                                  <Input type="email" placeholder="Votre email" {...field} data-testid="input-contact-email" />
+                                  <Input type="email" placeholder={t("contact.form.email_placeholder")} {...field} data-testid="input-contact-email" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -183,9 +185,9 @@ export default function Contact() {
                             name="phone"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Téléphone</FormLabel>
+                                <FormLabel>{t("contact.form.phone")}</FormLabel>
                                 <FormControl>
-                                  <Input type="tel" placeholder="Votre numéro" {...field} data-testid="input-contact-phone" />
+                                  <Input type="tel" placeholder={t("contact.form.phone_placeholder")} {...field} data-testid="input-contact-phone" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -196,9 +198,9 @@ export default function Contact() {
                             name="company"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Entreprise</FormLabel>
+                                <FormLabel>{t("contact.form.company")}</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Nom de l'entreprise" {...field} data-testid="input-contact-company" />
+                                  <Input placeholder={t("contact.form.company_placeholder")} {...field} data-testid="input-contact-company" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -211,17 +213,17 @@ export default function Contact() {
                           name="subject"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Sujet *</FormLabel>
+                              <FormLabel>{t("contact.form.subject_required")}</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger data-testid="select-contact-subject">
-                                    <SelectValue placeholder="Sélectionnez un sujet" />
+                                    <SelectValue placeholder={t("contact.form.subject_placeholder")} />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
                                   {subjects.map((subject) => (
                                     <SelectItem key={subject.value} value={subject.value}>
-                                      {subject.label}
+                                      {t(subject.labelKey)}
                                     </SelectItem>
                                   ))}
                                 </SelectContent>
@@ -236,10 +238,10 @@ export default function Contact() {
                           name="message"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Message *</FormLabel>
+                              <FormLabel>{t("contact.form.message_required")}</FormLabel>
                               <FormControl>
                                 <Textarea
-                                  placeholder="Écrivez votre message..."
+                                  placeholder={t("contact.form.message_placeholder")}
                                   className="min-h-[150px] resize-none"
                                   {...field}
                                   data-testid="textarea-contact-message"
@@ -275,10 +277,10 @@ export default function Contact() {
                           data-testid="button-submit-contact"
                         >
                           {isSubmitting ? (
-                            <>Envoi en cours...</>
+                            <>{t("contact.sending")}</>
                           ) : (
                             <>
-                              Envoyer le message
+                              {t("contact.send_button")}
                               <Send className="ml-2 h-4 w-4" />
                             </>
                           )}
@@ -293,7 +295,7 @@ export default function Contact() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Informations de contact</CardTitle>
+                  <CardTitle className="text-lg">{t("contact.info_title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-start gap-3 p-3 rounded-lg">
@@ -301,7 +303,7 @@ export default function Contact() {
                       <Phone className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Téléphone</p>
+                      <p className="font-medium">{t("contact.form.phone")}</p>
                       <p className="text-sm text-muted-foreground">
                         <a
                           href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
@@ -331,7 +333,7 @@ export default function Contact() {
                       <Mail className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Email</p>
+                      <p className="font-medium">{t("contact.form.email")}</p>
                       <p className="text-sm text-muted-foreground">{companyInfo.email}</p>
                     </div>
                   </a>
@@ -349,7 +351,7 @@ export default function Contact() {
                       <MapPin className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Adresse</p>
+                      <p className="font-medium">{t("contact.address")}</p>
                       <p className="text-sm text-muted-foreground">
                         {companyInfo.address}
                         <br />
@@ -362,7 +364,7 @@ export default function Contact() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Heures d'ouverture</CardTitle>
+                  <CardTitle className="text-lg">{t("contact.opening_hours")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-start gap-3">
@@ -371,12 +373,12 @@ export default function Contact() {
                     </div>
                     <div className="text-sm">
                       <p className="flex justify-between gap-4 mb-1">
-                        <span className="text-muted-foreground">Dim - Jeu</span>
+                        <span className="text-muted-foreground">{t("contact.sun_thu")}</span>
                         <span className="font-medium">08:00 - 17:00</span>
                       </p>
                       <p className="flex justify-between gap-4">
-                        <span className="text-muted-foreground">Ven - Sam</span>
-                        <span className="font-medium">Fermé</span>
+                        <span className="text-muted-foreground">{t("contact.fri_sat")}</span>
+                        <span className="font-medium">{t("contact.closed")}</span>
                       </p>
                     </div>
                   </div>
@@ -385,9 +387,9 @@ export default function Contact() {
 
               <Card className="bg-primary text-primary-foreground">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-2">Besoin d'une assistance urgente ?</h3>
+                  <h3 className="font-semibold text-lg mb-2">{t("contact.urgent_help")}</h3>
                   <p className="text-sm opacity-90 mb-4">
-                    Notre équipe de support technique est disponible pour vous aider.
+                    {t("contact.urgent_desc")}
                   </p>
                   <Button
                     variant="secondary"
@@ -396,7 +398,7 @@ export default function Contact() {
                   >
                     <a href={`tel:${companyInfo.phone.replace(/\s/g, "")}`} data-testid="button-urgent-call">
                       <Phone className="mr-2 h-4 w-4" />
-                      Appelez-nous maintenant
+                      {t("contact.call_now")}
                     </a>
                   </Button>
                 </CardContent>

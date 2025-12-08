@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getProducts, getCategories } from "@/lib/api";
+import { useLanguage } from "@/lib/i18n";
 
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
@@ -28,6 +29,7 @@ const imageMap: Record<string, string> = {
 };
 
 export default function Catalog() {
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const params = useParams<{ category?: string }>();
   const searchParams = useSearch();
@@ -95,14 +97,14 @@ export default function Catalog() {
                 onClick={() => setLocation("/")}
                 className="hover:text-foreground cursor-pointer"
               >
-                Home
+                {t("common.home")}
               </button>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-foreground">Catalogue</span>
+              <span className="text-foreground">{t("catalog.title")}</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold">Catalogue de produits</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">{t("catalog.title")}</h1>
             <p className="text-muted-foreground mt-2">
-              Découvrez notre gamme complète de composants et pièces de rechange pour ascenseurs
+              {t("catalog.subtitle")}
             </p>
           </div>
         </div>
@@ -114,7 +116,7 @@ export default function Catalog() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="search"
-                  placeholder="Rechercher des produits par nom ou code..."
+                  placeholder={t("catalog.search_placeholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -137,10 +139,10 @@ export default function Catalog() {
               >
                 <SelectTrigger className="w-[180px]" data-testid="select-category">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Catégorie" />
+                  <SelectValue placeholder={t("catalog.all_categories")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Toutes les catégories</SelectItem>
+                  <SelectItem value="all">{t("catalog.all_categories")}</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat.slug} value={cat.slug}>
                       {cat.name}
@@ -151,11 +153,11 @@ export default function Catalog() {
 
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-[150px]" data-testid="select-sort">
-                  <SelectValue placeholder="Trier par" />
+                  <SelectValue placeholder={t("catalog.sort_by")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Nom</SelectItem>
-                  <SelectItem value="code">Code</SelectItem>
+                  <SelectItem value="name">{t("catalog.name")}</SelectItem>
+                  <SelectItem value="code">{t("catalog.code")}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -188,7 +190,7 @@ export default function Catalog() {
             <>
               <div className="flex items-center justify-between mb-6">
                 <p className="text-muted-foreground">
-                  {filteredProducts.length} produits trouvés
+                  {filteredProducts.length} {t("catalog.products_found")}
                 </p>
               </div>
 
@@ -209,7 +211,7 @@ export default function Catalog() {
                         />
                         {product.featured && (
                           <Badge className="absolute top-3 right-3">
-                            En vedette
+                            {t("catalog.featured")}
                           </Badge>
                         )}
                       </div>
@@ -252,7 +254,7 @@ export default function Catalog() {
                               </h3>
                             </div>
                             {product.featured && (
-                              <Badge className="flex-shrink-0">En vedette</Badge>
+                              <Badge className="flex-shrink-0">{t("catalog.featured")}</Badge>
                             )}
                           </div>
                           <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
@@ -268,7 +270,7 @@ export default function Catalog() {
               {filteredProducts.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-muted-foreground mb-4">
-                    Aucun produit trouvé pour la recherche "{searchQuery}"
+                    {t("catalog.no_products")} "{searchQuery}"
                   </p>
                   <Button
                     variant="outline"
@@ -278,7 +280,7 @@ export default function Catalog() {
                     }}
                     data-testid="button-reset-filters"
                   >
-                    Réinitialiser les filtres
+                    {t("catalog.reset_filters")}
                   </Button>
                 </div>
               )}
