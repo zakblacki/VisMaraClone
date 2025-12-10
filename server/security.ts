@@ -2,31 +2,31 @@ import rateLimit from "express-rate-limit";
 import type { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 
-// Rate limiter for login endpoint
+// Rate limiter for login endpoint with proper IP detection
 export const loginRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 login requests per windowMs
+  limit: 5, // Limit each IP to 5 login requests per windowMs
   message: {
     message: "Too many login attempts. Please try again after 15 minutes.",
   },
-  standardHeaders: true,
+  standardHeaders: "draft-7",
   legacyHeaders: false,
   skipSuccessfulRequests: false,
-  keyGenerator: (req: Request) => {
-    // Use IP address as key
-    return req.ip || req.socket.remoteAddress || "unknown";
-  },
+  // Note: Express trust proxy is set to 1 in index.ts, so req.ip is reliable
+  // Validation is disabled because we've configured trust proxy correctly
+  validate: { trustProxy: false, xForwardedForHeader: false },
 });
 
 // General API rate limiter
 export const apiRateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100, // 100 requests per minute
+  limit: 100, // 100 requests per minute
   message: {
     message: "Too many requests. Please slow down.",
   },
-  standardHeaders: true,
+  standardHeaders: "draft-7",
   legacyHeaders: false,
+  validate: { trustProxy: false, xForwardedForHeader: false },
 });
 
 // CSRF Token storage (in production, use Redis or database)
@@ -64,24 +64,38 @@ export function validateCsrfToken(sessionId: string, token: string): boolean {
 }
 
 // CSRF protection middleware
+// Note: Public endpoints (login, inquiries, newsletter) are explicitly exempt as they:
+// 1. Don't require authentication (no session to protect)
+// 2. Have their own rate limiting and honeypot protections
+// 3. Are public-facing forms that need to work without prior authentication
 export function csrfProtection(req: Request, res: Response, next: NextFunction) {
-  // Skip for GET, HEAD, OPTIONS requests (safe methods)
+  // Skip for GET, HEAD, OPTIONS requests (safe methods per RFC 7231)
   if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
     return next();
   }
 
-  // Get session ID from auth token
-  const authToken = req.headers.authorization?.replace("Bearer ", "");
-  if (!authToken) {
-    return next(); // Let auth middleware handle missing token
+  // Explicitly exempt public endpoints that don't require authentication
+  // These are protected by rate limiting and honeypot fields instead
+  const csrfExemptPaths = [
+    "/api/auth/login",      // Pre-authentication - no session exists yet
+    "/api/auth/setup",      // Initial setup - no admin exists yet
+    "/api/inquiries",       // Public contact form - rate limited, honeypot protected
+    "/api/newsletter",      // Public newsletter signup - rate limited
+  ];
+  
+  if (csrfExemptPaths.some(p => req.path === p || req.path.startsWith(p + "/"))) {
+    return next();
   }
 
-  // Get CSRF token from header
+  // For all other mutating endpoints, require CSRF token
+  const authToken = req.headers.authorization?.replace("Bearer ", "");
   const csrfToken = req.headers["x-csrf-token"] as string;
 
-  // Skip CSRF for login (no session yet) and setup endpoints
-  if (req.path === "/api/auth/login" || req.path === "/api/auth/setup") {
-    return next();
+  // If there's no auth token, this request will fail auth middleware anyway
+  // But we still check CSRF to prevent any bypass attempts
+  if (!authToken) {
+    console.warn(`No auth token for ${req.method} ${req.path}`);
+    return res.status(401).json({ message: "Authentication required" });
   }
 
   // Validate CSRF token for authenticated requests
@@ -89,9 +103,9 @@ export function csrfProtection(req: Request, res: Response, next: NextFunction) 
     return next();
   }
 
-  // For backward compatibility, allow requests without CSRF token but log warning
+  // CSRF validation failed - reject the request
   console.warn(`CSRF token missing or invalid for ${req.method} ${req.path}`);
-  return next();
+  return res.status(403).json({ message: "Invalid or missing CSRF token" });
 }
 
 // Security headers middleware

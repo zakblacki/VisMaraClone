@@ -44,30 +44,38 @@ const pdfStorage = multer.diskStorage({
   },
 });
 
-// File filter for images
+// Allowed file extensions (whitelist)
+const allowedImageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+const allowedPdfExtensions = [".pdf"];
+
+// File filter for images - validates both MIME type and extension
 const imageFilter = (
   _req: Express.Request,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
   const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-  if (allowedMimes.includes(file.mimetype)) {
+  const ext = path.extname(file.originalname).toLowerCase();
+  
+  if (allowedMimes.includes(file.mimetype) && allowedImageExtensions.includes(ext)) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files (JPEG, PNG, GIF, WebP) are allowed"));
+    cb(new Error("Only image files (JPEG, PNG, GIF, WebP) with valid extensions are allowed"));
   }
 };
 
-// File filter for PDFs
+// File filter for PDFs - validates both MIME type and extension
 const pdfFilter = (
   _req: Express.Request,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  if (file.mimetype === "application/pdf") {
+  const ext = path.extname(file.originalname).toLowerCase();
+  
+  if (file.mimetype === "application/pdf" && allowedPdfExtensions.includes(ext)) {
     cb(null, true);
   } else {
-    cb(new Error("Only PDF files are allowed"));
+    cb(new Error("Only PDF files with .pdf extension are allowed"));
   }
 };
 

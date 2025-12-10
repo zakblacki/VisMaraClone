@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
+import { getAuthHeaders } from "@/lib/queryClient";
 import type { Product } from "@shared/schema";
 
 interface ProductFormProps {
@@ -65,14 +66,10 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
         ? `/api/products/${product.id}`
         : "/api/products";
       const method = product ? "PUT" : "POST";
-      const token = localStorage.getItem("adminToken");
 
       const response = await fetch(endpoint, {
         method,
-        headers: { 
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify(formData),
       });
 
@@ -177,15 +174,13 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
 
               setIsUploadingImage(true);
               try {
-                const token = localStorage.getItem("adminToken");
                 const formDataUpload = new FormData();
                 formDataUpload.append("image", file);
 
+                const headers = getAuthHeaders(false);
                 const response = await fetch("/api/upload/image", {
                   method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
+                  headers,
                   body: formDataUpload,
                 });
 

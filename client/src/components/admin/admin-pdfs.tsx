@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getAuthHeaders } from "@/lib/queryClient";
 
 interface PDFFile {
   id: number;
@@ -48,7 +49,6 @@ export default function AdminPDFs() {
     if (!files) return;
 
     setIsUploading(true);
-    const token = localStorage.getItem("adminToken");
     
     try {
       for (const file of Array.from(files)) {
@@ -63,11 +63,10 @@ export default function AdminPDFs() {
         formData.append("name", file.name);
         formData.append("type", "general");
         
+        const headers = getAuthHeaders(false);
         const response = await fetch("/api/upload/pdf", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers,
           body: formData,
         });
 
@@ -100,12 +99,9 @@ export default function AdminPDFs() {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?")) return;
 
     try {
-      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/pdfs/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(false),
       });
 
       if (!response.ok) {
@@ -124,14 +120,10 @@ export default function AdminPDFs() {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${selectedPdfs.size} fichier(s) ?`)) return;
 
     try {
-      const token = localStorage.getItem("adminToken");
       const ids = Array.from(selectedPdfs);
       const response = await fetch("/api/pdfs/bulk-delete", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify({ ids }),
       });
 

@@ -46,6 +46,7 @@ export default function AdminDashboard() {
     },
     onSettled: () => {
       localStorage.removeItem("adminToken");
+      localStorage.removeItem("csrfToken");
       setLocation("/admin");
     },
   });
@@ -53,6 +54,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isError) {
       localStorage.removeItem("adminToken");
+      localStorage.removeItem("csrfToken");
       setLocation("/admin");
     }
   }, [isError, setLocation]);

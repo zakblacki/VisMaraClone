@@ -7,6 +7,7 @@ interface LazyImageProps {
   className?: string;
   placeholderClassName?: string;
   fallbackSrc?: string;
+  "data-testid"?: string;
 }
 
 export function LazyImage({
@@ -15,6 +16,7 @@ export function LazyImage({
   className = "",
   placeholderClassName = "",
   fallbackSrc,
+  "data-testid": testId,
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -70,6 +72,7 @@ export function LazyImage({
           onLoad={handleLoad}
           onError={handleError}
           loading="lazy"
+          data-testid={testId}
         />
       )}
     </div>

@@ -7,14 +7,37 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+// Get auth headers including CSRF token
+export function getAuthHeaders(includeContentType = true): HeadersInit {
+  const headers: HeadersInit = {};
+  
+  const token = localStorage.getItem("adminToken");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  
+  const csrfToken = localStorage.getItem("csrfToken");
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  
+  if (includeContentType) {
+    headers["Content-Type"] = "application/json";
+  }
+  
+  return headers;
+}
+
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const headers = getAuthHeaders(!!data);
+  
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });

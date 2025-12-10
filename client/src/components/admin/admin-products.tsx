@@ -15,6 +15,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { getProducts } from "@/lib/api";
+import { getAuthHeaders } from "@/lib/queryClient";
 import ProductForm from "./product-form";
 import type { Product } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
@@ -71,12 +72,9 @@ export default function AdminProducts() {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) return;
 
     try {
-      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/products/${productId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(false),
       });
 
       if (!response.ok) {
@@ -95,13 +93,9 @@ export default function AdminProducts() {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer ${selectedProducts.size} produit(s) ?`)) return;
 
     try {
-      const token = localStorage.getItem("adminToken");
       const response = await fetch("/api/products/bulk-delete", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify({ ids: Array.from(selectedProducts) }),
       });
 
@@ -223,13 +217,9 @@ export default function AdminProducts() {
     setIsImporting(true);
 
     try {
-      const token = localStorage.getItem("adminToken");
       const response = await fetch("/api/products/bulk-import", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify({ products: importPreview }),
       });
 
@@ -297,10 +287,9 @@ export default function AdminProducts() {
           <Button 
             variant="outline" 
             onClick={async () => {
-              const token = localStorage.getItem("adminToken");
               try {
                 const response = await fetch("/api/products/export", {
-                  headers: { Authorization: `Bearer ${token}` },
+                  headers: getAuthHeaders(false),
                 });
                 if (!response.ok) throw new Error("Export failed");
                 const blob = await response.blob();

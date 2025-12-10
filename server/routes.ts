@@ -614,10 +614,13 @@ export async function registerRoutes(
 
   // Image upload endpoint with optimization
   app.post("/api/upload/image", requireAuth, uploadImage.single("image"), async (req, res) => {
+    let originalPath: string | undefined;
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No image file provided" });
       }
+
+      originalPath = req.file.path;
 
       // Optimize the uploaded image (convert to WebP)
       const optimized = await optimizeImage(req.file.path, {
@@ -636,9 +639,13 @@ export async function registerRoutes(
       });
     } catch (error) {
       console.error("Error uploading image:", error);
-      // Clean up file if it exists
-      if (req.file?.path && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
+      // Clean up original file if it exists and optimization failed
+      if (originalPath && fs.existsSync(originalPath)) {
+        try {
+          fs.unlinkSync(originalPath);
+        } catch (cleanupError) {
+          console.error("Error cleaning up file:", cleanupError);
+        }
       }
       res.status(500).json({ message: "Failed to upload image" });
     }
@@ -651,16 +658,28 @@ export async function registerRoutes(
         return res.status(400).json({ message: "No PDF file provided" });
       }
 
+      // Validate and sanitize input
+      const name = (req.body.name || req.file.originalname).slice(0, 255).replace(/[<>]/g, "");
+      const type = ["general", "technical", "catalog", "certificate"].includes(req.body.type) 
+        ? req.body.type 
+        : "general";
+      const productId = req.body.productId ? parseInt(req.body.productId, 10) : undefined;
+      
+      if (productId !== undefined && isNaN(productId)) {
+        fs.unlinkSync(req.file.path);
+        return res.status(400).json({ message: "Invalid product ID" });
+      }
+
       const url = getPublicUrl(req.file.path);
       const stats = fs.statSync(req.file.path);
 
       // Create PDF record in database
       const pdfData = {
-        name: req.body.name || req.file.originalname,
+        name,
         filename: req.file.filename,
         url,
-        type: req.body.type || "general",
-        productId: req.body.productId ? parseInt(req.body.productId) : undefined,
+        type,
+        productId,
       };
 
       const pdf = await storage.createPdf(pdfData);

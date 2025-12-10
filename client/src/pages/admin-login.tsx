@@ -24,6 +24,9 @@ export default function AdminLogin() {
     },
     onSuccess: (data) => {
       localStorage.setItem("adminToken", data.token);
+      if (data.csrfToken) {
+        localStorage.setItem("csrfToken", data.csrfToken);
+      }
       toast({
         title: "Connexion réussie",
         description: "Bienvenue dans le panneau d'administration",
