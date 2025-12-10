@@ -1,11 +1,11 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, boolean, timestamp, serial } from "drizzle-orm/pg-core";
+import { mysqlTable, text, varchar, int, boolean, timestamp } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Product Categories
-export const categories = pgTable("categories", {
-  id: serial("id").primaryKey(),
+export const categories = mysqlTable("categories", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
@@ -17,14 +17,14 @@ export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type Category = typeof categories.$inferSelect;
 
 // Products
-export const products = pgTable("products", {
-  id: serial("id").primaryKey(),
+export const products = mysqlTable("products", {
+  id: int("id").primaryKey().autoincrement(),
   code: text("code").notNull(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
   specifications: text("specifications"),
-  categoryId: integer("category_id").references(() => categories.id),
+  categoryId: int("category_id").references(() => categories.id),
   image: text("image"),
   featured: boolean("featured").default(false),
 });
@@ -34,15 +34,15 @@ export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;
 
 // Contact Inquiries
-export const inquiries = pgTable("inquiries", {
-  id: serial("id").primaryKey(),
+export const inquiries = mysqlTable("inquiries", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
   company: text("company"),
   subject: text("subject").notNull(),
   message: text("message").notNull(),
-  productId: integer("product_id").references(() => products.id),
+  productId: int("product_id").references(() => products.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -51,12 +51,12 @@ export type InsertInquiry = z.infer<typeof insertInquirySchema>;
 export type Inquiry = typeof inquiries.$inferSelect;
 
 // Elevator Configuration Options
-export const elevatorConfigurations = pgTable("elevator_configurations", {
-  id: serial("id").primaryKey(),
+export const elevatorConfigurations = mysqlTable("elevator_configurations", {
+  id: int("id").primaryKey().autoincrement(),
   sessionId: text("session_id").notNull(),
   cabinType: text("cabin_type"),
-  capacity: integer("capacity"),
-  floors: integer("floors"),
+  capacity: int("capacity"),
+  floors: int("floors"),
   doorType: text("door_type"),
   finishMaterial: text("finish_material"),
   lighting: text("lighting"),
@@ -70,12 +70,12 @@ export type InsertElevatorConfig = z.infer<typeof insertElevatorConfigSchema>;
 export type ElevatorConfig = typeof elevatorConfigurations.$inferSelect;
 
 // Platform Configuration Options
-export const platformConfigurations = pgTable("platform_configurations", {
-  id: serial("id").primaryKey(),
+export const platformConfigurations = mysqlTable("platform_configurations", {
+  id: int("id").primaryKey().autoincrement(),
   sessionId: text("session_id").notNull(),
   platformType: text("platform_type"),
-  capacity: integer("capacity"),
-  travelHeight: integer("travel_height"),
+  capacity: int("capacity"),
+  travelHeight: int("travel_height"),
   indoor: boolean("indoor").default(true),
   rampType: text("ramp_type"),
   safetyFeatures: text("safety_features"),
@@ -87,8 +87,8 @@ export type InsertPlatformConfig = z.infer<typeof insertPlatformConfigSchema>;
 export type PlatformConfig = typeof platformConfigurations.$inferSelect;
 
 // Users
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
 });
@@ -102,12 +102,12 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
 // PDFs
-export const pdfs = pgTable("pdfs", {
-  id: serial("id").primaryKey(),
+export const pdfs = mysqlTable("pdfs", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   filename: text("filename").notNull(),
   url: text("url").notNull(),
-  productId: integer("product_id").references(() => products.id),
+  productId: int("product_id").references(() => products.id),
   type: text("type").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -117,8 +117,8 @@ export type InsertPdf = z.infer<typeof insertPdfSchema>;
 export type Pdf = typeof pdfs.$inferSelect;
 
 // Newsletter Subscribers
-export const newsletters = pgTable("newsletters", {
-  id: serial("id").primaryKey(),
+export const newsletters = mysqlTable("newsletters", {
+  id: int("id").primaryKey().autoincrement(),
   email: text("email").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -128,8 +128,8 @@ export type InsertNewsletter = z.infer<typeof insertNewsletterSchema>;
 export type Newsletter = typeof newsletters.$inferSelect;
 
 // Site Settings (for admin to manage content)
-export const siteSettings = pgTable("site_settings", {
-  id: serial("id").primaryKey(),
+export const siteSettings = mysqlTable("site_settings", {
+  id: int("id").primaryKey().autoincrement(),
   key: text("key").notNull().unique(),
   value: text("value"),
   updatedAt: timestamp("updated_at").defaultNow(),
