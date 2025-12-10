@@ -6,6 +6,10 @@ import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { sendContactEmail, sendNewsletterEmail } from "./email";
 import crypto from "crypto";
+import { uploadImage, uploadPdf, optimizeImage, getPublicUrl, deleteFile } from "./upload";
+import { loginRateLimiter, generateCsrfToken, csrfProtection, securityHeaders, apiRateLimiter } from "./security";
+import path from "path";
+import fs from "fs";
 
 // Simple password hashing (for demo - in production use bcrypt)
 function hashPassword(password: string): string {
@@ -41,9 +45,13 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Apply security headers and rate limiting
+  app.use(securityHeaders);
+  app.use("/api", apiRateLimiter);
+  app.use("/api", csrfProtection);
 
-  // Auth routes
-  app.post("/api/auth/login", async (req, res) => {
+  // Auth routes with rate limiting
+  app.post("/api/auth/login", loginRateLimiter, async (req, res) => {
     try {
       const result = z.object({
         username: z.string(),
@@ -69,7 +77,10 @@ export async function registerRoutes(
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
       tokens.set(token, { userId: user.id, expiresAt });
 
-      res.json({ token, user: { id: user.id, username: user.username } });
+      // Generate CSRF token for the session
+      const csrfToken = generateCsrfToken(token);
+
+      res.json({ token, csrfToken, user: { id: user.id, username: user.username } });
     } catch (error) {
       console.error("Error logging in:", error);
       res.status(500).json({ message: "Login failed" });
@@ -484,6 +495,187 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error importing products:", error);
       res.status(500).json({ message: "Failed to import products" });
+    }
+  });
+
+  // CSV Export endpoint
+  app.get("/api/products/export", requireAuth, async (_req, res) => {
+    try {
+      const products = await storage.getProducts();
+      const categories = await storage.getCategories();
+
+      // Create category map for lookup
+      const categoryMap = new Map(categories.map(c => [c.id, c.name]));
+
+      // Generate CSV content
+      const headers = ["code", "name", "slug", "description", "specifications", "image", "featured", "categoryId", "categoryName"];
+      const csvRows = [headers.join(";")];
+
+      for (const product of products) {
+        const row = [
+          product.code,
+          product.name,
+          product.slug,
+          (product.description || "").replace(/;/g, ",").replace(/\n/g, " "),
+          (product.specifications || "").replace(/;/g, ",").replace(/\n/g, " "),
+          product.image || "",
+          product.featured ? "true" : "false",
+          product.categoryId?.toString() || "",
+          product.categoryId ? categoryMap.get(product.categoryId) || "" : "",
+        ];
+        csvRows.push(row.join(";"));
+      }
+
+      const csvContent = csvRows.join("\n");
+
+      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      res.setHeader("Content-Disposition", `attachment; filename="products_export_${new Date().toISOString().split("T")[0]}.csv"`);
+      res.send(csvContent);
+    } catch (error) {
+      console.error("Error exporting products:", error);
+      res.status(500).json({ message: "Failed to export products" });
+    }
+  });
+
+  // Advanced search endpoint
+  app.get("/api/products/search", async (req, res) => {
+    try {
+      const { q, category, featured, minCode, maxCode, sortBy, sortOrder, page, limit } = req.query;
+
+      let products = await storage.getProducts();
+
+      // Text search
+      if (q && typeof q === "string") {
+        const query = q.toLowerCase();
+        products = products.filter(
+          (p) =>
+            p.name.toLowerCase().includes(query) ||
+            p.code.toLowerCase().includes(query) ||
+            p.description?.toLowerCase().includes(query) ||
+            p.specifications?.toLowerCase().includes(query)
+        );
+      }
+
+      // Category filter
+      if (category && typeof category === "string" && category !== "all") {
+        const categories = await storage.getCategories();
+        const cat = categories.find((c) => c.slug === category || c.id.toString() === category);
+        if (cat) {
+          products = products.filter((p) => p.categoryId === cat.id);
+        }
+      }
+
+      // Featured filter
+      if (featured === "true") {
+        products = products.filter((p) => p.featured);
+      } else if (featured === "false") {
+        products = products.filter((p) => !p.featured);
+      }
+
+      // Code range filter
+      if (minCode && typeof minCode === "string") {
+        products = products.filter((p) => p.code >= minCode);
+      }
+      if (maxCode && typeof maxCode === "string") {
+        products = products.filter((p) => p.code <= maxCode);
+      }
+
+      // Sorting
+      const order = sortOrder === "desc" ? -1 : 1;
+      if (sortBy === "name") {
+        products.sort((a, b) => a.name.localeCompare(b.name) * order);
+      } else if (sortBy === "code") {
+        products.sort((a, b) => a.code.localeCompare(b.code) * order);
+      } else if (sortBy === "featured") {
+        products.sort((a, b) => ((a.featured ? 1 : 0) - (b.featured ? 1 : 0)) * order);
+      }
+
+      // Pagination
+      const pageNum = parseInt(page as string) || 1;
+      const limitNum = parseInt(limit as string) || 20;
+      const startIndex = (pageNum - 1) * limitNum;
+      const totalCount = products.length;
+      const paginatedProducts = products.slice(startIndex, startIndex + limitNum);
+
+      res.json({
+        products: paginatedProducts,
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total: totalCount,
+          totalPages: Math.ceil(totalCount / limitNum),
+        },
+      });
+    } catch (error) {
+      console.error("Error searching products:", error);
+      res.status(500).json({ message: "Failed to search products" });
+    }
+  });
+
+  // Image upload endpoint with optimization
+  app.post("/api/upload/image", requireAuth, uploadImage.single("image"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No image file provided" });
+      }
+
+      // Optimize the uploaded image (convert to WebP)
+      const optimized = await optimizeImage(req.file.path, {
+        format: "webp",
+        quality: 85,
+      });
+
+      const url = getPublicUrl(optimized.path);
+
+      res.json({
+        url,
+        filename: path.basename(optimized.path),
+        width: optimized.width,
+        height: optimized.height,
+        size: optimized.size,
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      // Clean up file if it exists
+      if (req.file?.path && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      res.status(500).json({ message: "Failed to upload image" });
+    }
+  });
+
+  // PDF file upload endpoint
+  app.post("/api/upload/pdf", requireAuth, uploadPdf.single("pdf"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No PDF file provided" });
+      }
+
+      const url = getPublicUrl(req.file.path);
+      const stats = fs.statSync(req.file.path);
+
+      // Create PDF record in database
+      const pdfData = {
+        name: req.body.name || req.file.originalname,
+        filename: req.file.filename,
+        url,
+        type: req.body.type || "general",
+        productId: req.body.productId ? parseInt(req.body.productId) : undefined,
+      };
+
+      const pdf = await storage.createPdf(pdfData);
+
+      res.status(201).json({
+        ...pdf,
+        size: stats.size,
+      });
+    } catch (error) {
+      console.error("Error uploading PDF:", error);
+      // Clean up file if it exists
+      if (req.file?.path && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      res.status(500).json({ message: "Failed to upload PDF" });
     }
   });
 
