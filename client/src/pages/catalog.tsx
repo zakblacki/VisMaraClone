@@ -18,6 +18,7 @@ import {
 import { getProducts, getCategories } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n";
 
+import LazyImage from "@/components/ui/lazy-image";
 import speedGovernorImg from "@assets/generated_images/elevator_speed_governor_product.png";
 import doorOperatorImg from "@assets/generated_images/elevator_door_operator_mechanism.png";
 import ledConnectorImg from "@assets/generated_images/led_connector_component.png";
@@ -27,6 +28,15 @@ const imageMap: Record<string, string> = {
   doorOperator: doorOperatorImg,
   ledConnector: ledConnectorImg,
 };
+
+// Helper to get image source - supports uploaded images or fallback to predefined
+function getImageSrc(image: string | null | undefined): string {
+  if (!image) return speedGovernorImg;
+  if (image.startsWith("/uploads/") || image.startsWith("http")) {
+    return image;
+  }
+  return imageMap[image] || speedGovernorImg;
+}
 
 export default function Catalog() {
   const { t } = useLanguage();
@@ -203,11 +213,12 @@ export default function Catalog() {
                       onClick={() => setLocation(`/product/${product.slug}`)}
                     >
                       <div className="aspect-square relative bg-muted/50">
-                        <img
-                          src={imageMap[product.image || "speedGovernor"]}
+                        <LazyImage
+                          src={getImageSrc(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                          data-testid={`img-catalog-product-${index}`}
+                          placeholderClassName="w-full h-full"
+                          fallbackSrc={speedGovernorImg}
                         />
                         {product.featured && (
                           <Badge className="absolute top-3 right-3">
@@ -236,11 +247,12 @@ export default function Catalog() {
                     >
                       <CardContent className="p-4 flex gap-4">
                         <div className="w-24 h-24 flex-shrink-0 bg-muted/50 rounded-lg overflow-hidden">
-                          <img
-                            src={imageMap[product.image || "speedGovernor"]}
+                          <LazyImage
+                            src={getImageSrc(product.image)}
                             alt={product.name}
                             className="w-full h-full object-contain p-2"
-                            data-testid={`img-catalog-list-product-${index}`}
+                            placeholderClassName="w-full h-full"
+                            fallbackSrc={speedGovernorImg}
                           />
                         </div>
                         <div className="flex-1 min-w-0">

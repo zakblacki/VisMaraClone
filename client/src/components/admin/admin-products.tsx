@@ -294,6 +294,32 @@ export default function AdminProducts() {
           />
         </div>
         <div className="flex gap-2 flex-wrap">
+          <Button 
+            variant="outline" 
+            onClick={async () => {
+              const token = localStorage.getItem("adminToken");
+              try {
+                const response = await fetch("/api/products/export", {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Export failed");
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `produits_${new Date().toISOString().split("T")[0]}.csv`;
+                link.click();
+                URL.revokeObjectURL(url);
+                toast({ title: "Export réussi", description: "Le fichier CSV a été téléchargé." });
+              } catch (error) {
+                toast({ title: "Erreur", description: "Échec de l'export", variant: "destructive" });
+              }
+            }}
+            data-testid="button-export-csv"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Exporter CSV
+          </Button>
           <Dialog open={isImportDialogOpen} onOpenChange={(open) => {
             setIsImportDialogOpen(open);
             if (!open) {

@@ -26,6 +26,7 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const generateSlug = (text: string) => {
     return text
@@ -169,20 +170,45 @@ export default function ProductForm({ product, onClose }: ProductFormProps) {
             name="image"
             type="file"
             accept="image/*"
-            onChange={(e) => {
+            disabled={isUploadingImage}
+            onChange={async (e) => {
               const file = e.target.files?.[0];
-              if (file) {
-                // For now, store the filename. In production, upload to server
+              if (!file) return;
+
+              setIsUploadingImage(true);
+              try {
+                const token = localStorage.getItem("adminToken");
+                const formDataUpload = new FormData();
+                formDataUpload.append("image", file);
+
+                const response = await fetch("/api/upload/image", {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: formDataUpload,
+                });
+
+                if (!response.ok) {
+                  throw new Error("Upload failed");
+                }
+
+                const data = await response.json();
                 setFormData((prev) => ({
                   ...prev,
-                  image: file.name,
+                  image: data.url,
                 }));
+              } catch (error) {
+                console.error("Error uploading image:", error);
+                alert("Erreur lors du téléchargement de l'image");
+              } finally {
+                setIsUploadingImage(false);
               }
             }}
             data-testid="input-product-image"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            {formData.image && `Actuel: ${formData.image}`}
+            {isUploadingImage ? "Téléchargement en cours..." : formData.image && `Actuel: ${formData.image}`}
           </p>
         </div>
         <div className="flex items-end">

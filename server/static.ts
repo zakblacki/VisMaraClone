@@ -10,6 +10,24 @@ export function serveStatic(app: Express) {
     );
   }
 
+  // Serve uploaded files from public/uploads
+  const uploadsPath = path.resolve(process.cwd(), "public", "uploads");
+  if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+  }
+  app.use(
+    "/uploads",
+    express.static(uploadsPath, {
+      maxAge: "7d",
+      setHeaders: (res, filePath) => {
+        if (filePath.match(/\.(pdf)$/i)) {
+          res.setHeader("Content-Type", "application/pdf");
+          res.setHeader("Content-Disposition", "inline");
+        }
+      },
+    })
+  );
+
   // Serve static assets with long-term caching for hashed files (1 year)
   app.use(
     "/assets",

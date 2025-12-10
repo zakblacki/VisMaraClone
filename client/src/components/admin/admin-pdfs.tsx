@@ -48,6 +48,8 @@ export default function AdminPDFs() {
     if (!files) return;
 
     setIsUploading(true);
+    const token = localStorage.getItem("adminToken");
+    
     try {
       for (const file of Array.from(files)) {
         if (file.type !== "application/pdf") {
@@ -55,18 +57,18 @@ export default function AdminPDFs() {
           continue;
         }
 
-        // For now, simulate upload - in production, implement file upload to server
-        const mockUrl = `/uploads/${file.name}`;
+        // Upload file using FormData
+        const formData = new FormData();
+        formData.append("pdf", file);
+        formData.append("name", file.name);
+        formData.append("type", "general");
         
-        const response = await fetch("/api/pdfs", {
+        const response = await fetch("/api/upload/pdf", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: file.name,
-            filename: file.name,
-            url: mockUrl,
-            type: "general",
-          }),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         });
 
         if (!response.ok) {
@@ -78,10 +80,10 @@ export default function AdminPDFs() {
           ...prev,
           {
             id: data.id,
-            name: file.name,
+            name: data.name,
             url: data.url,
             uploadedAt: new Date().toLocaleDateString("fr-FR"),
-            size: Math.round(file.size / 1024),
+            size: Math.round((data.size || 0) / 1024),
           },
         ]);
       }
