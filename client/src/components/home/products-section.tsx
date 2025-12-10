@@ -61,7 +61,7 @@ export function ProductsSection() {
                     data-testid={`img-product-${index}`}
                   />
                   {product.featured && (
-                    <Badge className="absolute top-3 left-3" variant="default" size="sm">
+                    <Badge className="absolute top-3 left-3" variant="default">
                       Nouveau
                     </Badge>
                   )}

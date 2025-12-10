@@ -1,6 +1,7 @@
 import { db } from "./db";
-import { products, categories, pdfs } from "@shared/schema";
+import { products, categories, pdfs, type Category, type Product, type Pdf } from "@shared/schema";
 import { sampleProducts, sampleCategories } from "../client/src/lib/data";
+import { eq } from "drizzle-orm";
 
 async function seed() {
   console.log("Starting database seed...");
@@ -12,11 +13,12 @@ async function seed() {
     await db.delete(categories);
 
     console.log("Inserting categories...");
-    const insertedCategories = await db.insert(categories).values(sampleCategories).returning();
+    await db.insert(categories).values(sampleCategories);
+    const insertedCategories: Category[] = await db.select().from(categories);
     console.log(`Inserted ${insertedCategories.length} categories`);
 
     const categoryMap = new Map<string, number>();
-    insertedCategories.forEach((cat) => {
+    insertedCategories.forEach((cat: Category) => {
       categoryMap.set(cat.slug, cat.id);
     });
 
@@ -38,11 +40,12 @@ async function seed() {
     });
 
     console.log("Inserting products...");
-    const insertedProducts = await db.insert(products).values(productsWithCategories).returning();
+    await db.insert(products).values(productsWithCategories);
+    const insertedProducts: Product[] = await db.select().from(products);
     console.log(`Inserted ${insertedProducts.length} products`);
 
     const productMap = new Map<string, number>();
-    insertedProducts.forEach((prod) => {
+    insertedProducts.forEach((prod: Product) => {
       productMap.set(prod.slug, prod.id);
     });
 
@@ -92,7 +95,8 @@ async function seed() {
     ];
 
     console.log("Inserting PDFs...");
-    const insertedPdfs = await db.insert(pdfs).values(samplePdfs).returning();
+    await db.insert(pdfs).values(samplePdfs);
+    const insertedPdfs: Pdf[] = await db.select().from(pdfs);
     console.log(`Inserted ${insertedPdfs.length} PDFs`);
 
     console.log("\nSeed completed successfully!");
