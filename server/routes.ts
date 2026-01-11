@@ -1,13 +1,29 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertInquirySchema, insertElevatorConfigSchema, insertPlatformConfigSchema } from "@shared/schema";
+import {
+  insertInquirySchema,
+  insertElevatorConfigSchema,
+  insertPlatformConfigSchema,
+} from "@shared/schema";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { sendContactEmail, sendNewsletterEmail } from "./email";
 import crypto from "crypto";
-import { uploadImage, uploadPdf, optimizeImage, getPublicUrl, deleteFile } from "./upload";
-import { loginRateLimiter, generateCsrfToken, csrfProtection, securityHeaders, apiRateLimiter } from "./security";
+import {
+  uploadImage,
+  uploadPdf,
+  optimizeImage,
+  getPublicUrl,
+  deleteFile,
+} from "./upload";
+import {
+  loginRateLimiter,
+  generateCsrfToken,
+  csrfProtection,
+  securityHeaders,
+  apiRateLimiter,
+} from "./security";
 import path from "path";
 import fs from "fs";
 
@@ -53,10 +69,12 @@ export async function registerRoutes(
   // Auth routes with rate limiting
   app.post("/api/auth/login", loginRateLimiter, async (req, res) => {
     try {
-      const result = z.object({
-        username: z.string(),
-        password: z.string(),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          username: z.string(),
+          password: z.string(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -65,12 +83,16 @@ export async function registerRoutes(
 
       const user = await storage.getUserByUsername(result.data.username);
       if (!user) {
-        return res.status(401).json({ message: "Invalid username or password" });
+        return res
+          .status(401)
+          .json({ message: "Invalid username or password" });
       }
 
       const hashedPassword = hashPassword(result.data.password);
       if (user.password !== hashedPassword) {
-        return res.status(401).json({ message: "Invalid username or password" });
+        return res
+          .status(401)
+          .json({ message: "Invalid username or password" });
       }
 
       const token = generateToken();
@@ -80,7 +102,11 @@ export async function registerRoutes(
       // Generate CSRF token for the session
       const csrfToken = generateCsrfToken(token);
 
-      res.json({ token, csrfToken, user: { id: user.id, username: user.username } });
+      res.json({
+        token,
+        csrfToken,
+        user: { id: user.id, username: user.username },
+      });
     } catch (error) {
       console.error("Error logging in:", error);
       res.status(500).json({ message: "Login failed" });
@@ -129,13 +155,132 @@ export async function registerRoutes(
         password: hashedPassword,
       });
 
-      res.status(201).json({ message: "Admin user created", user: { id: user.id, username: user.username } });
+      res
+        .status(201)
+        .json({
+          message: "Admin user created",
+          user: { id: user.id, username: user.username },
+        });
     } catch (error) {
       console.error("Error creating admin user:", error);
       res.status(500).json({ message: "Failed to create admin user" });
     }
   });
-  
+
+  // Database setup route for cPanel (manual seeding)
+  app.get("/api/db/setup", async (_req, res) => {
+    try {
+      console.log("Starting database setup via API...");
+
+      // 1. Check if already seeded
+      const existingCategories = await storage.getCategories();
+      if (existingCategories.length > 0) {
+        return res.json({
+          message: "Database already contains data. Skipping seed.",
+        });
+      }
+
+      // 2. Import sample data (hardcoded for safety during migration)
+      const sampleCategories = [
+        {
+          name: "Limiteurs de vitesse",
+          slug: "speed-limiters",
+          description:
+            "Limiteurs de vitesse bidirectionnels et unidirectionnels pour ascenseurs",
+          icon: "Gauge",
+        },
+        {
+          name: "Opérateurs de porte",
+          slug: "door-operators",
+          description: "Opérateurs et suspensions pour portes d'ascenseur",
+          icon: "DoorOpen",
+        },
+        {
+          name: "Composants LED",
+          slug: "led",
+          description:
+            "Connecteurs, bandes et accessoires LED pour l'éclairage d'ascenseur",
+          icon: "Lightbulb",
+        },
+        {
+          name: "Systèmes de sécurité",
+          slug: "safety-systems",
+          description: "Composants de sécurité pour systèmes d'ascenseurs",
+          icon: "Shield",
+        },
+        {
+          name: "Panneaux de commande",
+          slug: "control-panels",
+          description:
+            "Panneaux de commande et boutons pour cabines d'ascenseur",
+          icon: "Keyboard",
+        },
+        {
+          name: "Structures et guides",
+          slug: "structures",
+          description:
+            "Guides, structures et composants mécaniques pour ascenseurs",
+          icon: "Layers",
+        },
+      ];
+
+      console.log("Seeding categories...");
+      const createdCategories = [];
+      for (const cat of sampleCategories) {
+        const created = await storage.createCategory(cat);
+        createdCategories.push(created);
+      }
+
+      const categoryMap = new Map();
+      createdCategories.forEach((cat) => categoryMap.set(cat.slug, cat.id));
+
+      const sampleProducts = [
+        {
+          code: "L0X-187",
+          name: "Limiteur de Vitesse Bidirectionnel ø240mm",
+          slug: "speed-limiter-bidirectional-240mm",
+          description: "Limiteur de vitesse bidirectionnel poulie 240mm",
+          specifications: "ø 240 mm, CE",
+          categoryId: categoryMap.get("speed-limiters"),
+          featured: true,
+        },
+        {
+          code: "L0X-186",
+          name: "Limiteur de Vitesse Bidirectionnel ø150mm",
+          slug: "speed-limiter-bidirectional-150mm",
+          description: "Compact speed governor",
+          specifications: "ø 150 mm, CE",
+          categoryId: categoryMap.get("speed-limiters"),
+          featured: true,
+        },
+        {
+          code: "OP-SLIM-01",
+          name: "Opérateur Porte Slim Ouverture Latérale",
+          slug: "slim-door-operator-lateral",
+          description: "Design compact",
+          specifications: "Vantaux télescopiques",
+          categoryId: categoryMap.get("door-operators"),
+          featured: true,
+        },
+      ];
+
+      console.log("Seeding products...");
+      for (const prod of sampleProducts) {
+        await storage.createProduct(prod);
+      }
+
+      res.json({
+        message: "Database seeded successfully!",
+        categories: createdCategories.length,
+      });
+    } catch (error) {
+      console.error("Database setup error:", error);
+      res
+        .status(500)
+        .json({ message: "Database setup failed", error: String(error) });
+    }
+  });
+
   app.get("/api/products", async (_req, res) => {
     try {
       const products = await storage.getProducts();
@@ -209,12 +354,14 @@ export async function registerRoutes(
   // Admin endpoints for categories (protected)
   app.post("/api/categories", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        name: z.string(),
-        slug: z.string(),
-        description: z.string().optional(),
-        icon: z.string().optional(),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          name: z.string(),
+          slug: z.string(),
+          description: z.string().optional(),
+          icon: z.string().optional(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -235,13 +382,15 @@ export async function registerRoutes(
       if (isNaN(id)) {
         return res.status(400).json({ message: "Invalid category ID" });
       }
-      
-      const result = z.object({
-        name: z.string().optional(),
-        slug: z.string().optional(),
-        description: z.string().optional(),
-        icon: z.string().optional(),
-      }).safeParse(req.body);
+
+      const result = z
+        .object({
+          name: z.string().optional(),
+          slug: z.string().optional(),
+          description: z.string().optional(),
+          icon: z.string().optional(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -272,9 +421,11 @@ export async function registerRoutes(
 
   app.post("/api/categories/bulk-delete", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        ids: z.array(z.number()),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          ids: z.array(z.number()),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -296,14 +447,14 @@ export async function registerRoutes(
         console.log("Bot detected - honeypot field filled");
         return res.status(201).json({ message: "Inquiry submitted" });
       }
-      
+
       const result = insertInquirySchema.safeParse(req.body);
       if (!result.success) {
         const error = fromZodError(result.error);
         return res.status(400).json({ message: error.message });
       }
       const inquiry = await storage.createInquiry(result.data);
-      
+
       // Send email notification
       await sendContactEmail({
         name: result.data.name,
@@ -313,7 +464,7 @@ export async function registerRoutes(
         subject: result.data.subject,
         message: result.data.message,
       });
-      
+
       res.status(201).json(inquiry);
     } catch (error) {
       console.error("Error creating inquiry:", error);
@@ -328,10 +479,12 @@ export async function registerRoutes(
         console.log("Bot detected - honeypot field filled");
         return res.status(201).json({ message: "Subscription successful" });
       }
-      
-      const result = z.object({
-        email: z.string().email(),
-      }).safeParse(req.body);
+
+      const result = z
+        .object({
+          email: z.string().email(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -340,7 +493,7 @@ export async function registerRoutes(
 
       // Send email notification
       await sendNewsletterEmail(result.data.email);
-      
+
       res.status(201).json({ message: "Subscription successful" });
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);
@@ -359,7 +512,9 @@ export async function registerRoutes(
       res.status(201).json(config);
     } catch (error) {
       console.error("Error creating elevator configuration:", error);
-      res.status(500).json({ message: "Failed to create elevator configuration" });
+      res
+        .status(500)
+        .json({ message: "Failed to create elevator configuration" });
     }
   });
 
@@ -374,22 +529,26 @@ export async function registerRoutes(
       res.status(201).json(config);
     } catch (error) {
       console.error("Error creating platform configuration:", error);
-      res.status(500).json({ message: "Failed to create platform configuration" });
+      res
+        .status(500)
+        .json({ message: "Failed to create platform configuration" });
     }
   });
 
   // Admin endpoints for products (protected)
   app.post("/api/products", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        code: z.string(),
-        name: z.string(),
-        slug: z.string(),
-        description: z.string().optional(),
-        specifications: z.string().optional(),
-        image: z.string().optional(),
-        featured: z.boolean().optional(),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          code: z.string(),
+          name: z.string(),
+          slug: z.string(),
+          description: z.string().optional(),
+          specifications: z.string().optional(),
+          image: z.string().optional(),
+          featured: z.boolean().optional(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -410,17 +569,19 @@ export async function registerRoutes(
       if (isNaN(id)) {
         return res.status(400).json({ message: "Invalid product ID" });
       }
-      
-      const result = z.object({
-        code: z.string().optional(),
-        name: z.string().optional(),
-        slug: z.string().optional(),
-        description: z.string().optional(),
-        specifications: z.string().optional(),
-        image: z.string().optional(),
-        featured: z.boolean().optional(),
-        categoryId: z.number().optional(),
-      }).safeParse(req.body);
+
+      const result = z
+        .object({
+          code: z.string().optional(),
+          name: z.string().optional(),
+          slug: z.string().optional(),
+          description: z.string().optional(),
+          specifications: z.string().optional(),
+          image: z.string().optional(),
+          featured: z.boolean().optional(),
+          categoryId: z.number().optional(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -451,9 +612,11 @@ export async function registerRoutes(
 
   app.post("/api/products/bulk-delete", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        ids: z.array(z.number()),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          ids: z.array(z.number()),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -481,9 +644,11 @@ export async function registerRoutes(
         categoryId: z.number().optional(),
       });
 
-      const result = z.object({
-        products: z.array(productSchema),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          products: z.array(productSchema),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -491,7 +656,12 @@ export async function registerRoutes(
       }
 
       const created = await storage.createProducts(result.data.products);
-      res.status(201).json({ message: `${created.length} products imported successfully`, products: created });
+      res
+        .status(201)
+        .json({
+          message: `${created.length} products imported successfully`,
+          products: created,
+        });
     } catch (error) {
       console.error("Error importing products:", error);
       res.status(500).json({ message: "Failed to import products" });
@@ -505,10 +675,20 @@ export async function registerRoutes(
       const categories = await storage.getCategories();
 
       // Create category map for lookup
-      const categoryMap = new Map(categories.map(c => [c.id, c.name]));
+      const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
 
       // Generate CSV content
-      const headers = ["code", "name", "slug", "description", "specifications", "image", "featured", "categoryId", "categoryName"];
+      const headers = [
+        "code",
+        "name",
+        "slug",
+        "description",
+        "specifications",
+        "image",
+        "featured",
+        "categoryId",
+        "categoryName",
+      ];
       const csvRows = [headers.join(";")];
 
       for (const product of products) {
@@ -529,7 +709,12 @@ export async function registerRoutes(
       const csvContent = csvRows.join("\n");
 
       res.setHeader("Content-Type", "text/csv; charset=utf-8");
-      res.setHeader("Content-Disposition", `attachment; filename="products_export_${new Date().toISOString().split("T")[0]}.csv"`);
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="products_export_${
+          new Date().toISOString().split("T")[0]
+        }.csv"`
+      );
       res.send(csvContent);
     } catch (error) {
       console.error("Error exporting products:", error);
@@ -540,7 +725,17 @@ export async function registerRoutes(
   // Advanced search endpoint
   app.get("/api/products/search", async (req, res) => {
     try {
-      const { q, category, featured, minCode, maxCode, sortBy, sortOrder, page, limit } = req.query;
+      const {
+        q,
+        category,
+        featured,
+        minCode,
+        maxCode,
+        sortBy,
+        sortOrder,
+        page,
+        limit,
+      } = req.query;
 
       let products = await storage.getProducts();
 
@@ -559,7 +754,9 @@ export async function registerRoutes(
       // Category filter
       if (category && typeof category === "string" && category !== "all") {
         const categories = await storage.getCategories();
-        const cat = categories.find((c) => c.slug === category || c.id.toString() === category);
+        const cat = categories.find(
+          (c) => c.slug === category || c.id.toString() === category
+        );
         if (cat) {
           products = products.filter((p) => p.categoryId === cat.id);
         }
@@ -587,7 +784,9 @@ export async function registerRoutes(
       } else if (sortBy === "code") {
         products.sort((a, b) => a.code.localeCompare(b.code) * order);
       } else if (sortBy === "featured") {
-        products.sort((a, b) => ((a.featured ? 1 : 0) - (b.featured ? 1 : 0)) * order);
+        products.sort(
+          (a, b) => ((a.featured ? 1 : 0) - (b.featured ? 1 : 0)) * order
+        );
       }
 
       // Pagination
@@ -595,7 +794,10 @@ export async function registerRoutes(
       const limitNum = parseInt(limit as string) || 20;
       const startIndex = (pageNum - 1) * limitNum;
       const totalCount = products.length;
-      const paginatedProducts = products.slice(startIndex, startIndex + limitNum);
+      const paginatedProducts = products.slice(
+        startIndex,
+        startIndex + limitNum
+      );
 
       res.json({
         products: paginatedProducts,
@@ -613,90 +815,109 @@ export async function registerRoutes(
   });
 
   // Image upload endpoint with optimization
-  app.post("/api/upload/image", requireAuth, uploadImage.single("image"), async (req, res) => {
-    let originalPath: string | undefined;
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: "No image file provided" });
-      }
-
-      originalPath = req.file.path;
-
-      // Optimize the uploaded image (convert to WebP)
-      const optimized = await optimizeImage(req.file.path, {
-        format: "webp",
-        quality: 85,
-      });
-
-      const url = getPublicUrl(optimized.path);
-
-      res.json({
-        url,
-        filename: path.basename(optimized.path),
-        width: optimized.width,
-        height: optimized.height,
-        size: optimized.size,
-      });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      // Clean up original file if it exists and optimization failed
-      if (originalPath && fs.existsSync(originalPath)) {
-        try {
-          fs.unlinkSync(originalPath);
-        } catch (cleanupError) {
-          console.error("Error cleaning up file:", cleanupError);
+  app.post(
+    "/api/upload/image",
+    requireAuth,
+    uploadImage.single("image"),
+    async (req, res) => {
+      let originalPath: string | undefined;
+      try {
+        if (!req.file) {
+          return res.status(400).json({ message: "No image file provided" });
         }
+
+        originalPath = req.file.path;
+
+        // Optimize the uploaded image (convert to WebP)
+        const optimized = await optimizeImage(req.file.path, {
+          format: "webp",
+          quality: 85,
+        });
+
+        const url = getPublicUrl(optimized.path);
+
+        res.json({
+          url,
+          filename: path.basename(optimized.path),
+          width: optimized.width,
+          height: optimized.height,
+          size: optimized.size,
+        });
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        // Clean up original file if it exists and optimization failed
+        if (originalPath && fs.existsSync(originalPath)) {
+          try {
+            fs.unlinkSync(originalPath);
+          } catch (cleanupError) {
+            console.error("Error cleaning up file:", cleanupError);
+          }
+        }
+        res.status(500).json({ message: "Failed to upload image" });
       }
-      res.status(500).json({ message: "Failed to upload image" });
     }
-  });
+  );
 
   // PDF file upload endpoint
-  app.post("/api/upload/pdf", requireAuth, uploadPdf.single("pdf"), async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: "No PDF file provided" });
+  app.post(
+    "/api/upload/pdf",
+    requireAuth,
+    uploadPdf.single("pdf"),
+    async (req, res) => {
+      try {
+        if (!req.file) {
+          return res.status(400).json({ message: "No PDF file provided" });
+        }
+
+        // Validate and sanitize input
+        const name = (req.body.name || req.file.originalname)
+          .slice(0, 255)
+          .replace(/[<>]/g, "");
+        const type = [
+          "general",
+          "technical",
+          "catalog",
+          "certificate",
+        ].includes(req.body.type)
+          ? req.body.type
+          : "general";
+        const productId = req.body.productId
+          ? parseInt(req.body.productId, 10)
+          : undefined;
+
+        if (productId !== undefined && isNaN(productId)) {
+          fs.unlinkSync(req.file.path);
+          return res.status(400).json({ message: "Invalid product ID" });
+        }
+
+        const url = getPublicUrl(req.file.path);
+        const stats = fs.statSync(req.file.path);
+
+        // Create PDF record in database
+        const pdfData = {
+          name,
+          filename: req.file.filename,
+          url,
+          type,
+          productId,
+        };
+
+        const pdf = await storage.createPdf(pdfData);
+
+        res.status(201).json({
+          ...pdf,
+          size: stats.size,
+        });
+      } catch (error) {
+        console.error("Error uploading PDF:", error);
+        // Clean up file if it exists
+        if (req.file?.path && fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
+        res.status(500).json({ message: "Failed to upload PDF" });
       }
-
-      // Validate and sanitize input
-      const name = (req.body.name || req.file.originalname).slice(0, 255).replace(/[<>]/g, "");
-      const type = ["general", "technical", "catalog", "certificate"].includes(req.body.type) 
-        ? req.body.type 
-        : "general";
-      const productId = req.body.productId ? parseInt(req.body.productId, 10) : undefined;
-      
-      if (productId !== undefined && isNaN(productId)) {
-        fs.unlinkSync(req.file.path);
-        return res.status(400).json({ message: "Invalid product ID" });
-      }
-
-      const url = getPublicUrl(req.file.path);
-      const stats = fs.statSync(req.file.path);
-
-      // Create PDF record in database
-      const pdfData = {
-        name,
-        filename: req.file.filename,
-        url,
-        type,
-        productId,
-      };
-
-      const pdf = await storage.createPdf(pdfData);
-
-      res.status(201).json({
-        ...pdf,
-        size: stats.size,
-      });
-    } catch (error) {
-      console.error("Error uploading PDF:", error);
-      // Clean up file if it exists
-      if (req.file?.path && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
-      }
-      res.status(500).json({ message: "Failed to upload PDF" });
     }
-  });
+  );
 
   // PDF endpoints
   app.get("/api/pdfs", async (_req, res) => {
@@ -725,13 +946,15 @@ export async function registerRoutes(
 
   app.post("/api/pdfs", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        name: z.string(),
-        filename: z.string(),
-        url: z.string(),
-        productId: z.number().optional(),
-        type: z.string(),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          name: z.string(),
+          filename: z.string(),
+          url: z.string(),
+          productId: z.number().optional(),
+          type: z.string(),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -762,9 +985,11 @@ export async function registerRoutes(
 
   app.post("/api/pdfs/bulk-delete", requireAuth, async (req, res) => {
     try {
-      const result = z.object({
-        ids: z.array(z.number()),
-      }).safeParse(req.body);
+      const result = z
+        .object({
+          ids: z.array(z.number()),
+        })
+        .safeParse(req.body);
 
       if (!result.success) {
         const error = fromZodError(result.error);
@@ -781,10 +1006,11 @@ export async function registerRoutes(
 
   // SEO endpoints
   app.get("/robots.txt", (req, res) => {
-    const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+    const protocol =
+      req.headers["x-forwarded-proto"] || req.protocol || "https";
     const host = req.get("host") || "localhost:5000";
     const baseUrl = `${protocol}://${host}`;
-    
+
     const robotsTxt = `# Robots.txt for Prodlift
 User-agent: *
 Allow: /
@@ -799,22 +1025,23 @@ Crawl-delay: 1
 Disallow: /admin/
 Disallow: /api/
 `;
-    
+
     res.set("Content-Type", "text/plain");
     res.send(robotsTxt);
   });
 
   app.get("/sitemap.xml", async (req, res) => {
     try {
-      const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+      const protocol =
+        req.headers["x-forwarded-proto"] || req.protocol || "https";
       const host = req.get("host") || "localhost:5000";
       const baseUrl = `${protocol}://${host}`;
-      
+
       const products = await storage.getProducts();
       const categories = await storage.getCategories();
-      
+
       const today = new Date().toISOString().split("T")[0];
-      
+
       let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Static pages -->
@@ -879,7 +1106,7 @@ Disallow: /api/
       }
 
       sitemap += `</urlset>`;
-      
+
       res.set("Content-Type", "application/xml");
       res.send(sitemap);
     } catch (error) {
@@ -892,7 +1119,7 @@ Disallow: /api/
     try {
       const products = await storage.getProducts();
       const categories = await storage.getCategories();
-      
+
       let llmsTxt = `# Prodlift - Industrial Elevator Components
 
 ## About
@@ -911,7 +1138,9 @@ Prodlift is a leading manufacturer and supplier of industrial elevator component
 `;
 
       for (const category of categories) {
-        llmsTxt += `- ${category.name}: ${category.description || "Category of products"}\n`;
+        llmsTxt += `- ${category.name}: ${
+          category.description || "Category of products"
+        }\n`;
       }
 
       llmsTxt += `
@@ -919,7 +1148,9 @@ Prodlift is a leading manufacturer and supplier of industrial elevator component
 `;
 
       for (const product of products.slice(0, 20)) {
-        llmsTxt += `- ${product.name} (${product.code}): ${product.description?.substring(0, 100) || "Industrial component"}...\n`;
+        llmsTxt += `- ${product.name} (${product.code}): ${
+          product.description?.substring(0, 100) || "Industrial component"
+        }...\n`;
       }
 
       if (products.length > 20) {
@@ -933,7 +1164,7 @@ Visit our contact page for inquiries and support.
 ## Technical Specifications
 All products come with detailed technical specifications and PDF documentation available on individual product pages.
 `;
-      
+
       res.set("Content-Type", "text/plain");
       res.send(llmsTxt);
     } catch (error) {
